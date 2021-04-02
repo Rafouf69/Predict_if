@@ -22,7 +22,6 @@ package metier.modele;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.*;
@@ -47,7 +46,13 @@ public class Client {
     
     private String telephone;
     
-    private ArrayList<String> listeAstrale;
+    private String zodiaque;
+    
+    private String signeChinois;
+    
+    private String couleur;
+    
+    private String animalTotem;
     
     private String motDePasse;
     
@@ -59,9 +64,14 @@ public class Client {
         this.mail=mail;
         this.dateNaissance=date;
         this.motDePasse=modDePasse;
+        ArrayList<String> listeAstrale;
         AstroNetApi astroNetApi = new AstroNetApi();
         try {
             listeAstrale = (ArrayList<String>) astroNetApi.getProfil(prenom, date);
+            zodiaque=listeAstrale.get(0);
+            signeChinois=listeAstrale.get(1);
+            couleur=listeAstrale.get(2);
+            animalTotem=listeAstrale.get(3);
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -88,10 +98,21 @@ public class Client {
         return telephone;
     }
     
-    public List<String> getListeAstrale(){
-        return listeAstrale;
+    public String getZodiaque(){
+        return zodiaque;
     }
     
+    public String getSigneChinois(){
+        return signeChinois;
+    }
+    
+    public String getCouleur(){
+        return couleur;
+    }
+    
+    public String getAnimalTotem(){
+        return animalTotem;
+    }
     public Date getDateNaissance(){
         return dateNaissance;
     }
