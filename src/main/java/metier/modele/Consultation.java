@@ -29,6 +29,8 @@ public class Consultation {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     
+    private Date datedepart;
+    private Date datefin;
     private String commentaire;
     
     @ManyToOne
@@ -40,8 +42,6 @@ public class Consultation {
     @ManyToOne
     private Client client;
    
-    private Date datedepart;
-    private Date datefin;
     public Consultation(){    
     }
     public Consultation(Employee emp, Date datedeb, Client client, Medium medium ){

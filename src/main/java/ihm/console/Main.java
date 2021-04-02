@@ -22,9 +22,9 @@ public class Main {
     public static void main(String[] args) {
         JpaUtil.init();
         ControleService Controle= new ControleService();
-        Controle.testerInscriptionClient();
-        Controle.testerListeClients();
+        Controle.initdevversion();
         
+       
         //Controle.testerRechercheClient();
         //Controle.testerAuthentificationClient();
         JpaUtil.destroy();

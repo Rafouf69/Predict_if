@@ -12,8 +12,20 @@ import metier.modele.*;
 public class ConsultationDAO {
     
     public Consultation creer(Consultation myConsult) {
+        Client consultingClient= myConsult.getClient();
+        Medium consultedMedium= myConsult.getMedium();
+        Employee workingEmployee= myConsult.getEmployee();
         
+        consultingClient.addnewconsult(myConsult);
+        workingEmployee.addnewconsult(myConsult);
+        workingEmployee.setStatus("Waiting");
+        consultedMedium.addnewconsult(myConsult);
+       
         JpaUtil.obtenirContextePersistance().persist(myConsult);
+        JpaUtil.obtenirContextePersistance().merge(workingEmployee);
+        JpaUtil.obtenirContextePersistance().merge(consultedMedium);
+        JpaUtil.obtenirContextePersistance().merge(consultingClient);
+        
         return myConsult;
     }
     

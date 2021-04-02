@@ -87,7 +87,9 @@ public class Employee {
     public void setMotDePasse(String motDePasse){
         this.motDePasse= motDePasse;
     }
-    
+    public void setStatus(String status){
+        this.status= status;
+    }
     public List<Consultation> addnewconsult(Consultation myconsulToAdd){
         this.listconsult.add(myconsulToAdd);
         return this.listconsult;

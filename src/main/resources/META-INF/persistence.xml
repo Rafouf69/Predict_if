@@ -3,6 +3,9 @@
   <persistence-unit name="tpdazi" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>metier.modele.Client</class>
+    <class>metier.modele.Medium</class>
+    <class>metier.modele.Employee</class>
+    <class>metier.modele.Consultation</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/tpdazi"/>
       <property name="javax.persistence.jdbc.user" value="tpdazi"/>

@@ -5,6 +5,7 @@
  */
 package metier.services;
 
+import dao.ConsultationDAO;
 import dao.EmployeDAO;
 import dao.ClientDAO;
 import dao.JpaUtil;
@@ -22,7 +23,7 @@ import metier.modele.*;
  * @author louislombard
  */
 public class ServicePredictif {
-    public Client creer(Client client) {
+    public Client creerClient(Client client) throws Exception{
         ClientDAO monClientDAO= new ClientDAO();
         Client newClient;
         
@@ -40,6 +41,7 @@ public class ServicePredictif {
         } catch (IOException ex) {
             System.out.println("Error creating liste Astral");
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
         
         try{
@@ -52,20 +54,40 @@ public class ServicePredictif {
         catch(Exception ex){
             System.out.println("ERREUR: " + ex);
             envoyer.envoyerMail("contact@predict.if", client.getMail(), "Echec de l’inscription chez PREDICT’IF", "Bonjour "+ client.getPrenom()+", votre inscription au service PREDICT’IF a malencontreusement échoué... Merci de recommencer ultérieurement.");
-
-            newClient=null;
+            throw ex;
+        }
+        
+        finally { // dans tous les cas, on ferme l'entity manager
+            JpaUtil.fermerContextePersistance();
+        }     
+        return newClient;
+    }
+    public Employee creerEmployee(Employee Employee) throws Exception{
+        EmployeDAO monEmpDAO= new EmployeDAO();
+        Employee newEmp;
+        
+        try{
+            JpaUtil.creerContextePersistance();
+            JpaUtil.ouvrirTransaction();
+            newEmp= monEmpDAO.creer(Employee);
+            JpaUtil.validerTransaction();
+            Message.envoyerMail("contact@predict.if", Employee.getMail(), "Bienvenue chez PREDICT’IF", "Bonjour "+ Employee.getPrenom()+", nous vous confirmons votre inscription au service PREDICT’IF.Rendez-vous  vite  sur  notre  site  pour  consulter  votre profil  astrologique  et  profiter  des  dons incroyables de nos mediums.");
+        }
+        catch(Exception ex){
+            System.out.println("ERREUR: " + ex);
+            Message.envoyerMail("contact@predict.if", Employee.getMail(), "Echec de l’inscription chez PREDICT’IF", "Bonjour "+ Employee.getPrenom()+", votre inscription au service PREDICT’IF a malencontreusement échoué... Merci de recommencer ultérieurement.");
+            throw ex;
         }
         
         finally { // dans tous les cas, on ferme l'entity manager
         JpaUtil.fermerContextePersistance();
-        }
-        
-        
-        return newClient;
+        }     
+        return newEmp;
     }
      public Consultation DemandedeConsultation(Client client,Medium medium, Date date) throws Exception{
          EmployeDAO myDAOemp= new EmployeDAO();
          List<Employee> MatchingEmployees;
+         Consultation myConsult;
          try{
              MatchingEmployees=myDAOemp.chercherEmployeDispo(medium.getGender());
          }catch(Exception Ex){
@@ -78,10 +100,13 @@ public class ServicePredictif {
          }
          else{
              Employee employeChose = MatchingEmployees.get(0); //A faire: Algorithm pour trouver l'employee qui est le moins prix et pas le premier de la liste pour essayer de rééquilibrer le nombre d'apparition des demployee
+             ConsultationDAO myConsultationDAO= new ConsultationDAO();
+             myConsult= new Consultation(employeChose,date,client, medium);
+             myConsultationDAO.creer(myConsult);
              
          }
          
-         return null;
+         return myConsult;
      
      }
      public Client trouverClientparId(Long id) {
