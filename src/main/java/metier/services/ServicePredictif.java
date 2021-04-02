@@ -5,14 +5,16 @@
  */
 package metier.services;
 
+import dao.EmployeDAO;
 import dao.ClientDAO;
 import dao.JpaUtil;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import metier.modele.Client;
+import metier.modele.*;
 
 
 /**
@@ -61,7 +63,27 @@ public class ServicePredictif {
         
         return newClient;
     }
-    
+     public Consultation DemandedeConsultation(Client client,Medium medium, Date date) throws Exception{
+         EmployeDAO myDAOemp= new EmployeDAO();
+         List<Employee> MatchingEmployees;
+         try{
+             MatchingEmployees=myDAOemp.chercherEmployeDispo(medium.getGender());
+         }catch(Exception Ex){
+            System.out.println("ERREUR DAO.EMPLOYEE.chercherEmployedispo: " + Ex);
+            return null;
+         }
+         
+         if (MatchingEmployees.isEmpty()){
+             throw new Exception("Sorry, " + medium.getDenomination() + " is unavailable for the moment, please come back later");
+         }
+         else{
+             Employee employeChose = MatchingEmployees.get(0); //A faire: Algorithm pour trouver l'employee qui est le moins prix et pas le premier de la liste pour essayer de rééquilibrer le nombre d'apparition des demployee
+             
+         }
+         
+         return null;
+     
+     }
      public Client trouverClientparId(Long id) {
         ClientDAO monClientDAO= new ClientDAO();
         try{

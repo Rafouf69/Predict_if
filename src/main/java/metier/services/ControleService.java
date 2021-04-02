@@ -89,6 +89,11 @@ public class ControleService {
         
          
     }
-    
+    public void testerdemandesconsult() {
+       ServicePredictif ServiceClient = new ServicePredictif();
+       
+        
+         
+    }
     
 }

@@ -24,6 +24,7 @@ public class Main {
         ControleService Controle= new ControleService();
         Controle.testerInscriptionClient();
         Controle.testerListeClients();
+        
         //Controle.testerRechercheClient();
         //Controle.testerAuthentificationClient();
         JpaUtil.destroy();

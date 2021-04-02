@@ -48,9 +48,21 @@ public class Consultation {
        this.client=client;
        this.medium=medium;
        this.employee=emp;
-       this.datedepart=datedeb;
-       
+       this.datedepart=datedeb;    
     }
-   
+    
+    //Getters
+    public Client getClient(){
+    return this.client;
+    }
+    public Employee getEmployee(){
+    return this.employee;
+    }
+    public Medium getMedium(){
+    return this.medium;
+    }
+    
+    
+    
    
 }

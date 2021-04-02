@@ -73,6 +73,18 @@ public class Medium {
     public Long getId(){
         return id;
     }
+    public String getGender(){
+        return this.genre;
+    }
+    public String getDenomination(){
+        return this.denomination;
+    }
+    
+    
+    public List<Consultation> addnewconsult(Consultation myconsulToAdd){
+        this.listconsult.add(myconsulToAdd);
+        return this.listconsult;
+    }
     
 }
 

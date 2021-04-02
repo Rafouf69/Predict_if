@@ -31,18 +31,16 @@ public class Employee {
     
     private String nom;
     private String prenom;
-    private String genre; 
+    private String genre;
+    private String telephone;
+    private String motDePasse;
+    private String status;
     
     @Column(nullable = false, unique = true)
     private String mail;
-    
-    
+   
     @OneToMany(mappedBy="Employee")
     private List<Consultation> listconsult;
-    
-    private String telephone;
-    
-    private String motDePasse;
     
     public Employee(){    
     }
@@ -53,6 +51,7 @@ public class Employee {
         this.mail=mail;
         this.motDePasse=modDePasse;
         this.telephone=telephone;
+        this.status="free";
     }
     
     //Getters
@@ -71,8 +70,6 @@ public class Employee {
     public String getMotDePasse(){
         return motDePasse;
     }
-    
-    
     public String getTelephone(){
         return telephone;
     }
@@ -89,6 +86,11 @@ public class Employee {
     }
     public void setMotDePasse(String motDePasse){
         this.motDePasse= motDePasse;
+    }
+    
+    public List<Consultation> addnewconsult(Consultation myconsulToAdd){
+        this.listconsult.add(myconsulToAdd);
+        return this.listconsult;
     }
    
 }

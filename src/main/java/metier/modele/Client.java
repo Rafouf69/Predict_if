@@ -21,6 +21,7 @@
 package metier.modele;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -34,25 +35,21 @@ public class Client {
     
     private String nom;
     private String prenom;
+    private String telephone;
+    private String zodiaque;
+    private String signeChinois;
+    private String couleur; 
+    private String animalTotem;
+    private String motDePasse;
     
+    @OneToMany(mappedBy="Client")
+    private List<Consultation> listconsult;
     
     @Column(nullable = false, unique = true)
     private String mail;
     
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateNaissance;
-    
-    private String telephone;
-    
-    private String zodiaque;
-    
-    private String signeChinois;
-    
-    private String couleur;
-    
-    private String animalTotem;
-    
-    private String motDePasse;
     
     public Client(){    
     }
@@ -132,5 +129,9 @@ public class Client {
     }
     public void setAnimalTotem(String animalTotem){
         this.animalTotem=animalTotem;
+    }
+    public List<Consultation> addnewconsult(Consultation myconsulToAdd){
+        this.listconsult.add(myconsulToAdd);
+        return this.listconsult;
     }
 }
