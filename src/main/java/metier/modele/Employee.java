@@ -19,9 +19,6 @@
  * @author louislombard
  */
 package metier.modele;
-
-import java.util.Date;
-
 import javax.persistence.*;
 
 

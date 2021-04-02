@@ -22,7 +22,9 @@ import metier.modele.Client;
 public class ServiceClient {
     public Client creer(Client client) {
         ClientDAO monClientDAO= new ClientDAO();
-        Client newclient;
+        Client newClient;
+        
+        Message envoyer = new Message();
         
         ArrayList<String> listeAstrale;
         AstroNetApi astroNetApi = new AstroNetApi();
@@ -41,19 +43,23 @@ public class ServiceClient {
         try{
             JpaUtil.creerContextePersistance();
             JpaUtil.ouvrirTransaction();
-            newclient= monClientDAO.creer(client);
+            newClient= monClientDAO.creer(client);
             JpaUtil.validerTransaction();
+            envoyer.envoyerMail("contact@predict.if", newClient.getMail(), "Bienvenue chez PREDICT’IF", "Bonjour "+ newClient.getPrenom()+", nous vous confirmons votre inscription au service PREDICT’IF.Rendez-vous  vite  sur  notre  site  pour  consulter  votre profil  astrologique  et  profiter  des  dons incroyables de nos mediums.");
         }
         catch(Exception ex){
             System.out.println("ERREUR: " + ex);
-            newclient=null;
+            envoyer.envoyerMail("contact@predict.if", client.getMail(), "Echec de l’inscription chez PREDICT’IF", "Bonjour "+ client.getPrenom()+", votre inscription au service PREDICT’IF a malencontreusement échoué... Merci de recommencer ultérieurement.");
+
+            newClient=null;
         }
         
         finally { // dans tous les cas, on ferme l'entity manager
         JpaUtil.fermerContextePersistance();
         }
         
-        return newclient;
+        
+        return newClient;
     }
     
      public Client trouverClientparId(Long id) {
