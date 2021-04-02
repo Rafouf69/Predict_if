@@ -19,7 +19,7 @@ import metier.modele.Client;
  *
  * @author louislombard
  */
-public class ServiceClient {
+public class ServicePredictif {
     public Client creer(Client client) {
         ClientDAO monClientDAO= new ClientDAO();
         Client newClient;

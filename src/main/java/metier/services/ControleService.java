@@ -32,7 +32,7 @@ public class ControleService {
          
     }
     public void testerInscriptionClient() {
-        ServiceClient ServiceClient = new ServiceClient();
+        ServicePredictif ServiceClient = new ServicePredictif();
         Client newClient= ImportingClientIHMClient();
         Client newClientBD= ServiceClient.creer(newClient);
         
@@ -50,7 +50,7 @@ public class ControleService {
     public void testerAuthentificationClient() {
         String mail= Saisie.lireChaine("Mail du client :");
         String mdp= Saisie.lireChaine("Mdp du client");
-        ServiceClient ServiceClient = new ServiceClient();
+        ServicePredictif ServiceClient = new ServicePredictif();
         Client clientBD= ServiceClient.Authentifier(mail, mdp);
         if (clientBD==null){
              System.out.println("> Authentification failed");
@@ -64,7 +64,7 @@ public class ControleService {
     }
     public void testerRechercheClient() {
         long id= Saisie.lireInteger("Id du client :");
-        ServiceClient ServiceClient = new ServiceClient();
+        ServicePredictif ServiceClient = new ServicePredictif();
         Client clientBD= ServiceClient.trouverClientparId(id) ;
         if (clientBD==null){
              System.out.println("> Not any client found with this Id");
@@ -77,7 +77,7 @@ public class ControleService {
          
     }
     public void testerListeClients() {
-        ServiceClient ServiceClient = new ServiceClient();
+        ServicePredictif ServiceClient = new ServicePredictif();
         List <Client> clientsBD = ServiceClient.ListeClients() ;
         if (clientsBD==null){
              System.out.println(">Ooops. An error occurred");

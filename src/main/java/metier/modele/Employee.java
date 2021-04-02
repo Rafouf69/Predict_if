@@ -53,7 +53,6 @@ public class Employee {
         this.mail=mail;
         this.motDePasse=modDePasse;
         this.telephone=telephone;
-        this.nbconsultation=0;
     }
     
     //Getters
