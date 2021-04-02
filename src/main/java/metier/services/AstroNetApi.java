@@ -1,4 +1,4 @@
-package util;
+package metier.services;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
