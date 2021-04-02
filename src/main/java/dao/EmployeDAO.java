@@ -5,6 +5,9 @@
  */
 package dao;
 
+import java.io.IOException;
+import java.util.List;
+import javax.persistence.TypedQuery;
 import metier.modele.Employee;
 
 /**
@@ -16,6 +19,22 @@ public class EmployeDAO {
     {
         JpaUtil.obtenirContextePersistance().persist(employe);
         return employe;
+    }
+    
+    public List<Employee> chercherEmployeParGenre(String genre) throws Exception
+    {
+        // Utiliser le SGBD pour faire un tri plus précis et obtenir directement les employes disponibles
+        String q = "select e from Employee e where e.genre = :ungenre";
+        TypedQuery query = JpaUtil.obtenirContextePersistance().createQuery(q, Employee.class);
+        if(genre == "H")
+        {
+            query.setParameter("ungenre", "H");
+        }
+        else if(genre == "F")
+        {
+            query.setParameter("ungenre", "F");
+        }
+        return query.getResultList();
     }
     
 }
