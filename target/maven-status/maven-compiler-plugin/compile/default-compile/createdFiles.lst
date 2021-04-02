@@ -1,9 +1,0 @@
-newpackage/NewMain.class
-ihm/console/Saisie.class
-dao/ClientDAO.class
-ihm/console/Main.class
-dao/JpaUtil.class
-metier/services/ServiceClient.class
-metier/modele/Client.class
-dao/JpaUtil$1.class
-metier/services/ControleService.class
