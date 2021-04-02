@@ -7,7 +7,11 @@ package metier.services;
 
 import dao.ClientDAO;
 import dao.JpaUtil;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import metier.modele.Client;
 
 
@@ -19,14 +23,26 @@ public class ServiceClient {
     public Client creer(Client client) {
         ClientDAO monClientDAO= new ClientDAO();
         Client newclient;
+        
+        ArrayList<String> listeAstrale;
+        AstroNetApi astroNetApi = new AstroNetApi();
+        
+        try {
+            listeAstrale = (ArrayList<String>) astroNetApi.getProfil(client.getPrenom(), client.getDate());
+            client.setZodiaque(listeAstrale.get(0));
+            client.setSigneChinois(listeAstrale.get(1));
+            client.setCouleur(listeAstrale.get(2));
+            client.setAnimalTotem(listeAstrale.get(3));
+        } catch (IOException ex) {
+            System.out.println("Error creating liste Astral");
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         try{
-            
             JpaUtil.creerContextePersistance();
             JpaUtil.ouvrirTransaction();
             newclient= monClientDAO.creer(client);
             JpaUtil.validerTransaction();
-            
-            
         }
         catch(Exception ex){
             System.out.println("ERREUR: " + ex);

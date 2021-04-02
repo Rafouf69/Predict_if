@@ -14,6 +14,7 @@ import javax.persistence.*;
 public class ClientDAO {
     
     public Client creer(Client client) {
+        
         JpaUtil.obtenirContextePersistance().persist(client);
         return client;
     }
