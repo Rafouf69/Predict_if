@@ -40,8 +40,6 @@ public class Employee {
     @OneToMany(mappedBy="Employee")
     private List<Consultation> listconsult;
     
-    private int nbconsultation;
-    
     private String telephone;
     
     private String motDePasse;
