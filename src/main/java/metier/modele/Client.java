@@ -19,13 +19,11 @@
  * @author louislombard
  */
 package metier.modele;
-import java.io.IOException;
-import java.util.ArrayList;
+
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.persistence.*;
-import metier.services.AstroNetApi;
+
 
 @Entity
 public class Client {
@@ -58,23 +56,13 @@ public class Client {
     
     public Client(){    
     }
-    public Client(String nom,String prenom, String mail, Date date, String modDePasse){
+    public Client(String nom,String prenom, String mail, Date date, String modDePasse, String telephone){
         this.nom=nom;
         this.prenom=prenom;
         this.mail=mail;
         this.dateNaissance=date;
         this.motDePasse=modDePasse;
-        ArrayList<String> listeAstrale;
-        AstroNetApi astroNetApi = new AstroNetApi();
-        try {
-            listeAstrale = (ArrayList<String>) astroNetApi.getProfil(prenom, date);
-            zodiaque=listeAstrale.get(0);
-            signeChinois=listeAstrale.get(1);
-            couleur=listeAstrale.get(2);
-            animalTotem=listeAstrale.get(3);
-        } catch (IOException ex) {
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.telephone=telephone;
     }
     
     //Getters
@@ -92,6 +80,10 @@ public class Client {
     }
     public String getMotDePasse(){
         return motDePasse;
+    }
+    
+    public Date getDate(){
+        return dateNaissance;
     }
     
     public String getTelephone(){
@@ -129,5 +121,16 @@ public class Client {
     public void setMotDePasse(String motDePasse){
         this.motDePasse= motDePasse;
     }
-    
+    public void setZodiaque(String zodiaque){
+        this.zodiaque=zodiaque;
+    }    
+    public void setSigneChinois(String signeChinois){
+        this.signeChinois=signeChinois;
+    } 
+    public void setCouleur(String couleur){
+        this.couleur=couleur;
+    }
+    public void setAnimalTotem(String animalTotem){
+        this.animalTotem=animalTotem;
+    }
 }

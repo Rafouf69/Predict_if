@@ -6,8 +6,12 @@
 package metier.services;
 
 import ihm.console.Saisie;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import metier.modele.Client;
 
 /**
@@ -23,7 +27,18 @@ public class ControleService {
         String mail= Saisie.lireChaine("Mail du client :");
         String motDePasse= Saisie.lireChaine("MotDePasse du client");
         Date date = new Date();
-        Client newClient= new Client(nom,prenom,mail, date,motDePasse);
+        Client newClient= new Client(nom,prenom,mail, date,motDePasse, "0606060606");
+        ArrayList<String> listeAstrale;
+        AstroNetApi astroNetApi = new AstroNetApi();
+        try {
+            listeAstrale = (ArrayList<String>) astroNetApi.getProfil(newClient.getPrenom(), newClient.getDate());
+            newClient.setZodiaque(listeAstrale.get(0));
+            newClient.setSigneChinois(listeAstrale.get(1));
+            newClient.setCouleur(listeAstrale.get(2));
+            newClient.setAnimalTotem(listeAstrale.get(3));
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return newClient;
          
     }
