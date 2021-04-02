@@ -94,7 +94,7 @@ public class ControleService {
             ServiceClient.creerClient(newClient9);
             ServiceClient.creerClient(newClient10);
         }catch(Exception Ex){
-             System.out.println("> Echec inscription employee: Sorry boy");
+             System.out.println("> Echec initialization: ta base de données est sans doute déja remplie garçon");
         } 
         //initialize Employee
         Employee newEmployee1= new Employee("nom1","prenom1","nom1@gmail.com","H", "mdpnom1","0610000001");
@@ -120,7 +120,7 @@ public class ControleService {
             ServiceClient.creerEmployee(newEmployee9);
             ServiceClient.creerEmployee(newEmployee10);
         }catch(Exception Ex){
-             System.out.println("> Echec inscription employee: Sorry boy");
+             System.out.println("> Echec initialization: ta base de données est sans doute déja remplie garçon");
         }
     }
     public void testerAuthentificationClient() {
