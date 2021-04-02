@@ -6,6 +6,7 @@
 package metier.services;
 
 import ihm.console.Saisie;
+import java.util.Date;
 import java.util.List;
 import metier.modele.Client;
 
@@ -21,7 +22,8 @@ public class ControleService {
         String prenom= Saisie.lireChaine("Prenom du client");
         String mail= Saisie.lireChaine("Mail du client :");
         String motDePasse= Saisie.lireChaine("MotDePasse du client");
-        Client newClient= new Client(nom,prenom,mail,motDePasse);
+        Date date = new Date();
+        Client newClient= new Client(nom,prenom,mail, date,motDePasse);
         return newClient;
          
     }
