@@ -19,6 +19,7 @@
  * @author louislombard
  */
 package metier.modele;
+import java.util.List;
 import javax.persistence.*;
 
 
@@ -34,6 +35,10 @@ public class Employee {
     
     @Column(nullable = false, unique = true)
     private String mail;
+    
+    
+    @OneToMany(mappedBy="Employee")
+    private List<Consultation> listconsult;
     
     private int nbconsultation;
     
