@@ -16,3 +16,4 @@ J'ai un peu avancé, pour la suite
 - demander help
 - Si on a le temps s'occuper des setters pour modifier ton profil.
 - Enum au lieu de string: ou le localisé?
+- Voir throws exception
