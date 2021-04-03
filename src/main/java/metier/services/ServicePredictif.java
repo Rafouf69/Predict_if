@@ -265,6 +265,59 @@ public class ServicePredictif {
 
          return returningString;
      }
+     public String EndingConsult(long EmpId, String mdp, long Idconsult, String message) throws Exception{
+         
+         String returningString=null;
+         
+         //Find Employeee concern
+         Employee myemp=null;
+         try {
+             myemp=trouverEmpparId(EmpId);
+         }catch(Exception Ex){
+             throw Ex;
+         }
+         
+         //Check mdp
+         if (myemp.getMotDePasse()!=mdp){
+            returningString="Your are not allowed to use this feature. PLease Authenticate";
+         }
+         
+         //Find Conultation concern
+         Consultation myconsult=null;
+         try {
+             myconsult= trouverConsultparId(Idconsult);
+         }catch(Exception Ex){
+             throw Ex;
+         }
+         
+         //checking employee is the good one
+         if (myconsult.getEmployee().getId()!=myemp.getId()){
+             throw new Exception("Yout are not allowed to see other employee consultation. Sorry.");
+         }
+         
+         //checking Conversationsstatus
+         if (myconsult.getStatus() !="Running"){
+            throw new Exception("This consutation is not runnning. You cannot end a conversation not began or already finised ");
+         }
+          
+         try{
+             JpaUtil.creerContextePersistance();
+             JpaUtil.ouvrirTransaction();
+             ConsultationDAO myConsultationDAO= new ConsultationDAO();
+             myConsultationDAO.endconsult(myconsult, message);
+             JpaUtil.validerTransaction();      
+         }catch(Exception Ex){
+             System.out.println("ERREUR updating consultation: " + Ex);
+             throw Ex;
+         }finally{
+             JpaUtil.fermerContextePersistance();
+         }
+         
+         
+         returningString="Conversation ended!";
+
+         return returningString;
+     }
      
      
      public void checkListConsultClient (long idclient) throws Exception{

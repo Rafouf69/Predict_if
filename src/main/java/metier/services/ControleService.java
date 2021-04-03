@@ -272,5 +272,19 @@ public class ControleService {
        }
        
     }
+    public void testerendconsult() {
+       ServicePredictif Servicepredictif = new ServicePredictif();
+       long idEmp= Saisie.lireInteger("Id de l'employee : ");
+       String mdp= Saisie.lireChaine("Mdp de l'employee : ");
+       long idConsult= Saisie.lireInteger("Id de la consultation à terminer : ");
+       String Comment= Saisie.lireChaine("Commentaire : ");
+       try {
+            String Result= Servicepredictif.EndingConsult(idEmp, mdp, idConsult, Comment);
+            System.out.println(Result);
+       }catch(Exception Ex){
+            System.out.println(Ex);
+       }
+       
+    }
     
 }

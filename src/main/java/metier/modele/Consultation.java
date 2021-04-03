@@ -77,6 +77,12 @@ public class Consultation {
     public void setDateBegin(Date mydate){
         this.begginignedate=mydate;
     }
+    public void setDateEnd(Date mydate){
+        this.enddate=mydate;
+    }
+    public void setCommentaire(String comment){
+        this.commentaire=comment;
+    }
     public String toString() {
         return "Consultation " + this.id + " : // Date de demande : " + this.askingdate+ " : // Date de début : " + this.begginignedate+ " : // Date de fin : " + this.enddate + " // Commentaire : "+ this.commentaire +" // Employee : " +this.employee.getId()+  " // Medium : " + this.medium.getId()+ " // Client : "+ this.client.getId();
     }
