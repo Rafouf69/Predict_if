@@ -247,5 +247,17 @@ public class ControleService {
        
        ;
     }
+    public void testercheckwork() {
+       ServicePredictif Servicepredictif = new ServicePredictif();
+       long idEmp= Saisie.lireInteger("Id de l'employee : ");
+       String mdp= Saisie.lireChaine("Mdp de l'employee : ");
+       try {
+            String Result= Servicepredictif.checkWork(idEmp, mdp);
+            System.out.println(Result);
+       }catch(Exception Ex){
+            System.out.println(Ex);
+       }
+       
+    }
     
 }

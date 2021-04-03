@@ -176,6 +176,44 @@ public class ServicePredictif {
          return myConsult;
      
      }
+     public String checkWork(long EmpId, String mdp) throws Exception{
+         
+         String returningString=null;
+         //Find Employeee concern
+         Employee myemp=null;
+         
+         try {
+             myemp=trouverEmpparId(EmpId);
+         }catch(Exception Ex){
+             throw Ex;
+         }
+         
+         //Check mdp
+         if (myemp.getMotDePasse()!=mdp){
+            returningString="Your are not allowed to use this feature. PLease Authenticate";
+         }
+         
+         //checkstatus
+         if (myemp.getStatus()=="free"){
+             returningString="This is great: You have no work to do";
+         }
+         if (myemp.getStatus()=="consulting"){
+             returningString="You cannot use this feature while you're with a client. Sorry. PLease end your consutation";
+         }
+         else{
+             //get Lastelementof the list (should be a consultation waiting)
+             Consultation waitingconsult= myemp.getList().get(myemp.getList().size()-1);
+             
+             //This should never happen with our logic. Just in case.
+             if (waitingconsult.getStatus()!="Waiting"){
+                 throw new Exception("Hmmm An error Occurred. PLease contact Predictif");
+             }
+             
+             returningString="It seems that you have one client waiting for you. Please begin the consultation n° " +waitingconsult.getId() +" with the client n° "+ waitingconsult.getClient().getId()+". You shoul incarn Medium "+waitingconsult.getMedium().getDenomination();
+         
+         }
+         return returningString;
+     }
      
      public void checkListConsultClient (long idclient) throws Exception{
          Client myclient;
@@ -191,9 +229,10 @@ public class ServicePredictif {
      }
      private Client trouverClientparId(Long id) throws Exception{
         ClientDAO monClientDAO= new ClientDAO();
+        Client returningClient=null;
         try{
             JpaUtil.creerContextePersistance();
-            return monClientDAO.chercherClientparID(id);
+            returningClient= monClientDAO.chercherClientparID(id);
         }
         catch(Exception ex){
             System.out.println("ERREUR: " + ex);
@@ -201,8 +240,25 @@ public class ServicePredictif {
         }
         finally { // dans tous les cas, on ferme l'entity manager
         JpaUtil.fermerContextePersistance();
+        }   
+        return returningClient;
+     }
+     private Employee trouverEmpparId(Long id) throws Exception{
+        EmployeDAO monEmpDAO= new EmployeDAO();
+        Employee emptoreturn= null;
+        try{
+            JpaUtil.creerContextePersistance();
+            emptoreturn= monEmpDAO.chercherEmployeeparID(id);
         }
-    }
+        catch(Exception ex){
+            System.out.println("ERREUR: " + ex);
+            throw ex;
+        }
+        finally { // dans tous les cas, on ferme l'entity manager
+        JpaUtil.fermerContextePersistance();
+        }   
+        return emptoreturn;
+     }
      
      private Medium trouverMediumparId(Long id) throws Exception{
         MediumDAO monMediumDAO= new MediumDAO();

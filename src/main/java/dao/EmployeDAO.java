@@ -29,5 +29,9 @@ public class EmployeDAO {
         query.setParameter("ungenre", genre);
         return query.getResultList();
     }
+    public Employee chercherEmployeeparID(Long Id) {
+        return JpaUtil.obtenirContextePersistance().find(Employee.class, Id);
+        
+    }
     
 }

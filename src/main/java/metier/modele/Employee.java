@@ -61,6 +61,9 @@ public class Employee {
     public String getNom(){
         return nom;
     }
+    public String getStatus(){
+        return status;
+    }
     public String getPrenom(){
         return prenom;
     }
@@ -73,7 +76,9 @@ public class Employee {
     public String getTelephone(){
         return telephone;
     }
-    
+    public List<Consultation> getList(){
+        return listconsult;
+    }
     //Setters
     public void setNom(String nom){
         this.nom= nom;
@@ -94,5 +99,6 @@ public class Employee {
         this.listconsult.add(myconsulToAdd);
         return this.listconsult;
     }
+     
    
 }

@@ -29,9 +29,12 @@ public class Consultation {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     
-    private Date datedepart;
+    private Date askingdate;
+    private Date begginignedate;
+    private Date enddate;
     private Date datefin;
     private String commentaire;
+    private String status;
     
     @ManyToOne
     private Employee employee;
@@ -44,25 +47,36 @@ public class Consultation {
    
     public Consultation(){    
     }
-    public Consultation(Employee emp, Date datedeb, Client client, Medium medium ){
+    public Consultation(Employee emp, Date askingdate, Client client, Medium medium ){
        this.client=client;
        this.medium=medium;
        this.employee=emp;
-       this.datedepart=datedeb;    
+       this.askingdate=askingdate; 
+       this.status="Waiting";
     }
     
     //Getters
     public Client getClient(){
-    return this.client;
+        return this.client;
+    }
+    
+    public Long getId(){
+        return this.id;
+    }
+    public String getStatus(){
+        return this.status;
     }
     public Employee getEmployee(){
-    return this.employee;
+        return this.employee;
     }
     public Medium getMedium(){
-    return this.medium;
+        return this.medium;
+    }
+    public void setStatus(String newStat){
+        this.status=newStat;
     }
     public String toString() {
-        return "Consultation " + this.id + " : // Date départ : " + this.datedepart + " // DateFin : " + this.datefin+ " // Commentaire : "+ this.commentaire +" // Employee : " +this.employee.getId()+  " // Medium : " + this.medium.getId()+ " // Client : "+ this.client.getId();
+        return "Consultation " + this.id + " : // Date de demande : " + this.askingdate+ " : // Date de début : " + this.begginignedate+ " : // Date de fin : " + this.datefin + " // DateFin : " + this.datefin+ " // Commentaire : "+ this.commentaire +" // Employee : " +this.employee.getId()+  " // Medium : " + this.medium.getId()+ " // Client : "+ this.client.getId();
     }
 }
     

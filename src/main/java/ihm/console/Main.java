@@ -26,6 +26,7 @@ public class Main {
         Controle.initdevversion(20,20,20);
         Controle.testerdemandesconsult() ;
         Controle.testerdemandesconsult() ;
+        Controle.testercheckwork();
         
        
         //Controle.testerRechercheClient();
