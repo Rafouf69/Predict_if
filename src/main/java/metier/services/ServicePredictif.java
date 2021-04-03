@@ -221,11 +221,12 @@ public class ServicePredictif {
         return mediumtoreturn;
     }
      
+     //never used (maybe one day?)
       public Client Authentifier(String mail, String mdp) {
         ClientDAO monClientDAO= new ClientDAO();
         try{
             JpaUtil.creerContextePersistance();
-            return monClientDAO.chercherClient(mail, mdp) ;
+            return monClientDAO.authentifierClient(mail, mdp) ;
         }
         catch(Exception ex){
             System.out.println("ERREUR: " + ex);
@@ -236,6 +237,8 @@ public class ServicePredictif {
         }
         
     }
+      
+      //never used (maybe one day?)
       public List<Client> ListeClients() {
         ClientDAO monClientDAO= new ClientDAO();
         try{
