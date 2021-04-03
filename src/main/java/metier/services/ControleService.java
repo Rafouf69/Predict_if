@@ -238,6 +238,7 @@ public class ControleService {
        }catch(Exception Ex){
             System.out.println(Ex);
        }
+       
        try {
            Servicepredictif.checkListConsultClient(idClient);
        }catch(Exception ex)
