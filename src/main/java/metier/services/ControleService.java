@@ -183,6 +183,10 @@ public class ControleService {
         }
       
     }
+    
+    
+    
+    
     public void testerAuthentificationClient() {
         String mail= Saisie.lireChaine("Mail du client :");
         String mdp= Saisie.lireChaine("Mdp du client");
@@ -198,20 +202,20 @@ public class ControleService {
         
          
     }
-    public void testerRechercheClient() {
-        long id= Saisie.lireInteger("Id du client :");
-        ServicePredictif ServiceClient = new ServicePredictif();
-        Client clientBD= ServiceClient.trouverClientparId(id) ;
-        if (clientBD==null){
-             System.out.println("> Not any client found with this Id");
-        }
-        else{
-            System.out.println("> Client Found");
-            System.out.println("-> Client: id= " + clientBD.getId()+ " ;nom= "+ clientBD.getNom()+" ;mail= "+ clientBD.getMail()+" ;motDePasse= "+clientBD.getMotDePasse());
-        }
-        
-         
-    }
+//    public void testerRechercheClient() {
+//        long id= Saisie.lireInteger("Id du client :");
+//        ServicePredictif ServiceClient = new ServicePredictif();
+//        Client clientBD= ServiceClient.trouverClientparId(id) ;
+//        if (clientBD==null){
+//             System.out.println("> Not any client found with this Id");
+//        }
+//        else{
+//            System.out.println("> Client Found");
+//            System.out.println("-> Client: id= " + clientBD.getId()+ " ;nom= "+ clientBD.getNom()+" ;mail= "+ clientBD.getMail()+" ;motDePasse= "+clientBD.getMotDePasse());
+//        }
+//        
+//         
+//    }
     public void testerListeClients() {
         ServicePredictif ServiceClient = new ServicePredictif();
         List <Client> clientsBD = ServiceClient.ListeClients() ;
@@ -219,17 +223,29 @@ public class ControleService {
              System.out.println(">Ooops. An error occurred");
         }
         else{
-             System.out.println("> Clients Found");
+            System.out.println("> Clients Found");
             clientsBD.stream().forEach((clientBD) ->  System.out.println("-> Client: id= " + clientBD.getId()+ " ;nom= "+ clientBD.getNom()+" ;mail= "+ clientBD.getMail()+" ;motDePasse= "+clientBD.getMotDePasse()));
         }
         
          
     }
     public void testerdemandesconsult() {
-       ServicePredictif ServiceClient = new ServicePredictif();
+       ServicePredictif Servicepredictif = new ServicePredictif();
+       long idClient= Saisie.lireInteger("Id du client :");
+       long idmedium= Saisie.lireInteger("Id du medium :");
+       try {
+            Servicepredictif.DemandedeConsultation(idClient, idmedium, new Date());
+       }catch(Exception Ex){
+            System.out.println(Ex);
+       }
+       try {
+           Servicepredictif.checkListConsultClient(idClient);
+       }catch(Exception ex)
+       {
+           System.out.println("Fail : " + ex.getMessage());
+       }
        
-        
-         
+       ;
     }
     
 }

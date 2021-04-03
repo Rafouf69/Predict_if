@@ -20,7 +20,10 @@ public class MediumDAO {
         JpaUtil.obtenirContextePersistance().persist(newMedium);
         return newMedium;
     }
-    
+    public Medium chercherMediumparID(Long Id) {
+        return JpaUtil.obtenirContextePersistance().find(Medium.class, Id);
+        
+    }
    
     
 }

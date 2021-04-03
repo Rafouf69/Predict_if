@@ -41,6 +41,7 @@ public class Client {
     private String couleur; 
     private String animalTotem;
     private String motDePasse;
+    private String status;
     
     @OneToMany(mappedBy="Client")
     private List<Consultation> listconsult;
@@ -60,12 +61,14 @@ public class Client {
         this.dateNaissance=date;
         this.motDePasse=modDePasse;
         this.telephone=telephone;
+        this.status="free";
     }
     
     //Getters
     public Long getId(){
         return id;
     }
+    
     public String getNom(){
         return nom;
     }
@@ -105,6 +108,12 @@ public class Client {
     public Date getDateNaissance(){
         return dateNaissance;
     }
+    public String getStatus(){
+        return status;
+    }
+    public List<Consultation>getList(){
+        return this.listconsult;
+    }
     //Setters
     public void setNom(String nom){
         this.nom= nom;
@@ -129,6 +138,9 @@ public class Client {
     }
     public void setAnimalTotem(String animalTotem){
         this.animalTotem=animalTotem;
+    }
+    public void setStatus(String status){
+        this.status=status;
     }
     public List<Consultation> addnewconsult(Consultation myconsulToAdd){
         this.listconsult.add(myconsulToAdd);

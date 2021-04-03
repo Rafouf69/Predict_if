@@ -61,8 +61,11 @@ public class Consultation {
     public Medium getMedium(){
     return this.medium;
     }
-    
+    public String toString() {
+        return "Consultation " + this.id + " : // Date départ : " + this.datedepart + " // DateFin : " + this.datefin+ " // Commentaire : "+ this.commentaire +" // Employee : " +this.employee.getId()+  " // Medium : " + this.medium.getId()+ " // Client : "+ this.client.getId();
+    }
+}
     
     
    
-}
+

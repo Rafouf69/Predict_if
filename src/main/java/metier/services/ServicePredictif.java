@@ -94,6 +94,7 @@ public class ServicePredictif {
             JpaUtil.ouvrirTransaction();
             newmed= monMedDAO.creer(newmedium);
             JpaUtil.validerTransaction();
+            
         }
         catch(Exception ex){
             System.out.println("ERREUR: " + ex);
@@ -105,32 +106,90 @@ public class ServicePredictif {
         }     
         return newmed;
     }
-     public Consultation DemandedeConsultation(Client client,Medium medium, Date date) throws Exception{
-         EmployeDAO myDAOemp= new EmployeDAO();
+     public Consultation DemandedeConsultation(long idclient,long idmedium, Date date) throws Exception{
+        
+         //Etape 1: Retrouver le client demandé
+         Client myclient;
+         try {
+             myclient= trouverClientparId(idclient);
+         }catch(Exception ex){
+             System.out.println("Desolé, cette utilisateur n'existe pas");
+             throw ex;
+         };
+         //Etape 1:Vérifier que le client demandé n'a pas déja une consultation en attente
+         if (myclient.getStatus()!="free"){
+             throw new Exception("Sorry, " + myclient.getPrenom() +" "+ myclient.getNom() + " already have a consultation reserved");
+         }
+         
+         
+         //Etape 3: Retrouver le medium demandée
+         Medium mymedium;
+         try {
+             mymedium= trouverMediumparId(idmedium);
+         }catch(Exception ex){
+             System.out.println("Desolé, ce medium n'existe pas");
+             throw ex;
+         };
+         
+         //Etape 4: Trouver la liste des employée pouvant executer le role
          List<Employee> MatchingEmployees;
          Consultation myConsult;
          try{
-             MatchingEmployees=myDAOemp.chercherEmployeDispo(medium.getGender());
+             JpaUtil.creerContextePersistance();
+             EmployeDAO myDAOemp= new EmployeDAO();
+             MatchingEmployees=myDAOemp.chercherEmployeDispo(mymedium.getGender());
          }catch(Exception Ex){
             System.out.println("ERREUR DAO.EMPLOYEE.chercherEmployedispo: " + Ex);
-            return null;
+            throw Ex;
+         }
+         finally{
+            JpaUtil.fermerContextePersistance();
          }
          
+         //Etape 5: Vérifier que la liste d'employée pouvant faire le role n'est pas vide
          if (MatchingEmployees.isEmpty()){
-             throw new Exception("Sorry, " + medium.getDenomination() + " is unavailable for the moment, please come back later");
+             throw new Exception("Sorry, " + mymedium.getDenomination() + " is unavailable for the moment, please come back later");
          }
          else{
-             Employee employeChose = MatchingEmployees.get(0); //A faire: Algorithm pour trouver l'employee qui est le moins prix et pas le premier de la liste pour essayer de rééquilibrer le nombre d'apparition des demployee
-             ConsultationDAO myConsultationDAO= new ConsultationDAO();
-             myConsult= new Consultation(employeChose,date,client, medium);
-             myConsultationDAO.creer(myConsult);
+             //Etape 6: créer la consultation
+             try{
+                 Employee employeChose = MatchingEmployees.get(0); //A faire: Algorithm pour trouver l'employee qui est le moins prix et pas le premier de la liste pour essayer de rééquilibrer le nombre d'apparition des demployee
+                 myConsult= new Consultation(employeChose,date,myclient, mymedium);
+                 JpaUtil.creerContextePersistance();
+                 JpaUtil.ouvrirTransaction();
+                 ConsultationDAO myConsultationDAO= new ConsultationDAO();
+                 myConsultationDAO.creer(myConsult);
+                 JpaUtil.validerTransaction();
+                 
+             }catch(Exception Ex){
+                  System.out.println("ERREUR creating consultation: " + Ex);
+                 throw Ex;
+             }
+             finally{
+                 JpaUtil.fermerContextePersistance();
+             }
+            
+             
              
          }
          
          return myConsult;
      
      }
-     public Client trouverClientparId(Long id) {
+     
+     public void checkListConsultClient (long idclient) throws Exception{
+         Client myclient;
+         try {
+             myclient= trouverClientparId(idclient);
+         }catch(Exception ex){
+             System.out.println("Desolé, cette utilisateur n'existe pas");
+             throw ex;
+         };
+         List<Consultation> myconsultList = myclient.getList();
+         myconsultList.stream().forEach((consult)-> System.out.println(consult));
+         
+     }
+     private Client trouverClientparId(Long id) throws Exception{
         ClientDAO monClientDAO= new ClientDAO();
         try{
             JpaUtil.creerContextePersistance();
@@ -138,12 +197,30 @@ public class ServicePredictif {
         }
         catch(Exception ex){
             System.out.println("ERREUR: " + ex);
-            return null;
+            throw ex;
         }
         finally { // dans tous les cas, on ferme l'entity manager
         JpaUtil.fermerContextePersistance();
         }
     }
+     
+     private Medium trouverMediumparId(Long id) throws Exception{
+        MediumDAO monMediumDAO= new MediumDAO();
+        Medium mediumtoreturn=null;
+        try{
+            JpaUtil.creerContextePersistance();
+            mediumtoreturn= monMediumDAO.chercherMediumparID(id);
+        }
+        catch(Exception ex){
+            System.out.println("ERREUR: " + ex);
+            throw ex;
+        }
+        finally { // dans tous les cas, on ferme l'entity manager
+        JpaUtil.fermerContextePersistance();
+        }
+        return mediumtoreturn;
+    }
+     
       public Client Authentifier(String mail, String mdp) {
         ClientDAO monClientDAO= new ClientDAO();
         try{

@@ -24,6 +24,8 @@ public class Main {
         ControleService Controle= new ControleService();
         //Controle.testerInscriptionMedium();
         Controle.initdevversion(20,20,20);
+        Controle.testerdemandesconsult() ;
+        Controle.testerdemandesconsult() ;
         
        
         //Controle.testerRechercheClient();

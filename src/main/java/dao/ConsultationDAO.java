@@ -17,6 +17,7 @@ public class ConsultationDAO {
         Employee workingEmployee= myConsult.getEmployee();
         
         consultingClient.addnewconsult(myConsult);
+        consultingClient.setStatus("Waiting");
         workingEmployee.addnewconsult(myConsult);
         workingEmployee.setStatus("Waiting");
         consultedMedium.addnewconsult(myConsult);

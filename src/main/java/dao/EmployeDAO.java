@@ -26,14 +26,8 @@ public class EmployeDAO {
         // Utiliser le SGBD pour faire un tri plus précis et obtenir directement les employes disponibles
         String q = "select e from Employee e where e.genre = :ungenre and e.status = 'free'";
         TypedQuery query = JpaUtil.obtenirContextePersistance().createQuery(q, Employee.class);
-        if(genre == "H")
-        {
-            query.setParameter("ungenre", "H");
-        }
-        else if(genre == "F")
-        {
-            query.setParameter("ungenre", "F");
-        }
+        query.setParameter("ungenre", genre);
+
         return query.getResultList();
     }
     
