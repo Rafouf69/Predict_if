@@ -12,3 +12,4 @@ J'ai un peu avancé, pour la suite
 - Normalement coté client presque fini
 - S'occuper du coté employé: Check travail (Voir si on est waitings et agir en conséquence ) et demander help
 - Si on a le temps s'occuper des setters pour modifier ton profil.
+- Enum au lieu de string: ou le localisé?
