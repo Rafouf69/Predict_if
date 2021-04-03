@@ -22,8 +22,8 @@ public class Main {
     public static void main(String[] args) {
         JpaUtil.init();
         ControleService Controle= new ControleService();
-        Controle.testerInscriptionMedium();
-        //Controle.initdevversion(10,10,10);
+        //Controle.testerInscriptionMedium();
+        Controle.initdevversion(20,20,20);
         
        
         //Controle.testerRechercheClient();

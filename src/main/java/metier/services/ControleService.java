@@ -142,6 +142,45 @@ public class ControleService {
             }
             
         }
+        
+        
+        //initialize Medium
+        for(int i=0;i<nbmedium;i++){
+           
+            String nom= "denominationMedium"+i;
+            String genre= (i%2==1?"H":"G");
+            String presentation= "presentationMedium"+i;
+            if (i%3==0){
+                Medium newMed= new Medium(nom,genre,presentation);
+                try{
+                    ServiceClient.creerMedium(newMed);
+                }catch (Exception Ex){
+                    System.out.println("> Echec initialization: ta base de données est sans doute déja remplie garçon");
+                }
+            }
+            else if (i%3==1){
+                
+                String support ="supportMedium"+i;
+                Medium newMed= new Medium(nom,genre,presentation,support);
+                try{
+                    ServiceClient.creerMedium(newMed);
+                }catch (Exception Ex){
+                    System.out.println("> Echec initialization: ta base de données est sans doute déja remplie garçon");
+                }
+            }
+            else {
+                String formation ="formationMedium"+i;
+                String promotion ="200"+i;
+                Medium newMed= new Medium(nom,genre,presentation,formation,promotion);
+                try{
+                    ServiceClient.creerMedium(newMed);
+                }catch (Exception Ex){
+                    System.out.println("> Echec initialization: ta base de données est sans doute déja remplie garçon");
+                }
+            }
+   
+            
+        }
       
     }
     public void testerAuthentificationClient() {
