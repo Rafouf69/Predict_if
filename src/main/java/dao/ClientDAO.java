@@ -26,7 +26,7 @@ public class ClientDAO {
     }
    
     
-     public Client chercherClient(String mail, String mdp) {
+     public Client authentifierClient(String mail, String mdp) {
         String s = "select e from Client e where e.mail = :unmail and e.motDePasse = :unmdp";
         Query query = JpaUtil.obtenirContextePersistance().createQuery(s);
         query.setParameter("unmail", mail);

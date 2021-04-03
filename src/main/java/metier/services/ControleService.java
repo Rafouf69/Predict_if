@@ -133,7 +133,7 @@ public class ControleService {
             String mdp = "mdpEmployee"+i;
             String phonenumber="061100000"+i;
             
-            String genre= (i%2==1?"H":"G");
+            String genre= (i%2==1?"H":"F");
             Employee newEmployee= new Employee(nom,prenom,mail,genre,mdp,phonenumber);
             try{
             ServiceClient.creerEmployee(newEmployee);
@@ -148,7 +148,7 @@ public class ControleService {
         for(int i=0;i<nbmedium;i++){
            
             String nom= "denominationMedium"+i;
-            String genre= (i%2==1?"H":"G");
+            String genre= (i%2==1?"H":"F");
             String presentation= "presentationMedium"+i;
             if (i%3==0){
                 Medium newMed= new Medium(nom,genre,presentation);
