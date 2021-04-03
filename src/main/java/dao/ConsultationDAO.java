@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package dao;
+import java.util.Date;
 import metier.modele.*;
 /**
  *
@@ -36,6 +37,34 @@ public class ConsultationDAO {
         JpaUtil.obtenirContextePersistance().merge(consultingClient);
         
         return myConsult;
+    }
+    public Consultation beginconsult(Consultation myConsult) {
+        
+        //obtenir les élements important de la consultation (clefs étrangères) 
+        Client consultingClient= myConsult.getClient();
+        Employee workingEmployee= myConsult.getEmployee();
+        
+        //Changer status client
+        consultingClient.setStatus("Conversing");
+        
+        //Changer status employee
+        workingEmployee.setStatus("Conversing");
+        
+         //Changer status conversation
+        myConsult.setStatus("Running");
+        myConsult.setDateBegin(new Date());
+        
+       
+        //Sauvegarder changement
+        JpaUtil.obtenirContextePersistance().merge(myConsult);
+        JpaUtil.obtenirContextePersistance().merge(workingEmployee);
+        JpaUtil.obtenirContextePersistance().merge(consultingClient);
+        
+        return myConsult;
+    }
+    public Consultation chercherConsultparID(Long Id) {
+        return JpaUtil.obtenirContextePersistance().find(Consultation.class, Id);
+        
     }
     
     

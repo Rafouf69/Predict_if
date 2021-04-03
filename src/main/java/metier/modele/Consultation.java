@@ -32,7 +32,6 @@ public class Consultation {
     private Date askingdate;
     private Date begginignedate;
     private Date enddate;
-    private Date datefin;
     private String commentaire;
     private String status;
     
@@ -75,8 +74,11 @@ public class Consultation {
     public void setStatus(String newStat){
         this.status=newStat;
     }
+    public void setDateBegin(Date mydate){
+        this.begginignedate=mydate;
+    }
     public String toString() {
-        return "Consultation " + this.id + " : // Date de demande : " + this.askingdate+ " : // Date de début : " + this.begginignedate+ " : // Date de fin : " + this.datefin + " // DateFin : " + this.datefin+ " // Commentaire : "+ this.commentaire +" // Employee : " +this.employee.getId()+  " // Medium : " + this.medium.getId()+ " // Client : "+ this.client.getId();
+        return "Consultation " + this.id + " : // Date de demande : " + this.askingdate+ " : // Date de début : " + this.begginignedate+ " : // Date de fin : " + this.enddate + " // Commentaire : "+ this.commentaire +" // Employee : " +this.employee.getId()+  " // Medium : " + this.medium.getId()+ " // Client : "+ this.client.getId();
     }
 }
     

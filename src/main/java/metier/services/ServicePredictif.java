@@ -208,12 +208,64 @@ public class ServicePredictif {
              if (waitingconsult.getStatus()!="Waiting"){
                  throw new Exception("Hmmm An error Occurred. PLease contact Predictif");
              }
-             
              returningString="It seems that you have one client waiting for you. Please begin the consultation n° " +waitingconsult.getId() +" with the client n° "+ waitingconsult.getClient().getId()+". You shoul incarn Medium "+waitingconsult.getMedium().getDenomination();
-         
          }
          return returningString;
      }
+     public String BegginingConsult(long EmpId, String mdp, long Idconsult) throws Exception{
+         
+         String returningString=null;
+         
+         //Find Employeee concern
+         Employee myemp=null;
+         try {
+             myemp=trouverEmpparId(EmpId);
+         }catch(Exception Ex){
+             throw Ex;
+         }
+         
+         //Check mdp
+         if (myemp.getMotDePasse()!=mdp){
+            returningString="Your are not allowed to use this feature. PLease Authenticate";
+         }
+         
+         //Find Conultation concern
+         Consultation myconsult=null;
+         try {
+             myconsult= trouverConsultparId(Idconsult);
+         }catch(Exception Ex){
+             throw Ex;
+         }
+         
+         //checking employee is the good one
+         if (myconsult.getEmployee().getId()!=myemp.getId()){
+             throw new Exception("Yout are not allowed to see other employee consultation. Sorry.");
+         }
+         
+         //checking Conversationsstatus
+         if (myconsult.getStatus() !="Waiting"){
+            throw new Exception("This consutation is finish. Sorry. ");
+         }
+          
+         try{
+             JpaUtil.creerContextePersistance();
+             JpaUtil.ouvrirTransaction();
+             ConsultationDAO myConsultationDAO= new ConsultationDAO();
+             myConsultationDAO.beginconsult(myconsult);
+             JpaUtil.validerTransaction();      
+         }catch(Exception Ex){
+             System.out.println("ERREUR updating consultation: " + Ex);
+             throw Ex;
+         }finally{
+             JpaUtil.fermerContextePersistance();
+         }
+         
+         
+         returningString="Conversation started!";
+
+         return returningString;
+     }
+     
      
      public void checkListConsultClient (long idclient) throws Exception{
          Client myclient;
@@ -277,6 +329,22 @@ public class ServicePredictif {
         return mediumtoreturn;
     }
      
+     private Consultation trouverConsultparId(Long id) throws Exception{
+        ConsultationDAO monConsultDAO= new ConsultationDAO();
+        Consultation consulttorretrun=null;
+        try{
+            JpaUtil.creerContextePersistance();
+            consulttorretrun= monConsultDAO.chercherConsultparID(id);
+        }
+        catch(Exception ex){
+            System.out.println("ERREUR: " + ex);
+            throw ex;
+        }
+        finally { // dans tous les cas, on ferme l'entity manager
+        JpaUtil.fermerContextePersistance();
+        }
+        return consulttorretrun;
+    }
      //never used (maybe one day?)
       public Client Authentifier(String mail, String mdp) {
         ClientDAO monClientDAO= new ClientDAO();

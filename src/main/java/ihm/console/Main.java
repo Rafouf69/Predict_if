@@ -27,7 +27,7 @@ public class Main {
         Controle.testerdemandesconsult() ;
         Controle.testerdemandesconsult() ;
         Controle.testercheckwork();
-        
+        Controle.testerbeginconsult();
        
         //Controle.testerRechercheClient();
         //Controle.testerAuthentificationClient();
