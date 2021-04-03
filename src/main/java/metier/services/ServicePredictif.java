@@ -8,6 +8,7 @@ package metier.services;
 import dao.ConsultationDAO;
 import dao.EmployeDAO;
 import dao.ClientDAO;
+import dao.MediumDAO;
 import dao.JpaUtil;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -83,6 +84,26 @@ public class ServicePredictif {
         JpaUtil.fermerContextePersistance();
         }     
         return newEmp;
+    }
+    public Medium creerMedium(Medium newmedium) throws Exception{
+        MediumDAO monMedDAO= new MediumDAO();
+        Medium newmed;
+        
+        try{
+            JpaUtil.creerContextePersistance();
+            JpaUtil.ouvrirTransaction();
+            newmed= monMedDAO.creer(newmedium);
+            JpaUtil.validerTransaction();
+        }
+        catch(Exception ex){
+            System.out.println("ERREUR: " + ex);
+            throw ex;
+        }
+        
+        finally { // dans tous les cas, on ferme l'entity manager
+        JpaUtil.fermerContextePersistance();
+        }     
+        return newmed;
     }
      public Consultation DemandedeConsultation(Client client,Medium medium, Date date) throws Exception{
          EmployeDAO myDAOemp= new EmployeDAO();

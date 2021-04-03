@@ -35,7 +35,7 @@ public class Medium {
     
     private String promotion;
     
-    private int typeMedium;
+    private String typeMedium;
     
     public Medium(){    
     }
@@ -44,7 +44,7 @@ public class Medium {
         this.denomination=denomination;
         this.genre=genre;
         this.presentation=presentation;
-        this.typeMedium=1;
+        this.typeMedium="Cartomancien";
         this.support=null;
         this.formation=null;
         this.promotion=null;
@@ -54,7 +54,7 @@ public class Medium {
         this.denomination=denomination;
         this.genre=genre;
         this.presentation=presentation;
-        this.typeMedium=2;
+        this.typeMedium="Spirite";
         this.support=support;
         this.formation=null;
         this.promotion=null;
@@ -64,7 +64,7 @@ public class Medium {
         this.denomination=denomination;
         this.genre=genre;
         this.presentation=presentation;
-        this.typeMedium=1;
+        this.typeMedium="Astrologue";
         this.support=null;
         this.formation=formation;
         this.promotion=promotion;

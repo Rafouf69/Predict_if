@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import metier.modele.Client;
 import metier.modele.Employee;
+import metier.modele.Medium;
 
 /**
  *
@@ -45,6 +46,31 @@ public class ControleService {
         return myemp;
          
     }
+      private Medium ImportingClientIHMMedium() {
+        Medium newMedium=null;
+        String denomination= Saisie.lireChaine("Dénomination du médium :");
+        String genre= Saisie.lireChaine("Genre du medium (H/F) :");
+        String presentation=Saisie.lireChaine("Présentation du médium :");
+        
+        int i=0;
+        while (i!=1 && i!=2 && i!=3){
+            i= Saisie.lireInteger("Type de medium: Cartomancien(1)/Spirite(2)/Astrologue(3)");
+        }
+        if (i==1){ //Create Catromancien
+            newMedium = new Medium(denomination,genre,presentation);
+        }
+        else if (i==2){ //Create Spirite
+            String support=Saisie.lireChaine("Support du medium: ");
+            newMedium = new Medium(denomination,genre,presentation,support);
+        }
+        else if (i==3){ //Create Astrologue
+            String formation=Saisie.lireChaine("Formation du medium: ");
+            String promotion=Saisie.lireChaine("Promotion du medium: ");
+            newMedium = new Medium(denomination,genre,presentation,formation,promotion);
+        }
+        return newMedium;
+         
+    }
     public void testerInscriptionClient() {
         ServicePredictif ServiceClient = new ServicePredictif();
         Client newClient= ImportingClientIHMClient();
@@ -56,7 +82,8 @@ public class ControleService {
              System.out.println("> Echec inscription employee: Sorry boy");
         } 
     }
-     public void testerInscriptionEmployee(){
+    
+    public void testerInscriptionEmployee(){
         ServicePredictif Servicepred = new ServicePredictif();
         Employee newEmployee= ImportingClientIHMEmployee();
         try{ 
@@ -67,61 +94,55 @@ public class ControleService {
          System.out.println("> Echec inscription: Sorry boy");
         }
     }
-    public void initdevversion(){
     
-    ServicePredictif ServiceClient = new ServicePredictif();
-    //initialize Client
-        Client newClient1= new Client("Ducoq","Hubert","HubertDucoq@gmail.com",new Date(), "mdpHubert","0600000001");
-        Client newClient2= new Client("Vignon","Raphael","Raphael@gmail.com",new Date(), "mdpRaphael", "0600000002");
-        Client newClient3= new Client("Loiseau","Lucas","lucas@gmail.com",new Date(), "mdplucas","0600000003");
-        Client newClient4= new Client("Senouci","Alex","Alex@gmail.com",new Date(), "mdpAlex","0600000004");
-        Client newClient5= new Client("Lombard","Louis","louis@gmail.com",new Date(), "mdplouis","0600000005");
-        Client newClient6= new Client("Rael","Freeze","rael@gmail.com",new Date(), "mdpfreeze","0600000006");
-        Client newClient7= new Client("Saumon","René","rené@gmail.com",new Date(), "mdprené","0600000007");
-        Client newClient8= new Client("Luflo","Luc","Luc@gmail.com",new Date(), "mdpluc","0600000008");
-        Client newClient9= new Client("Dumontel","Albert","albert@gmail.com",new Date(), "mdpalbert","0600000009");
-        Client newClient10= new Client("Macron","Emmanuel","Emmanuel@gmail.com",new Date(), "mdpmanu","0600000010");
-        
-        try{
-            ServiceClient.creerClient(newClient1);
-            ServiceClient.creerClient(newClient2);
-            ServiceClient.creerClient(newClient3);
-            ServiceClient.creerClient(newClient4);
-            ServiceClient.creerClient(newClient5);
-            ServiceClient.creerClient(newClient6);
-            ServiceClient.creerClient(newClient7);
-            ServiceClient.creerClient(newClient8);
-            ServiceClient.creerClient(newClient9);
-            ServiceClient.creerClient(newClient10);
-        }catch(Exception Ex){
-             System.out.println("> Echec initialization: ta base de données est sans doute déja remplie garçon");
-        } 
-        //initialize Employee
-        Employee newEmployee1= new Employee("nom1","prenom1","nom1@gmail.com","H", "mdpnom1","0610000001");
-        Employee newEmployee2= new Employee("nom2","prenom2","nom2@gmail.com","H", "mdpnom2","0610000002");
-        Employee newEmployee3= new Employee("nom3","prenom3","nom3@gmail.com","H", "mdpnom3","0610000003");
-        Employee newEmployee4= new Employee("nom4","prenom4","nom4@gmail.com","H", "mdpnom4","0610000004");
-        Employee newEmployee5= new Employee("nom5","prenom5","nom5@gmail.com","H", "mdpnom5","0610000005");
-        Employee newEmployee6= new Employee("nom6","prenom6","nom6@gmail.com","F", "mdpnom6","061000006");
-        Employee newEmployee7= new Employee("nom7","prenom7","nom7@gmail.com","F", "mdpnom7","0610000007");
-        Employee newEmployee8= new Employee("nom8","prenom8","nom8@gmail.com","F", "mdpnom8","061000008");
-        Employee newEmployee9= new Employee("nom9","prenom9","nom9@gmail.com","F", "mdpnom9","0610000009");
-        Employee newEmployee10= new Employee("nom10","prenom10","nom10@gmail.com","F", "mdpnom10","0610000010");
-        
-        try{
-            ServiceClient.creerEmployee(newEmployee1);
-            ServiceClient.creerEmployee(newEmployee2);
-            ServiceClient.creerEmployee(newEmployee3);
-            ServiceClient.creerEmployee(newEmployee4);
-            ServiceClient.creerEmployee(newEmployee5);
-            ServiceClient.creerEmployee(newEmployee6);
-            ServiceClient.creerEmployee(newEmployee7);
-            ServiceClient.creerEmployee(newEmployee8);
-            ServiceClient.creerEmployee(newEmployee9);
-            ServiceClient.creerEmployee(newEmployee10);
-        }catch(Exception Ex){
-             System.out.println("> Echec initialization: ta base de données est sans doute déja remplie garçon");
+    public void testerInscriptionMedium(){
+      ServicePredictif Servicepred = new ServicePredictif();
+      Medium newMedium= ImportingClientIHMMedium();
+      try{ 
+            Medium newMediumBD= Servicepred.creerMedium(newMedium);
+            System.out.println("-> Succès inscription");
+            System.out.println("-> Bienvenue au Medium: id= " + newMedium.getId()+ " ;denomination= "+ newMedium.getDenomination()+" ;mail= ");
+        }catch(Exception ex){
+         System.out.println("> Echec inscription: Sorry boy");
         }
+     }
+    public void initdevversion(int nbclient, int nbemployee, int nbmedium){
+    
+        ServicePredictif ServiceClient = new ServicePredictif();
+        //initialize Client
+        for(int i=0;i<nbclient;i++){
+            String nom= "NomClient"+i;
+            String prenom= "PrenomClient"+i;
+            String mail="MailClient"+i+"@gmail.com";
+            String mdp = "mdpClient"+i;
+            String phonenumber="060000000"+i;
+            Client newClient= new Client(nom,prenom,mail,new Date(),mdp,phonenumber);
+            try{
+            ServiceClient.creerClient(newClient);
+            }catch (Exception Ex){
+             System.out.println("> Echec initialization: ta base de données est sans doute déja remplie garçon");
+            }
+            
+        }
+        
+        //initialize Employee
+        for(int i=0;i<nbemployee;i++){
+            String nom= "NomEployee"+i;
+            String prenom= "PrenomEmployee"+i;
+            String mail="MailEmployee"+i+"@gmail.com";
+            String mdp = "mdpEmployee"+i;
+            String phonenumber="061100000"+i;
+            
+            String genre= (i%2==1?"H":"G");
+            Employee newEmployee= new Employee(nom,prenom,mail,genre,mdp,phonenumber);
+            try{
+            ServiceClient.creerEmployee(newEmployee);
+            }catch (Exception Ex){
+             System.out.println("> Echec initialization: ta base de données est sans doute déja remplie garçon");
+            }
+            
+        }
+      
     }
     public void testerAuthentificationClient() {
         String mail= Saisie.lireChaine("Mail du client :");
