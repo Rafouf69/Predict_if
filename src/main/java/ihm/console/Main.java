@@ -24,11 +24,11 @@ public class Main {
         ControleService Controle= new ControleService();
         //Controle.testerInscriptionMedium();
         Controle.initdevversion(20,20,20);
-        Controle.testerdemandesconsult() ;
-        Controle.testerdemandesconsult() ;
-        Controle.testercheckwork();
-        Controle.testerbeginconsult();
-        Controle.testerendconsult();
+        int i=-1;
+        while(i!=0){
+            i=Controle.runningservice();
+        } 
+        
        
         //Controle.testerRechercheClient();
         //Controle.testerAuthentificationClient();

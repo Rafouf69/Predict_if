@@ -285,6 +285,69 @@ public class ControleService {
        }catch(Exception Ex){
             System.out.println(Ex);
        }
+    }
+    public int runningservice() {
+            System.out.println("***************************************************************");
+            System.out.println("******************** Welcome to Predict'if ********************");
+            System.out.println("*********************** Console Version ***********************");
+            System.out.println("***************************************************************");
+            System.out.println("---------------------------------------------------------------");
+            System.out.println("***************************   |||   ***************************");
+            System.out.println("********** Client *********   |||   ******** Employee *********");
+            System.out.println("***************************   |||   ***************************");
+            System.out.println("                              |||                              ");
+            System.out.println(" • S'authentifier        (1)  |||   • S'authentifier        (2)");
+            System.out.println("                              |||                              ");
+            System.out.println(" • Créer un compte       (3)  |||   • Check Work            (4)");
+            System.out.println("                              |||                              ");
+            System.out.println(" • Demander Consultation (5)  |||   • Begining Consultation (6)");
+            System.out.println("                              |||                              ");
+            System.out.println(" • Check information     (7)  |||   • End Consultation      (8)");
+            System.out.println("                              |||                              ");
+            System.out.println("                              |||   • Ask for help          (9)");
+            System.out.println("                              |||                              ");
+            System.out.println("---------------------------------------------------------------");
+            System.out.println("***************************************************************");
+            System.out.println("***************************************************************");
+            System.out.println("*************************   Exit (0)  *************************");
+            System.out.println("***************************************************************");
+            System.out.println("***************************************************************");
+            int integ= Saisie.lireInteger("Choisir un chiffre entre 0 et 10 : ");
+        switch (integ) {
+            case 1:
+                testerAuthentificationClient();
+                break;
+            case 2:
+                //testerAuthentificationEmployee();
+                break;
+            case 3:
+                testerInscriptionClient();
+                break;
+            case 4:
+                testercheckwork();
+                break;
+            case 5:
+                testerdemandesconsult();
+                break;
+            case 6:
+                testerbeginconsult();
+                break;
+            case 7:
+                //testerAuthentificationEmployee();
+                break;
+            case 8:
+                testerendconsult();
+                break;
+            case 9:
+                //testercheckinfoClient();
+                break;
+            case 10:
+                //testerAskingHelp();
+                break;
+            default:
+                break;
+        }
+            return integ;
        
     }
     
