@@ -3,18 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package metier.services;
+package ihm.console;
 
-import ihm.console.Saisie;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import metier.modele.Client;
 import metier.modele.Employee;
 import metier.modele.Medium;
+import metier.services.ServicePredictif;
 
 /**
  *
@@ -286,6 +283,23 @@ public class ControleService {
             System.out.println(Ex);
        }
     }
+    public void testerAskingHelp() {
+       long idEmp= Saisie.lireInteger("Id de l'employee : ");
+       String mdp= Saisie.lireChaine("Mdp de l'employee : ");
+       List<Integer> listvalue = Arrays.asList(new Integer[]{1,2,3,4});
+       int niveauAmour= Saisie.lireInteger("Niveau d'Amour : ",listvalue);
+       int niveauSante= Saisie.lireInteger("Niveau de Santé : ",listvalue);
+       int niveauTravail= Saisie.lireInteger("Niveau de travail : ",listvalue);
+       try {
+            ServicePredictif Servicepredictif = new ServicePredictif();
+            List<String> Result= Servicepredictif.AskingHelp(idEmp, mdp, niveauAmour, niveauSante, niveauTravail);
+            System.out.println(Result);
+       }catch(Exception Ex){
+            System.out.println(Ex);
+       }
+    
+    }
+    
     public int runningservice() {
             System.out.println("***************************************************************");
             System.out.println("******************** Welcome to Predict'if ********************");
@@ -302,10 +316,13 @@ public class ControleService {
             System.out.println("                              |||                              ");
             System.out.println(" • Demander Consultation (5)  |||   • Begining Consultation (6)");
             System.out.println("                              |||                              ");
-            System.out.println(" • Check information     (7)  |||   • End Consultation      (8)");
+            System.out.println(" • Check Client infos    (7)  |||   • End Consultation      (8)");
             System.out.println("                              |||                              ");
             System.out.println("                              |||   • Ask for help          (9)");
             System.out.println("                              |||                              ");
+            System.out.println("                              |||   • Check Employee Info  (10)");
+            System.out.println("                              |||                              ");
+            System.out.println("                              |||   • Check Company Stats  (11)");
             System.out.println("---------------------------------------------------------------");
             System.out.println("***************************************************************");
             System.out.println("***************************************************************");
@@ -333,16 +350,19 @@ public class ControleService {
                 testerbeginconsult();
                 break;
             case 7:
-                //testerAuthentificationEmployee();
+                //testerIfoClient();
                 break;
             case 8:
                 testerendconsult();
                 break;
             case 9:
-                //testercheckinfoClient();
+                testerAskingHelp();
                 break;
             case 10:
-                //testerAskingHelp();
+                //testerEmployeeInfos();
+                break;
+            case 11:
+                //testerCompanyStats();
                 break;
             default:
                 break;

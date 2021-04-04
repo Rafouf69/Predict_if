@@ -188,8 +188,12 @@ public class ServicePredictif {
              throw Ex;
          }
          
+         //check Emlpoyee is Found (not detected as an error if the employee doesn't eist it juste send null: checkpoint)
+         if (myemp == null){
+             throw new Exception("This Employee seems not to be existing, please check Id");
+         }
          //Check mdp
-         if (myemp.getMotDePasse()!=mdp){
+         if (!myemp.getMotDePasse().equals(mdp)){
             returningString="Your are not allowed to use this feature. PLease Authenticate";
          }
          
@@ -224,8 +228,12 @@ public class ServicePredictif {
              throw Ex;
          }
          
+         //check Emlpoyee is Found (not detected as an error if the employee doesn't eist it juste send null: checkpoint)
+         if (myemp == null){
+             throw new Exception("This Employee seems not to be existing, please check Id");
+         }
          //Check mdp
-         if (myemp.getMotDePasse()!=mdp){
+         if (!myemp.getMotDePasse().equals(mdp)){
             returningString="Your are not allowed to use this feature. PLease Authenticate";
          }
          
@@ -276,10 +284,13 @@ public class ServicePredictif {
          }catch(Exception Ex){
              throw Ex;
          }
-         
+         //check Emlpoyee is Found (not detected as an error if the employee doesn't eist it juste send null: checkpoint)
+         if (myemp == null){
+             throw new Exception("This Employee seems not to be existing, please check Id");
+         }
          //Check mdp
-         if (myemp.getMotDePasse()!=mdp){
-            returningString="Your are not allowed to use this feature. PLease Authenticate";
+         if (!myemp.getMotDePasse().equals(mdp)){
+            throw new Exception("Your are not allowed to use this feature. PLease Authenticate");
          }
          
          //Find Conultation concern
@@ -317,6 +328,42 @@ public class ServicePredictif {
          returningString="Conversation ended!";
 
          return returningString;
+     }
+     public List<String> AskingHelp(long Idemp, String mdp, int Amour, int Sante, int Travail) throws Exception{
+         List<String> result=null;
+         
+         //Find Employeee concern
+         Employee myemp=null;
+         try {
+             myemp=trouverEmpparId(Idemp);
+         }catch(Exception Ex){
+             throw Ex;
+         }
+         //check Emlpoyee is Found (not detected as an error if the employee doesn't eist it juste send null: checkpoint)
+         if (myemp == null){
+             throw new Exception("This Employee seems not to be existing, please check Id");
+         }
+         //Check mdp
+         if (!myemp.getMotDePasse().equals(mdp)){
+            System.out.println(myemp.getMotDePasse());
+            System.out.println(mdp);
+            throw new Exception("Your are not allowed to use this featurenticate");
+         }
+         //check currently conversing
+         if (myemp.getStatus()!= "Conversing"){
+            throw new Exception("This feature can only be called when conversing. Sorry.");
+         }
+         try{
+             AstroNetApi astroNetApi = new AstroNetApi();
+             System.out.println(myemp.getList().get(myemp.getList().size()-1).getClient().getCouleur());
+             System.out.println(myemp.getList().get(myemp.getList().size()-1).getClient().getAnimalTotem());
+             result=astroNetApi.getPredictions(myemp.getList().get(myemp.getList().size()-1).getClient().getCouleur(), myemp.getList().get(myemp.getList().size()-1).getClient().getAnimalTotem(), Amour, Sante, Travail);
+             
+         }catch(Exception Ex){
+            throw Ex;
+         }
+         return result;
+         
      }
      
      

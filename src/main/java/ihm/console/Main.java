@@ -11,7 +11,6 @@ package ihm.console;
  * @author louislombard
  */
 import dao.JpaUtil;
-import metier.services.*;
 
 public class Main {
 
@@ -22,16 +21,14 @@ public class Main {
     public static void main(String[] args) {
         JpaUtil.init();
         ControleService Controle= new ControleService();
-        //Controle.testerInscriptionMedium();
+        
         Controle.initdevversion(20,20,20);
+        
+        
         int i=-1;
         while(i!=0){
             i=Controle.runningservice();
-        } 
-        
-       
-        //Controle.testerRechercheClient();
-        //Controle.testerAuthentificationClient();
+        }
         JpaUtil.destroy();
     }
 
