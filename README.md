@@ -14,3 +14,9 @@ J'ai un peu avancé, pour la suite
 - Faire les stats de la company: meilleur employé: pire: temsp d'attente
 - Si on a le temps s'occuper des setters pour modifier ton profil.
 - Enum au lieu de string: ou le localisé?
+- TlT redescendre les exceptions le plus bas possible
+- comparaison avec equals et pas ==
+- service public ---> les seuls dispo
+- service private ----> utilisé par les services publics, fonction interne pour faciliter code
+- consultation DAO modif employe,medium et client
+- UN SEUL SERICE ?
