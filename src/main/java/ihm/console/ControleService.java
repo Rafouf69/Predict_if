@@ -180,10 +180,7 @@ public class ControleService {
         }
       
     }
-    
-    
-    
-    
+
     public void testerAuthentificationClient() {
         String mail= Saisie.lireChaine("Mail du client :");
         String mdp= Saisie.lireChaine("Mdp du client");
@@ -229,9 +226,11 @@ public class ControleService {
     public void testerdemandesconsult() {
        ServicePredictif Servicepredictif = new ServicePredictif();
        long idClient= Saisie.lireInteger("Id du client :");
+       String mdp= Saisie.lireChaine("Mdp du client : ");
        long idmedium= Saisie.lireInteger("Id du medium :");
+       
        try {
-            Servicepredictif.DemandedeConsultation(idClient, idmedium, new Date());
+            Servicepredictif.DemandedeConsultation(idClient,mdp, idmedium, new Date());
        }catch(Exception Ex){
             System.out.println(Ex);
        }
@@ -261,9 +260,9 @@ public class ControleService {
        ServicePredictif Servicepredictif = new ServicePredictif();
        long idEmp= Saisie.lireInteger("Id de l'employee : ");
        String mdp= Saisie.lireChaine("Mdp de l'employee : ");
-       long idConsult= Saisie.lireInteger("Id de la consultation à commencer : ");
+       
        try {
-            String Result= Servicepredictif.BegginingConsult(idEmp, mdp, idConsult);
+            String Result= Servicepredictif.BegginingConsult(idEmp, mdp);
             System.out.println(Result);
        }catch(Exception Ex){
             System.out.println(Ex);
@@ -274,10 +273,9 @@ public class ControleService {
        ServicePredictif Servicepredictif = new ServicePredictif();
        long idEmp= Saisie.lireInteger("Id de l'employee : ");
        String mdp= Saisie.lireChaine("Mdp de l'employee : ");
-       long idConsult= Saisie.lireInteger("Id de la consultation à terminer : ");
        String Comment= Saisie.lireChaine("Commentaire : ");
        try {
-            String Result= Servicepredictif.EndingConsult(idEmp, mdp, idConsult, Comment);
+            String Result= Servicepredictif.EndingConsult(idEmp, mdp, Comment);
             System.out.println(Result);
        }catch(Exception Ex){
             System.out.println(Ex);
