@@ -314,7 +314,19 @@ public class ServicePredictif {
          
      }
      
-     
+    public void companyStats(long EmpId, String mdp) throws Exception
+    {
+        Employee myEmp=null;
+        try {
+            myEmp=checkEmpIdentity(EmpId,mdp);
+        }catch(Exception Ex){
+            throw Ex;
+        }
+        
+        //top 3 des mediums choisis par les clients
+        
+        
+    }
      public void checkListConsultClient (long idclient) throws Exception{
          Client myclient;
          try {
@@ -480,7 +492,7 @@ public class ServicePredictif {
         }
       }
 
-      
+    
 }
     
     
