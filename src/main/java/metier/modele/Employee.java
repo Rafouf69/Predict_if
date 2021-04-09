@@ -102,11 +102,11 @@ public class Employee implements Comparable {
 
     @Override
     public int compareTo(Object o) {
-        Employee e2 = (Employee) o;
-        if(e2.equals(null))
+        if(!(o instanceof Employee))
         {
             throw new NullPointerException("Un exmploye n'est comparable qu'avec un autre employe");
         }
+        Employee e2 = (Employee) o;
         return this.listconsult.size() - e2.getList().size();
     }
      
