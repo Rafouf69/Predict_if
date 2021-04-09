@@ -105,7 +105,7 @@ public class Employee implements Comparable {
         Employee e2 = (Employee) o;
         if(e2.equals(null))
         {
-            throw new NullPointerException();
+            throw new NullPointerException("Un exmploye n'est comparable qu'avec un autre employe");
         }
         return this.listconsult.size() - e2.getList().size();
     }
