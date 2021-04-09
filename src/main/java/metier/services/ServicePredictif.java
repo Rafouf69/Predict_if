@@ -156,17 +156,14 @@ public class ServicePredictif {
              //Etape 6: créer la consultation
              try{
                  //A faire: Algorithm pour trouver l'employee qui est le moins prix et pas le premier de la liste pour essayer de rééquilibrer le nombre d'apparition des demployee
-                 Employee employeChose;                 
-                 int iMin = 0, i = 0;
+                 Employee employeChose = MatchingEmployees.get(0);
                  for(Employee e : MatchingEmployees)
                  {
-                     if(e.getList().size() < MatchingEmployees.get(iMin).getList().size() && e.getStatus() == "free")
+                     if(e.getList().size() < employeChose.getList().size())
                      {
-                         iMin = i;
+                         employeChose = e;
                      }
-                     ++i;
                  }
-                 employeChose = MatchingEmployees.get(iMin);
                  
                  myConsult= new Consultation(employeChose,date,myclient, mymedium);
                  JpaUtil.creerContextePersistance();
