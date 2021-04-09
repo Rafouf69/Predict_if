@@ -40,7 +40,7 @@ public class ServicePredictif {
             client.setCouleur(listeAstrale.get(2));
             client.setAnimalTotem(listeAstrale.get(3));
         } catch (IOException ex) {
-            System.out.println("Error creating liste Astral");
+            //System.out.println("Error creating liste Astral");
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
         }
@@ -53,7 +53,8 @@ public class ServicePredictif {
             Message.envoyerMail("contact@predict.if", newClient.getMail(), "Bienvenue chez PREDICT’IF", "Bonjour "+ newClient.getPrenom()+", nous vous confirmons votre inscription au service PREDICT’IF.Rendez-vous  vite  sur  notre  site  pour  consulter  votre profil  astrologique  et  profiter  des  dons incroyables de nos mediums.");
         }
         catch(Exception ex){
-            System.out.println("ERREUR: " + ex);
+            //System.out.println("ERREUR: " + ex);
+            JpaUtil.annulerTransaction();
             Message.envoyerMail("contact@predict.if", client.getMail(), "Echec de l’inscription chez PREDICT’IF", "Bonjour "+ client.getPrenom()+", votre inscription au service PREDICT’IF a malencontreusement échoué... Merci de recommencer ultérieurement.");
             throw ex;
         }
