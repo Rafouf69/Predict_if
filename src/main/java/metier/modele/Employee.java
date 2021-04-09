@@ -24,7 +24,7 @@ import javax.persistence.*;
 
 
 @Entity
-public class Employee {
+public class Employee implements Comparable {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
@@ -98,6 +98,16 @@ public class Employee {
     public List<Consultation> addnewconsult(Consultation myconsulToAdd){
         this.listconsult.add(myconsulToAdd);
         return this.listconsult;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(!(o instanceof Employee))
+        {
+            throw new NullPointerException("Un exmploye n'est comparable qu'avec un autre employe");
+        }
+        Employee e2 = (Employee) o;
+        return this.listconsult.size() - e2.getList().size();
     }
      
    

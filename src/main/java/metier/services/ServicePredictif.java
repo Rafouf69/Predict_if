@@ -156,7 +156,9 @@ public class ServicePredictif {
          else{
              //Etape 6: créer la consultation
              try{
-                 Employee employeChose = MatchingEmployees.get(0); //A faire: Algorithm pour trouver l'employee qui est le moins prix et pas le premier de la liste pour essayer de rééquilibrer le nombre d'apparition des demployee
+                 //A faire: Algorithm pour trouver l'employee qui est le moins prix et pas le premier de la liste pour essayer de rééquilibrer le nombre d'apparition des demployee
+                 Employee employeChose = Collections.min(MatchingEmployees);
+                 
                  myConsult= new Consultation(employeChose,date,myclient, mymedium);
                  JpaUtil.creerContextePersistance();
                  JpaUtil.ouvrirTransaction();
