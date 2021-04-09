@@ -167,6 +167,7 @@ public class ServicePredictif {
                  JpaUtil.validerTransaction();
                  
              }catch(Exception Ex){
+                  JpaUtil.annulerTransaction();
                   System.out.println("ERREUR creating consultation: " + Ex);
                  throw Ex;
              }
