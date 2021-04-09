@@ -12,6 +12,7 @@ import dao.MediumDAO;
 import dao.JpaUtil;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -156,14 +157,7 @@ public class ServicePredictif {
              //Etape 6: créer la consultation
              try{
                  //A faire: Algorithm pour trouver l'employee qui est le moins prix et pas le premier de la liste pour essayer de rééquilibrer le nombre d'apparition des demployee
-                 Employee employeChose = MatchingEmployees.get(0);
-                 for(Employee e : MatchingEmployees)
-                 {
-                     if(e.getList().size() < employeChose.getList().size())
-                     {
-                         employeChose = e;
-                     }
-                 }
+                 Employee employeChose = Collections.min(MatchingEmployees);
                  
                  myConsult= new Consultation(employeChose,date,myclient, mymedium);
                  JpaUtil.creerContextePersistance();
