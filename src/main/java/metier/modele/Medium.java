@@ -10,12 +10,13 @@ package metier.modele;
  * @author vigno
  */
 
+import java.util.Comparator;
 import java.util.List;
 import javax.persistence.*;
 
 
 @Entity
-public class Medium {
+public class Medium implements Comparator<Medium> {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
@@ -84,6 +85,11 @@ public class Medium {
     public List<Consultation> addnewconsult(Consultation myconsulToAdd){
         this.listconsult.add(myconsulToAdd);
         return this.listconsult;
+    }
+
+    @Override
+    public int compare(Medium o1, Medium o2) {
+        return o2.listconsult.size() - o1.listconsult.size();
     }
     
 }

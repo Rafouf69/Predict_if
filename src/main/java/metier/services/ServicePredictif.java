@@ -12,6 +12,7 @@ import dao.MediumDAO;
 import dao.JpaUtil;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -325,8 +326,25 @@ public class ServicePredictif {
         }
         
         //top 3 des mediums choisis par les clients
+        MediumDAO monMediumDAO= new MediumDAO();
+        List<Medium> listeMedium=null;
         
+        try{
+            JpaUtil.creerContextePersistance();
+            listeMedium = monMediumDAO.chercherTous();
+            Collections.sort(listeMedium, new Medium());
+        }
+        catch(Exception ex){
+            System.out.println("ERREUR: " + ex);
+            throw ex;
+        }
+        finally { // dans tous les cas, on ferme l'entity manager
+        JpaUtil.fermerContextePersistance();
+        }
         
+        System.out.println("medium numéro 1 : " + listeMedium.get(0).getDenomination());
+        System.out.println("medium numéro 2 : " + listeMedium.get(1).getDenomination());
+        System.out.println("medium numéro 3 : " + listeMedium.get(2).getDenomination());
     }
      public void checkListConsultClient (long idclient) throws Exception{
          Client myclient;

@@ -21,9 +21,13 @@ public class MediumDAO {
         return newMedium;
     }
     public Medium chercherMediumparID(Long Id) {
-        return JpaUtil.obtenirContextePersistance().find(Medium.class, Id);
-        
+        return JpaUtil.obtenirContextePersistance().find(Medium.class, Id);   
     }
    
-    
+    public List<Medium> chercherTous()
+    {
+        String s = "select m from Medium m order by m.denomination asc";
+        TypedQuery query = JpaUtil.obtenirContextePersistance().createQuery(s, Medium.class);
+        return query.getResultList();
+    }
 }

@@ -298,6 +298,18 @@ public class ControleService {
     
     }
     
+    public void testerCompanyStats()
+    {
+        long idEmp= Saisie.lireInteger("Id de l'employee : ");
+        String mdp= Saisie.lireChaine("Mdp de l'employee : ");
+        try {
+            ServicePredictif Servicepredictif = new ServicePredictif();
+            Servicepredictif.companyStats(idEmp, mdp);
+        }catch(Exception Ex){
+            System.out.println(Ex);
+        }
+    }
+    
     public int runningservice() {
             System.out.println("***************************************************************");
             System.out.println("******************** Welcome to Predict'if ********************");
@@ -360,7 +372,7 @@ public class ControleService {
                 //testerEmployeeInfos();
                 break;
             case 11:
-                //testerCompanyStats();
+                testerCompanyStats();
                 break;
             default:
                 break;
