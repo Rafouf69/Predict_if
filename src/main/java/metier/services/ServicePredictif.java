@@ -41,7 +41,7 @@ public class ServicePredictif {
             client.setCouleur(listeAstrale.get(2));
             client.setAnimalTotem(listeAstrale.get(3));
         } catch (IOException ex) {
-            //System.out.println("Error creating liste Astral");
+            System.out.println("Error creating liste Astral");
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
         }
@@ -437,21 +437,62 @@ public class ServicePredictif {
         }
         return consulttorretrun;
     }
-     //never used (maybe one day?)
-      public Client Authentifier(String mail, String mdp) {
+     
+      public Client AuthentifierClient(String mail, String mdp) throws Exception {
           
         ClientDAO monClientDAO= new ClientDAO();
+        Client monclient;
         try{
             JpaUtil.creerContextePersistance();
-            return monClientDAO.authentifierClient(mail, mdp) ;
+            monclient= monClientDAO.authentifierClient(mail) ;
         }
         catch(Exception ex){
             System.out.println("ERREUR: " + ex);
-            return null;
+            throw ex;
+            
         }
         finally { // dans tous les cas, on ferme l'entity manager
             JpaUtil.fermerContextePersistance();
         }
+        //Cas exceptionnele si client null
+        if (monclient==null){
+            throw new Exception("Aucun client n'est incrit avec cet email. Veuillez vérifier vos credential");
+        }
+        //verification de mot de passe
+        if (!monclient.getMotDePasse().equals(mdp)){
+             throw new Exception("Mauvais mot de passe. Veuillez vérifier vos credential");
+        }
+        
+        return monclient;
+        
+        
+    }
+       public Employee AuthentifierEmployee(String mail, String mdp) throws Exception {
+          
+        EmployeDAO monEmpDAO= new EmployeDAO();
+        Employee monEmp;
+        try{
+            JpaUtil.creerContextePersistance();
+            monEmp= monEmpDAO.authentifierEmp(mail) ;
+        }
+        catch(Exception ex){
+            System.out.println("ERREUR: " + ex);
+            throw ex;
+        }
+        finally { // dans tous les cas, on ferme l'entity manager
+            JpaUtil.fermerContextePersistance();
+        }
+        //Cas exceptionnele si client null
+        if (monEmp==null){
+            throw new Exception("Aucun client n'est incrit avec cet email. Veuillez vérifier vos credential");
+        }
+        //verification de mot de passe
+        if (!monEmp.getMotDePasse().equals(mdp)){
+             throw new Exception("Mauvais mot de passe. Veuillez vérifier vos credential");
+        }
+        
+        return monEmp;
+        
         
     }
       private Client checkClientIdentity(long idclient, String mdp)throws Exception{

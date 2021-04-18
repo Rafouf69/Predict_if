@@ -7,6 +7,7 @@ package dao;
 
 import java.io.IOException;
 import java.util.List;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import metier.modele.Employee;
 
@@ -31,6 +32,13 @@ public class EmployeDAO {
     }
     public Employee chercherEmployeeparID(Long Id) {
         return JpaUtil.obtenirContextePersistance().find(Employee.class, Id);
+        
+    }
+    public Employee authentifierEmp(String mail) {
+        String s = "select e from Employee e where e.mail = :unmail";
+        Query query = JpaUtil.obtenirContextePersistance().createQuery(s);
+        query.setParameter("unmail", mail);
+        return (Employee) query.getSingleResult();
         
     }
     

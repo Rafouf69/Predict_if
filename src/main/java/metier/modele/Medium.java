@@ -24,7 +24,9 @@ public class Medium implements Comparator<Medium> {
     @OneToMany(mappedBy="Medium")
     private List<Consultation> listconsult;
     
+    @Column(nullable = false, unique = true)
     private String denomination;
+   
     
     private String genre;
     
