@@ -83,7 +83,10 @@ public class Medium implements Comparator<Medium> {
         return this.denomination;
     }
     
-    
+    public int getConsultNumber()
+    {
+        return listconsult.size();
+    }
     public List<Consultation> addnewconsult(Consultation myconsulToAdd){
         this.listconsult.add(myconsulToAdd);
         return this.listconsult;

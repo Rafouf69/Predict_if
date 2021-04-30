@@ -343,10 +343,18 @@ public class ServicePredictif {
         finally { // dans tous les cas, on ferme l'entity manager
         JpaUtil.fermerContextePersistance();
         }
-        
+        System.out.println("-----Top 3 des mediums hoisis par les clients-----");
         System.out.println("medium numéro 1 : " + listeMedium.get(0).getDenomination());
         System.out.println("medium numéro 2 : " + listeMedium.get(1).getDenomination());
         System.out.println("medium numéro 3 : " + listeMedium.get(2).getDenomination());
+        System.out.println("----------");
+        
+        //nombre de consultations par medium
+        System.out.println("-----Nombre de consultation par medium-----");
+        for (Medium listeMedium1 : listeMedium) {
+            System.out.println(listeMedium1.getDenomination()+ " a " + listeMedium1.getConsultNumber() + " consultations");
+        }
+        System.out.println("----------");
     }
      public void checkListConsultClient (long idclient) throws Exception{
          Client myclient;
