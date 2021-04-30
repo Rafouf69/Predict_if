@@ -147,6 +147,7 @@ public class Client {
         return this.listconsult;
     }
     
+    @Override
     public String toString()
     {
         String s = "";
