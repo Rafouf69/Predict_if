@@ -79,6 +79,7 @@ public class ServicePredictif {
             Message.envoyerMail("contact@predict.if", Employee.getMail(), "Bienvenue chez PREDICT’IF", "Bonjour "+ Employee.getPrenom()+", nous vous confirmons votre inscription au service PREDICT’IF.Rendez-vous  vite  sur  notre  site  pour  consulter  votre profil  astrologique  et  profiter  des  dons incroyables de nos mediums.");
         }
         catch(Exception ex){
+            JpaUtil.annulerTransaction();
             System.out.println("ERREUR: " + ex);
             Message.envoyerMail("contact@predict.if", Employee.getMail(), "Echec de l’inscription chez PREDICT’IF", "Bonjour "+ Employee.getPrenom()+", votre inscription au service PREDICT’IF a malencontreusement échoué... Merci de recommencer ultérieurement.");
             throw ex;
@@ -101,6 +102,7 @@ public class ServicePredictif {
             
         }
         catch(Exception ex){
+            JpaUtil.annulerTransaction();
             System.out.println("ERREUR: " + ex);
             throw ex;
         }
@@ -122,7 +124,7 @@ public class ServicePredictif {
          }
          
          //Etape 2:Vérifier que le client demandé n'a pas déja une consultation en attente
-         if (myclient.getStatus()!="free"){
+         if (!myclient.getStatus().equals("free")){
              throw new Exception("Sorry, " + myclient.getPrenom() +" "+ myclient.getNom() + " already have a consultation reserved");
          }
          
@@ -169,6 +171,7 @@ public class ServicePredictif {
                  JpaUtil.validerTransaction();
                  
              }catch(Exception Ex){
+                  JpaUtil.annulerTransaction();
                   System.out.println("ERREUR creating consultation: " + Ex);
                  throw Ex;
              }
@@ -243,6 +246,7 @@ public class ServicePredictif {
              myConsultationDAO.beginconsult(myemp.getList().get(myemp.getList().size()-1));
              JpaUtil.validerTransaction();      
          }catch(Exception Ex){
+             JpaUtil.annulerTransaction();
              System.out.println("ERREUR updating consultation: " + Ex);
              throw Ex;
          }finally{
@@ -282,6 +286,7 @@ public class ServicePredictif {
              myConsultationDAO.endconsult(myemp.getList().get(myemp.getList().size()-1), message);
              JpaUtil.validerTransaction();      
          }catch(Exception Ex){
+             JpaUtil.annulerTransaction();
              System.out.println("ERREUR updating consultation: " + Ex);
              throw Ex;
          }finally{
