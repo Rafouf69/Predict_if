@@ -25,7 +25,7 @@ public class Main {
     public static void main(String[] args) {
         JpaUtil.init();
         ControleService Controle= new ControleService();
-        Controle.initdevversion(20,20,20);
+        Controle.initDevVersion(20,20,20);
         
         //Definir quelle version de l'app
         List<Integer> listvalue = Arrays.asList(new Integer[]{0,1,2,3});

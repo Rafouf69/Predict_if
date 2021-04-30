@@ -11,20 +11,13 @@ import dao.ClientDAO;
 import dao.MediumDAO;
 import dao.JpaUtil;
 import java.util.stream.Collectors;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.LinkedHashMap;
-import java.util.Objects;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import metier.modele.*;
 
 
@@ -241,7 +234,7 @@ public class ServicePredictif {
             JpaUtil.creerContextePersistance();
             JpaUtil.ouvrirTransaction();
             ConsultationDAO myConsultationDAO= new ConsultationDAO();
-            myConsultationDAO.endconsult(myEmp.getList().get(myEmp.getList().size()-1), message);
+            myConsultationDAO.endConsult(myEmp.getList().get(myEmp.getList().size()-1), message);
             JpaUtil.validerTransaction();      
         }catch(Exception ex){
             JpaUtil.annulerTransaction();

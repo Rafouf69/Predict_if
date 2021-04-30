@@ -5,7 +5,6 @@
  */
 package dao;
 
-import java.io.IOException;
 import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -16,15 +15,15 @@ import metier.modele.Employee;
  * @author Lucas
  */
 public class EmployeDAO {
-    public Employee creer(Employee employe)
+    public Employee creer(Employee employee)
     {
-        JpaUtil.obtenirContextePersistance().persist(employe);
-        return employe;
+        JpaUtil.obtenirContextePersistance().persist(employee);
+        return employee;
     }
     
-    public Employee modifier(Employee employe)
+    public Employee modifier(Employee employee)
     {
-        return JpaUtil.obtenirContextePersistance().merge(employe);
+        return JpaUtil.obtenirContextePersistance().merge(employee);
     }
     
     public List<Employee> chercherEmployeDispo(String genre) throws Exception
@@ -35,6 +34,7 @@ public class EmployeDAO {
         query.setParameter("ungenre", genre);
         return query.getResultList();
     }
+    
     public Employee chercherEmployeeparID(Long Id) {
         return JpaUtil.obtenirContextePersistance().find(Employee.class, Id);
         

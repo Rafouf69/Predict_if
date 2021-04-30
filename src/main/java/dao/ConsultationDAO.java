@@ -38,6 +38,12 @@ public class ConsultationDAO {
         
         return myConsult;
     }
+    
+    public Consultation modifier(Consultation consultation)
+    {
+        return JpaUtil.obtenirContextePersistance().merge(consultation);
+    }
+    
     public Consultation beginconsult(Consultation myConsult) {
         
         //obtenir les élements important de la consultation (clefs étrangères) 
@@ -62,7 +68,7 @@ public class ConsultationDAO {
         
         return myConsult;
     }
-    public Consultation endconsult(Consultation myConsult, String Message) {
+    public Consultation endConsult(Consultation myConsult, String Message) {
         
         //obtenir les élements important de la consultation (clefs étrangères) 
         Client consultingClient= myConsult.getClient();

@@ -5,7 +5,6 @@
  */
 package ihm.console;
 
-import dao.EmployeDAO;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -32,9 +31,9 @@ public class ControleService {
         String prenom= Saisie.lireChaine("Prenom du client");
         String mail= Saisie.lireChaine("Mail du client :");
         String motDePasse= Saisie.lireChaine("MotDePasse du client");
-        String phonenumber=Saisie.lireChaine("Numéro de téléphone du client: ");
+        String phoneNumber=Saisie.lireChaine("Numéro de téléphone du client: ");
         Date birthdate = new Date();
-        Client newClient= new Client(nom,prenom,mail, birthdate,motDePasse, phonenumber);
+        Client newClient= new Client(nom,prenom,mail, birthdate,motDePasse, phoneNumber);
         return newClient;
          
     }
@@ -45,8 +44,8 @@ public class ControleService {
         String mail= Saisie.lireChaine("Mail de l'employé :");
         String genre= Saisie.lireChaine("Genre de l'employé (H/F) :");
         String motDePasse= Saisie.lireChaine("MotDePasse de l'employé: ");
-        String phonenumber=Saisie.lireChaine("Numéro de téléphonede l'employée: ");
-        Employee myemp= new Employee(nom,prenom,mail,genre,motDePasse, phonenumber);
+        String phoneNumber=Saisie.lireChaine("Numéro de téléphonede l'employée: ");
+        Employee myemp= new Employee(nom,prenom,mail,genre,motDePasse, phoneNumber);
         return myemp;
          
     }
@@ -60,7 +59,7 @@ public class ControleService {
         while (i!=1 && i!=2 && i!=3){
             i= Saisie.lireInteger("Type de medium: Cartomancien(1)/Spirite(2)/Astrologue(3)");
         }
-        if (i==1){ //Create Catromancien
+        if (i==1){ //Create Cartomancien
             newMedium = new Medium(denomination,genre,presentation);
         }
         else if (i==2){ //Create Spirite
@@ -76,25 +75,25 @@ public class ControleService {
          
     }
     public Client testerInscriptionClient() throws Exception{
-        ServicePredictif ServiceClient = new ServicePredictif();
+        ServicePredictif serviceClient = new ServicePredictif();
         Client newClient= ImportingClientIHMClient();
         Client newClientBD=null;
         try{
-            newClientBD= ServiceClient.creerClient(newClient);
+            newClientBD= serviceClient.creerClient(newClient);
             System.out.println("> Succès inscription");
             System.out.println("-> Client: id= " + newClientBD.getId()+ " ;nom= "+ newClientBD.getNom()+" ;mail= "+ newClientBD.getMail()+" ;motDePasse= "+newClientBD.getMotDePasse());
-        }catch(Exception Ex){
+        }catch(Exception ex){
              System.out.println("> Echec inscription employee: Sorry boy");
-             throw Ex;
+             throw ex;
         } 
         return newClientBD;
     }
     
     public void testerInscriptionEmployee(){
-        ServicePredictif Servicepred = new ServicePredictif();
+        ServicePredictif servicePred = new ServicePredictif();
         Employee newEmployee= ImportingClientIHMEmployee();
         try{ 
-            Employee newEmptBD= Servicepred.creerEmployee(newEmployee);
+            Employee newEmptBD= servicePred.creerEmployee(newEmployee);
             System.out.println("-> Succès inscription");
             System.out.println("-> Bienvenue à l'Employée: id= " + newEmptBD.getId()+ " ;nom= "+ newEmptBD.getNom()+" ;mail= "+ newEmptBD.getMail()+" ;motDePasse= "+newEmptBD.getMotDePasse());
         }catch(Exception ex){
@@ -103,17 +102,17 @@ public class ControleService {
     }
     
     public void testerInscriptionMedium(){
-      ServicePredictif Servicepred = new ServicePredictif();
+      ServicePredictif servicePredictif = new ServicePredictif();
       Medium newMedium= ImportingClientIHMMedium();
       try{ 
-            Medium newMediumBD= Servicepred.creerMedium(newMedium);
+            Medium newMediumBD= servicePredictif.creerMedium(newMedium);
             System.out.println("-> Succès inscription");
             System.out.println("-> Bienvenue au Medium: id= " + newMedium.getId()+ " ;denomination= "+ newMedium.getDenomination()+" ;mail= ");
         }catch(Exception ex){
          System.out.println("> Echec inscription: Sorry boy");
         }
      }
-    public void initdevversion(int nbclient, int nbemployee, int nbmedium){
+    public void initDevVersion(int nbclient, int nbemployee, int nbmedium){
     
         ServicePredictif serviceClient = new ServicePredictif();
         //initialize Client
@@ -122,8 +121,8 @@ public class ControleService {
             String prenom= "PrenomClient"+i;
             String mail="MailClient"+i+"@gmail.com";
             String mdp = "mdpClient"+i;
-            String phonenumber="060000000"+i;
-            Client newClient= new Client(nom,prenom,mail,new Date(),mdp,phonenumber);
+            String phoneNumber="060000000"+i;
+            Client newClient= new Client(nom,prenom,mail,new Date(),mdp,phoneNumber);
             try{
             serviceClient.creerClient(newClient);
             }catch (Exception Ex){
@@ -138,10 +137,10 @@ public class ControleService {
             String prenom= "PrenomEmployee"+i;
             String mail="MailEmployee"+i+"@gmail.com";
             String mdp = "mdpEmployee"+i;
-            String phonenumber="061100000"+i;
+            String phoneNumber="061100000"+i;
             
             String genre= (i%2==1?"H":"F");
-            Employee newEmployee= new Employee(nom,prenom,mail,genre,mdp,phonenumber);
+            Employee newEmployee= new Employee(nom,prenom,mail,genre,mdp,phoneNumber);
             try{
             serviceClient.creerEmployee(newEmployee);
             }catch (Exception Ex){
@@ -194,10 +193,10 @@ public class ControleService {
     public Client testerAuthentificationClient() throws Exception{
         String mail= Saisie.lireChaine("Mail du client :");
         String mdp= Saisie.lireChaine("Mdp du client");
-        ServicePredictif ServiceClient = new ServicePredictif();
+        ServicePredictif service = new ServicePredictif();
         Client clientBD;
         try{
-            clientBD= ServiceClient.AuthentifierClient(mail,mdp);  
+            clientBD= service.AuthentifierClient(mail,mdp);  
         }catch(Exception err){
             System.out.println("> Authentification Failed : " + err.getMessage());
             throw err;
@@ -208,10 +207,10 @@ public class ControleService {
     public Employee testerAuthentificationEmployee() throws Exception{
         String mail= Saisie.lireChaine("Mail de l'employe :");
         String mdp= Saisie.lireChaine("Mdp de l'employe");
-        ServicePredictif ServiceClient = new ServicePredictif();
+        ServicePredictif service = new ServicePredictif();
         Employee myEmp;
         try{
-            myEmp= ServiceClient.AuthentifierEmployee(mail,mdp);  
+            myEmp= service.AuthentifierEmployee(mail,mdp);  
         }catch(Exception err){
             System.out.println("> Authentification Failed : " + err.getMessage());
             throw err;
@@ -237,8 +236,8 @@ public class ControleService {
 //         
 //    }
     public void testerListeClients() {
-        ServicePredictif ServiceClient = new ServicePredictif();
-        List <Client> clientsBD = ServiceClient.ListeClients() ;
+        ServicePredictif service = new ServicePredictif();
+        List <Client> clientsBD = service.ListeClients() ;
         if (clientsBD==null){
              System.out.println(">Ooops. An error occurred");
         }
@@ -249,28 +248,28 @@ public class ControleService {
         
          
     }
-    public void testerdemandesconsult(Client myClient) {
-       ServicePredictif Servicepredictif = new ServicePredictif();
+    public void testerDemandeConsult(Client myClient) {
+       ServicePredictif service = new ServicePredictif();
       
-       long idmedium= Saisie.lireInteger("Id du medium :");
+       long idMedium= Saisie.lireInteger("Id du medium :");
        //enlever les mdp
        try {
-            Servicepredictif.DemandeDeConsultation(myClient,idmedium, new Date());
+            service.DemandeDeConsultation(myClient,idMedium, new Date());
        }catch(Exception Ex){
             System.out.println(Ex);
        }
        
        try {
-           Servicepredictif.checkListConsultClient(myClient.getId());
+           service.checkListConsultClient(myClient.getId());
        }catch(Exception ex)
        {
            System.out.println("Fail : " + ex.getMessage());
        }
     }
-    public void testercheckwork(Employee myEmp) {
-       ServicePredictif Servicepredictif = new ServicePredictif();
+    public void testerCheckWork(Employee myEmp) {
+       ServicePredictif service = new ServicePredictif();
        try {
-            String Result= Servicepredictif.checkWork(myEmp);
+            String Result= service.checkWork(myEmp);
             System.out.println(Result);
        }catch(Exception Ex){
             System.out.println(Ex);
@@ -278,30 +277,30 @@ public class ControleService {
        
     }
     public void testerEmployeeInfos(Employee myEmp) {
-       ServicePredictif Servicepredictif = new ServicePredictif();
+       ServicePredictif service = new ServicePredictif();
        try {
-            String Result= Servicepredictif.EmployeeStats(myEmp);
+            String Result= service.EmployeeStats(myEmp);
             System.out.println(Result);
        }catch(Exception Ex){
             System.out.println(Ex);
        }
        
     }
-    public void testerbeginconsult(Employee myEmp) {
-       ServicePredictif Servicepredictif = new ServicePredictif();
+    public void testerBeginConsult(Employee myEmp) {
+       ServicePredictif service = new ServicePredictif();
        try {
-            String Result= Servicepredictif.BegginingConsult(myEmp);
+            String Result= service.BegginingConsult(myEmp);
             System.out.println(Result);
        }catch(Exception Ex){
             System.out.println(Ex);
        }
        
     }
-    public void testerendconsult(Employee myEmp) {
-       ServicePredictif Servicepredictif = new ServicePredictif();
+    public void testeRendConsult(Employee myEmp) {
+       ServicePredictif service = new ServicePredictif();
        String Comment= Saisie.lireChaine("Commentaire : ");
        try {
-            String Result= Servicepredictif.EndingConsult(myEmp, Comment);
+            String Result= service.EndingConsult(myEmp, Comment);
             System.out.println(Result);
        }catch(Exception Ex){
             System.out.println(Ex);
@@ -313,11 +312,11 @@ public class ControleService {
        int niveauSante= Saisie.lireInteger("Niveau de Santé : ",listvalue);
        int niveauTravail= Saisie.lireInteger("Niveau de travail : ",listvalue);
        try {
-            ServicePredictif Servicepredictif = new ServicePredictif();
-            List<String> Result= Servicepredictif.AskingHelp(myEmp, niveauAmour, niveauSante, niveauTravail);
-            System.out.println(Result);
-       }catch(Exception Ex){
-            System.out.println(Ex);
+            ServicePredictif service = new ServicePredictif();
+            List<String> result= service.AskingHelp(myEmp, niveauAmour, niveauSante, niveauTravail);
+            System.out.println(result);
+       }catch(Exception ex){
+            System.out.println(ex);
        }
     
     }
@@ -328,8 +327,8 @@ public class ControleService {
         try {
             ServicePredictif servicePredictif = new ServicePredictif();
             array = servicePredictif.companyStats();
-        }catch(Exception Ex){
-            System.out.println(Ex);
+        }catch(Exception ex){
+            System.out.println(ex);
         }
         
         List<Medium> listeMedium = array.get(0);
@@ -370,8 +369,8 @@ public class ControleService {
         try {
             ServicePredictif servicePredictif = new ServicePredictif();
             listeMedium = servicePredictif.getListAllMedium();
-        }catch(Exception Ex){
-            System.out.println(Ex);
+        }catch(Exception ex){
+            System.out.println(ex);
         }
         
         System.out.println("Les medium disponibles sont les suivants : ");
@@ -412,13 +411,13 @@ public class ControleService {
             int integ= Saisie.lireInteger("Choisir un chiffre entre 0 et 6 : ");
         switch (integ) {
             case 1:
-                testercheckwork(myEmp);
+                testerCheckWork(myEmp);
                 break;
             case 2:
-                testerbeginconsult(myEmp);
+                testerBeginConsult(myEmp);
                 break;
             case 3:
-                testerendconsult(myEmp);
+                testeRendConsult(myEmp);
                 break;
             case 4:
                 testerAskingHelp(myEmp);
@@ -455,7 +454,7 @@ public class ControleService {
             int integ= Saisie.lireInteger("Choisir un chiffre entre 0 et 3 : ");
         switch (integ) {
             case 1:
-                testerdemandesconsult(myClient);
+                testerDemandeConsult(myClient);
                 break;     
             case 2:
                 testerGetListAllMedium();

@@ -5,7 +5,6 @@
  */
 package dao;
 
-import java.io.IOException;
 import java.util.List;
 import javax.persistence.TypedQuery;
 import metier.modele.Medium;
@@ -20,6 +19,7 @@ public class MediumDAO {
         JpaUtil.obtenirContextePersistance().persist(newMedium);
         return newMedium;
     }
+    
     public Medium chercherMediumparID(Long Id) {
         return JpaUtil.obtenirContextePersistance().find(Medium.class, Id);   
     }
