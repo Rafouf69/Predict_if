@@ -33,20 +33,13 @@ public class ServicePredictif {
         ClientDAO monClientDAO= new ClientDAO();
         Client newClient;
         
-        
-        ArrayList<String> listeAstrale;
         AstroNetApi astroNetApi = new AstroNetApi();
         
-        try {
-            listeAstrale = (ArrayList<String>) astroNetApi.getProfil(client.getPrenom(), client.getDate());
-            client.setZodiaque(listeAstrale.get(0));
-            client.setSigneChinois(listeAstrale.get(1));
-            client.setCouleur(listeAstrale.get(2));
-            client.setAnimalTotem(listeAstrale.get(3));
-        } catch (IOException ex) {
-            /*Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);*/
-            throw ex;
-        }
+        ArrayList<String>  listeAstrale = (ArrayList<String>) astroNetApi.getProfil(client.getPrenom(), client.getDate());
+        client.setZodiaque(listeAstrale.get(0));
+        client.setSigneChinois(listeAstrale.get(1));
+        client.setCouleur(listeAstrale.get(2));
+        client.setAnimalTotem(listeAstrale.get(3));
         
         try{
             JpaUtil.creerContextePersistance();
@@ -66,20 +59,20 @@ public class ServicePredictif {
         }     
         return newClient;
     }
-    public Employee creerEmployee(Employee Employee) throws Exception{
+    public Employee creerEmployee(Employee employee) throws Exception{
         EmployeDAO monEmpDAO= new EmployeDAO();
         Employee newEmp;
         
         try{
             JpaUtil.creerContextePersistance();
             JpaUtil.ouvrirTransaction();
-            newEmp= monEmpDAO.creer(Employee);
+            newEmp= monEmpDAO.creer(employee);
             JpaUtil.validerTransaction();
-            Message.envoyerMail("contact@predict.if", Employee.getMail(), "Bienvenue chez PREDICT’IF", "Bonjour "+ Employee.getPrenom()+", nous vous confirmons votre inscription au service PREDICT’IF.Rendez-vous  vite  sur  notre  site  pour  consulter  votre profil  astrologique  et  profiter  des  dons incroyables de nos mediums.");
+            Message.envoyerMail("contact@predict.if", employee.getMail(), "Bienvenue chez PREDICT’IF", "Bonjour "+ employee.getPrenom()+", nous vous confirmons votre inscription au service PREDICT’IF.Rendez-vous  vite  sur  notre  site  pour  consulter  votre profil  astrologique  et  profiter  des  dons incroyables de nos mediums.");
         }
         catch(Exception ex){
             JpaUtil.annulerTransaction();
-            Message.envoyerMail("contact@predict.if", Employee.getMail(), "Echec de l’inscription chez PREDICT’IF", "Bonjour "+ Employee.getPrenom()+", votre inscription au service PREDICT’IF a malencontreusement échoué... Merci de recommencer ultérieurement.");
+            Message.envoyerMail("contact@predict.if", employee.getMail(), "Echec de l’inscription chez PREDICT’IF", "Bonjour "+ employee.getPrenom()+", votre inscription au service PREDICT’IF a malencontreusement échoué... Merci de recommencer ultérieurement.");
             throw ex;
         }
         
@@ -88,14 +81,14 @@ public class ServicePredictif {
         }     
         return newEmp;
     }
-    public Medium creerMedium(Medium newmedium) throws Exception{
+    public Medium creerMedium(Medium newMedium) throws Exception{
         MediumDAO monMedDAO= new MediumDAO();
-        Medium newmed;
+        Medium newMed;
         
         try{
             JpaUtil.creerContextePersistance();
             JpaUtil.ouvrirTransaction();
-            newmed= monMedDAO.creer(newmedium);
+            newMed = monMedDAO.creer(newMedium);
             JpaUtil.validerTransaction();
             
         }
@@ -107,33 +100,26 @@ public class ServicePredictif {
         finally { // dans tous les cas, on ferme l'entity manager
         JpaUtil.fermerContextePersistance();
         }     
-        return newmed;
+        return newMed;
     }
-    //change en d majuscule, long -> Long => 0 -> null, enlève le mdp => 
-     public Consultation DemandedeConsultation(long idclient,String mdp,long idmedium, Date date) throws Exception{
+
+    public Consultation DemandeDeConsultation(Client myClient,Long idmedium, Date date) throws Exception{
+           
+        //Etape 1: Retrouver le client demandé
+         
+        //Etape 2:Vérifier que le client demandé n'a pas déja une consultation en attente
+        if (!myClient.getStatus().equals("free")){
+            throw new Exception("Sorry, " + myClient.getPrenom() +" "+ myClient.getNom() + " already have a consultation reserved");
+        }
         
-       
-         //Etape 1: Retrouver le client demandé
-         Client myclient;
-         try {
-               myclient=checkClientIdentity(idclient,mdp);
-         }catch(Exception ex){
-             throw ex;
-         }
          
-         //Etape 2:Vérifier que le client demandé n'a pas déja une consultation en attente
-         if (!myclient.getStatus().equals("free")){
-             throw new Exception("Sorry, " + myclient.getPrenom() +" "+ myclient.getNom() + " already have a consultation reserved");
-         }
-         
-         
-         //Etape 3: Retrouver le medium demandée
-         Medium mymedium;
-         try {
-             mymedium= trouverMediumparId(idmedium);
-         }catch(Exception ex){
-             throw ex;
-         }
+        //Etape 3: Retrouver le medium demandée
+        Medium mymedium;
+        try {
+            mymedium= trouverMediumParId(idmedium);
+        }catch(Exception ex){
+            throw ex;
+        }
          
          
          //Etape 4: Trouver la liste des employée pouvant executer le role
@@ -160,16 +146,18 @@ public class ServicePredictif {
                  //A faire: Algorithm pour trouver l'employee qui est le moins prix et pas le premier de la liste pour essayer de rééquilibrer le nombre d'apparition des demployee
                  Employee employeChose = Collections.min(MatchingEmployees);
                  
-                 myConsult= new Consultation(employeChose,date,myclient, mymedium);
+                 
+                 //changer etat employee dans la classe de service 
+                 myConsult= new Consultation(employeChose,date,myClient, mymedium);
                  JpaUtil.creerContextePersistance();
                  JpaUtil.ouvrirTransaction();
                  ConsultationDAO myConsultationDAO= new ConsultationDAO();
                  myConsultationDAO.creer(myConsult);
                  JpaUtil.validerTransaction();
                  
-            }catch(Exception Ex){
+            }catch(Exception ex){
                 JpaUtil.annulerTransaction();
-                throw Ex;
+                throw ex;
             }
             finally{
                 JpaUtil.fermerContextePersistance();
@@ -182,168 +170,117 @@ public class ServicePredictif {
         return myConsult;
      
      }
-     public String checkWork(long EmpId, String mdp) throws Exception{
+    public String checkWork(Employee myEmp) throws Exception{
          
-         String returningString=null;
-
-         Employee myemp=null;
-         try {
-             myemp=checkEmpIdentity(EmpId,mdp);
-         }catch(Exception Ex){
-             throw Ex;
-         }
-         
-         //checkstatus
-         if (myemp.getStatus().equals("free")){
-             returningString="This is great: You have no work to do";
-         }
-         else if (myemp.getStatus().equals("consulting")){
-             returningString="You cannot use this feature while you're with a client. Sorry. PLease end your consutation";
-         }
-         else{
-             //get Lastelementof the list (should be a consultation waiting)
-             Consultation waitingconsult= myemp.getList().get(myemp.getList().size()-1);
-             
-             //This should never happen with our logic. Just in case.
-             if (!"Waiting".equals(waitingconsult.getStatus())){
-                 throw new Exception("Hmmm An error Occurred. PLease contact Predictif");
-             }
-             returningString="It seems that you have one client waiting for you. Please begin the consultation n° " +waitingconsult.getId() +" with the client n° "+ waitingconsult.getClient().getId()+". You shoul incarn Medium "+waitingconsult.getMedium().getDenomination();
-         }
-         return returningString;
-     }
-     public String BegginingConsult(long EmpId, String mdp) throws Exception{
-         
-         String returningString=null;
-         
-         //Find Employeee concern
-         Employee myemp=null;
-         try {
-             myemp=checkEmpIdentity(EmpId,mdp);
-         }catch(Exception Ex){
-             throw Ex;
-         }
-         //check employee is phoning
-         if (!myemp.getStatus().equals("Waiting")){
-             throw new Exception("You cannot begin a conversation because they are not conversation waitings for you");
-         }
-         //should never happen. just incase.
-         if (!myemp.getList().get(myemp.getList().size()-1).getStatus().equals("Waiting")){
-          throw new Exception("Hmmm An error occured. please call us.");
-         }
-         
-          
-         try{
-             JpaUtil.creerContextePersistance();
-             JpaUtil.ouvrirTransaction();
-             ConsultationDAO myConsultationDAO= new ConsultationDAO();
-             myConsultationDAO.beginconsult(myemp.getList().get(myemp.getList().size()-1));
-             JpaUtil.validerTransaction();      
-         }catch(Exception Ex){
-             JpaUtil.annulerTransaction();
-             throw Ex;
-         }finally{
-             JpaUtil.fermerContextePersistance();
-         }
-         
-         
-         returningString="Conversation started!";
-
-         return returningString;
-     }
-     public String EndingConsult(long EmpId, String mdp, String message) throws Exception{
-         
-         String returningString=null;
-         
-         //Find Employeee concern
-        Employee myemp=null;
-         try {
-             myemp=checkEmpIdentity(EmpId,mdp);
-         }catch(Exception Ex){
-             throw Ex;
-         }
-         
-         //check employee is phoning
-         if (!myemp.getStatus().equals("Conversing")){
-             throw new Exception("You cannot en a conversation if you are not consultating");
-         }
-         //should never happen. just incase.
-         if (!myemp.getList().get(myemp.getList().size()-1).getStatus().equals("Running")){
-          throw new Exception("Hmmm An error occured. please call us.");
-         }
-          
-         try{
-             JpaUtil.creerContextePersistance();
-             JpaUtil.ouvrirTransaction();
-             ConsultationDAO myConsultationDAO= new ConsultationDAO();
-             myConsultationDAO.endconsult(myemp.getList().get(myemp.getList().size()-1), message);
-             JpaUtil.validerTransaction();      
-         }catch(Exception Ex){
-             JpaUtil.annulerTransaction();
-             throw Ex;
-         }finally{
-             JpaUtil.fermerContextePersistance();
-         }
-         
-         
-         returningString="Conversation ended!";
-
-         return returningString;
-     }
-     public List<String> AskingHelp(long Idemp, String mdp, int Amour, int Sante, int Travail) throws Exception{
-         List<String> result=null;
-         
-         //Find Employeee concern
-         Employee myemp=null;
-         try {
-             myemp=checkEmpIdentity(Idemp,mdp);
-         }catch(Exception Ex){
-             throw Ex;
-         }
-         //check currently conversing
-         if (!"Conversing".equals(myemp.getStatus())){
-            throw new Exception("This feature can only be called when conversing. Sorry.");
-         }
-         try{
-             AstroNetApi astroNetApi = new AstroNetApi();
-             result=astroNetApi.getPredictions(myemp.getList().get(myemp.getList().size()-1).getClient().getCouleur(), myemp.getList().get(myemp.getList().size()-1).getClient().getAnimalTotem(), Amour, Sante, Travail);
-             
-         }catch(Exception Ex){
-            throw Ex;
-         }
-         return result;
-         
-     }
-     
-    public ArrayList<List> companyStats(long EmpId, String mdp) throws Exception
-    {
-        try {
-            checkEmpIdentity(EmpId,mdp);
-        }catch(Exception Ex){
-            throw Ex;
+        String returningString;
+        
+        //checkstatus
+        if (myEmp.getStatus().equals("free")){
+            returningString="This is great: You have no work to do";
         }
+        else if (myEmp.getStatus().equals("consulting")){
+            returningString="You cannot use this feature while you're with a client. Sorry. PLease end your consutation";
+        }
+        else{
+            //get Lastelementof the list (should be a consultation waiting)
+            Consultation waitingconsult= myEmp.getList().get(myEmp.getList().size()-1);
+            
+            //This should never happen with our logic. Just in case.
+            if (!"Waiting".equals(waitingconsult.getStatus())){
+                throw new Exception("Hmmm An error Occurred. PLease contact Predictif");
+            }
+            returningString="It seems that you have one client waiting for you. Please begin the consultation n° " +waitingconsult.getId() +" with the client n° "+ waitingconsult.getClient().getId()+". You shoul incarn Medium "+waitingconsult.getMedium().getDenomination();
+        }
+        return returningString;
+    }
+    public String BegginingConsult(Employee myEmp) throws Exception{
         
-        //top 3 des mediums choisis par les clients
-        MediumDAO monMediumDAO= new MediumDAO();
-        List<Medium> listeMedium=new ArrayList<>();
-        
+        //check employee is phoning
+        if (!myEmp.getStatus().equals("Waiting")){
+            throw new Exception("You cannot begin a conversation because they are not conversation waitings for you");
+        }
+        //should never happen. just incase.
+        if (!myEmp.getList().get(myEmp.getList().size()-1).getStatus().equals("Waiting")){
+            throw new Exception("Hmmm An error occured. please call us.");
+        }   
+          
         try{
             JpaUtil.creerContextePersistance();
-            listeMedium = monMediumDAO.chercherTous();
-            Collections.sort(listeMedium, new Medium());
-        }
-        catch(Exception ex){
-            throw ex;
-        }
-        finally { // dans tous les cas, on ferme l'entity manager
+            JpaUtil.ouvrirTransaction();
+            ConsultationDAO myConsultationDAO= new ConsultationDAO();
+            myConsultationDAO.beginconsult(myEmp.getList().get(myEmp.getList().size()-1));
+            JpaUtil.validerTransaction();      
+        }catch(Exception Ex){
+            JpaUtil.annulerTransaction();
+            throw Ex;
+        }finally{
             JpaUtil.fermerContextePersistance();
         }
+
+        String returningString="Conversation started!";
+
+        return returningString;
+     }
+    public String EndingConsult(Employee myEmp, String message) throws Exception{
+        
+        //check employee is phoning
+        if (!myEmp.getStatus().equals("Conversing")){
+            throw new Exception("You cannot en a conversation if you are not consultating");
+        }
+        //should never happen. just incase.
+        if (!myEmp.getList().get(myEmp.getList().size()-1).getStatus().equals("Running")){
+            throw new Exception("Hmmm An error occured. please call us.");
+        }
+         
+        try{
+            JpaUtil.creerContextePersistance();
+            JpaUtil.ouvrirTransaction();
+            ConsultationDAO myConsultationDAO= new ConsultationDAO();
+            myConsultationDAO.endconsult(myEmp.getList().get(myEmp.getList().size()-1), message);
+            JpaUtil.validerTransaction();      
+        }catch(Exception ex){
+            JpaUtil.annulerTransaction();
+            throw ex;
+        }finally{
+            JpaUtil.fermerContextePersistance();
+        }
+         
+         
+        String returningString="Conversation ended!";
+
+        return returningString;
+     }
+     
+    public List<String> AskingHelp(Employee myEmp, int amour, int sante, int travail) throws Exception{
+        List<String> result=null;
+        
+        //check currently conversing
+        if (!"Conversing".equals(myEmp.getStatus())){
+           throw new Exception("This feature can only be called when conversing. Sorry.");
+        }
+        try{
+            AstroNetApi astroNetApi = new AstroNetApi();
+            result=astroNetApi.getPredictions(myEmp.getList().get(myEmp.getList().size()-1).getClient().getCouleur(), myEmp.getList().get(myEmp.getList().size()-1).getClient().getAnimalTotem(), amour, sante, travail);       
+        }catch(Exception ex){
+           throw ex;
+        }
+        return result;
+         
+    }
+     
+    public ArrayList<List> companyStats() throws Exception
+    {    
+        MediumDAO monMediumDAO= new MediumDAO();
+        List<Medium> listeMedium=new ArrayList<>();
         
         EmployeDAO monEmployeDAO= new EmployeDAO();
         List<Employee> listeEmployee= new ArrayList<>();
         
         try{
             JpaUtil.creerContextePersistance();
+            listeMedium = monMediumDAO.chercherTous();
+            
+            Collections.sort(listeMedium, new Medium());
             listeEmployee = monEmployeDAO.chercherTous();
         }
         catch(Exception ex){
@@ -361,29 +298,23 @@ public class ServicePredictif {
         return array;
     }
     
-    public void clientInfos(long clientId, String mdp) throws Exception
+    public void ClientInfos(Client myClient)
     {
-        Client myClient;
-        try {
-            myClient = trouverClientparId(clientId);
-        }
-        catch(Exception ex) {
-            throw ex;
-        }
         System.out.println(myClient);
     }
     
-     public void checkListConsultClient (long idclient) throws Exception{
-         Client myclient;
-         try {
-             myclient= trouverClientparId(idclient);
-         }catch(Exception ex){
-             throw ex;
-         }
-         List<Consultation> myconsultList = myclient.getList();
-         myconsultList.stream().forEach((consult)-> System.out.println(consult));
+    public void checkListConsultClient (Long idClient) throws Exception{
+        Client myClient;
+        try {
+            myClient= trouverClientparId(idClient);
+        }catch(Exception ex){
+            throw ex;
+        }
+        List<Consultation> myConsultList = myClient.getList();
+        myConsultList.stream().forEach((consult)-> System.out.println(consult));
          
-     }
+    }
+    
      private Client trouverClientparId(Long id) throws Exception{
         ClientDAO monClientDAO= new ClientDAO();
         Client returningClient=null;
@@ -404,10 +335,10 @@ public class ServicePredictif {
      }
      private Employee trouverEmpparId(Long id) throws Exception{
         EmployeDAO monEmpDAO= new EmployeDAO();
-        Employee emptoreturn= null;
+        Employee empToReturn= null;
         try{
             JpaUtil.creerContextePersistance();
-            emptoreturn= monEmpDAO.chercherEmployeeparID(id);
+            empToReturn= monEmpDAO.chercherEmployeeparID(id);
         }
         catch(Exception ex){
             throw ex;
@@ -415,18 +346,18 @@ public class ServicePredictif {
         finally { // dans tous les cas, on ferme l'entity manager
         JpaUtil.fermerContextePersistance();
         }   
-        if (emptoreturn==null){
+        if (empToReturn==null){
             throw new Exception("Sorry that id does not match with any EmployeeId");
         }
-        return emptoreturn;
+        return empToReturn;
      }
      
-     private Medium trouverMediumparId(Long id) throws Exception{
+     private Medium trouverMediumParId(Long id) throws Exception{
         MediumDAO monMediumDAO= new MediumDAO();
-        Medium mediumtoreturn=null;
+        Medium mediumToReturn=null;
         try{
             JpaUtil.creerContextePersistance();
-            mediumtoreturn= monMediumDAO.chercherMediumparID(id);
+            mediumToReturn= monMediumDAO.chercherMediumparID(id);
         }
         catch(Exception ex){
             throw ex;
@@ -434,18 +365,18 @@ public class ServicePredictif {
         finally { // dans tous les cas, on ferme l'entity manager
         JpaUtil.fermerContextePersistance();
         }
-        if (mediumtoreturn==null){
+        if (mediumToReturn==null){
             throw new Exception("Sorry that id does not match with any MediumId");
         }
-        return mediumtoreturn;
+        return mediumToReturn;
     }
      
      private Consultation trouverConsultparId(Long id) throws Exception{
         ConsultationDAO monConsultDAO= new ConsultationDAO();
-        Consultation consulttorretrun=null;
+        Consultation consultToReturn=null;
         try{
             JpaUtil.creerContextePersistance();
-            consulttorretrun= monConsultDAO.chercherConsultparID(id);
+            consultToReturn= monConsultDAO.chercherConsultparID(id);
         }
         catch(Exception ex){
             throw ex;
@@ -453,19 +384,19 @@ public class ServicePredictif {
         finally { // dans tous les cas, on ferme l'entity manager
         JpaUtil.fermerContextePersistance();
         }
-        if (consulttorretrun==null){
+        if (consultToReturn==null){
             throw new Exception("Sorry that id does not match with any ConsultationId");
         }
-        return consulttorretrun;
+        return consultToReturn;
     }
      
       public Client AuthentifierClient(String mail, String mdp) throws Exception {
           
         ClientDAO monClientDAO= new ClientDAO();
-        Client monclient;
+        Client monClient;
         try{
             JpaUtil.creerContextePersistance();
-            monclient= monClientDAO.authentifierClient(mail) ;
+            monClient= monClientDAO.authentifierClient(mail) ;
         }
         catch(Exception ex){
             throw ex;
@@ -475,15 +406,15 @@ public class ServicePredictif {
             JpaUtil.fermerContextePersistance();
         }
         //Cas exceptionnele si client null
-        if (monclient==null){
+        if (monClient==null){
             throw new Exception("Aucun client n'est incrit avec cet email. Veuillez vérifier vos credential");
         }
         //verification de mot de passe
-        if (!monclient.getMotDePasse().equals(mdp)){
+        if (!monClient.getMotDePasse().equals(mdp)){
              throw new Exception("Mauvais mot de passe. Veuillez vérifier vos credential");
         }
         
-        return monclient;
+        return monClient;
         
         
     }

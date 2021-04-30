@@ -255,7 +255,7 @@ public class ControleService {
        long idmedium= Saisie.lireInteger("Id du medium :");
        //enlever les mdp
        try {
-            Servicepredictif.DemandedeConsultation(myClient.getId(),myClient.getMotDePasse(),idmedium, new Date());
+            Servicepredictif.DemandeDeConsultation(myClient,idmedium, new Date());
        }catch(Exception Ex){
             System.out.println(Ex);
        }
@@ -270,7 +270,7 @@ public class ControleService {
     public void testercheckwork(Employee myEmp) {
        ServicePredictif Servicepredictif = new ServicePredictif();
        try {
-            String Result= Servicepredictif.checkWork(myEmp.getId(), myEmp.getMotDePasse());
+            String Result= Servicepredictif.checkWork(myEmp);
             System.out.println(Result);
        }catch(Exception Ex){
             System.out.println(Ex);
@@ -280,7 +280,7 @@ public class ControleService {
     public void testerbeginconsult(Employee myEmp) {
        ServicePredictif Servicepredictif = new ServicePredictif();
        try {
-            String Result= Servicepredictif.BegginingConsult(myEmp.getId(),myEmp.getMotDePasse());
+            String Result= Servicepredictif.BegginingConsult(myEmp);
             System.out.println(Result);
        }catch(Exception Ex){
             System.out.println(Ex);
@@ -291,7 +291,7 @@ public class ControleService {
        ServicePredictif Servicepredictif = new ServicePredictif();
        String Comment= Saisie.lireChaine("Commentaire : ");
        try {
-            String Result= Servicepredictif.EndingConsult(myEmp.getId(), myEmp.getMotDePasse(), Comment);
+            String Result= Servicepredictif.EndingConsult(myEmp, Comment);
             System.out.println(Result);
        }catch(Exception Ex){
             System.out.println(Ex);
@@ -304,7 +304,7 @@ public class ControleService {
        int niveauTravail= Saisie.lireInteger("Niveau de travail : ",listvalue);
        try {
             ServicePredictif Servicepredictif = new ServicePredictif();
-            List<String> Result= Servicepredictif.AskingHelp(myEmp.getId(), myEmp.getMotDePasse(), niveauAmour, niveauSante, niveauTravail);
+            List<String> Result= Servicepredictif.AskingHelp(myEmp, niveauAmour, niveauSante, niveauTravail);
             System.out.println(Result);
        }catch(Exception Ex){
             System.out.println(Ex);
@@ -312,12 +312,12 @@ public class ControleService {
     
     }
     
-    public void testerCompanyStats(Employee myEmp)
+    public void testerCompanyStats()
     {
         ArrayList<List> array = new ArrayList<>();
         try {
             ServicePredictif servicePredictif = new ServicePredictif();
-            array = servicePredictif.companyStats(myEmp.getId(),myEmp.getMotDePasse());
+            array = servicePredictif.companyStats();
         }catch(Exception Ex){
             System.out.println(Ex);
         }
@@ -373,15 +373,8 @@ public class ControleService {
     
     public void testerClientInfos(Client myClient)
     {
-        try
-        {
-            ServicePredictif ser = new ServicePredictif();
-            ser.clientInfos(myClient.getId(), myClient.getMotDePasse());
-        }
-        catch(Exception e)
-        {
-            Logger.getLogger(ControleService.class.getName()).log(Level.SEVERE, null, e);
-        }
+        ServicePredictif ser = new ServicePredictif();
+        ser.ClientInfos(myClient);
     }
     
     public int runningserviceEmployee(Employee myEmp) {
@@ -421,7 +414,7 @@ public class ControleService {
                 testerAskingHelp(myEmp);
                 break;
             case 5:
-                testerCompanyStats(myEmp);
+                testerCompanyStats();
                 break;
             case 6:
                 //testerEmployeeInfos();
