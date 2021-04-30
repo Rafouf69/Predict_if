@@ -277,6 +277,16 @@ public class ControleService {
        }
        
     }
+    public void testerEmployeeInfos(Employee myEmp) {
+       ServicePredictif Servicepredictif = new ServicePredictif();
+       try {
+            String Result= Servicepredictif.EmployeeStats(myEmp);
+            System.out.println(Result);
+       }catch(Exception Ex){
+            System.out.println(Ex);
+       }
+       
+    }
     public void testerbeginconsult(Employee myEmp) {
        ServicePredictif Servicepredictif = new ServicePredictif();
        try {
@@ -417,7 +427,7 @@ public class ControleService {
                 testerCompanyStats();
                 break;
             case 6:
-                //testerEmployeeInfos();
+                testerEmployeeInfos(myEmp);
                 break;
             default:
                 break;
@@ -451,7 +461,9 @@ public class ControleService {
                 testerGetListAllMedium();
                 break;
             case 3:
+
                 testerClientInfos(myClient);
+
                 break;
             default:
                 break;
