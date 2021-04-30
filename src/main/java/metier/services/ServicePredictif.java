@@ -120,7 +120,7 @@ public class ServicePredictif {
          }
          
          //Etape 2:Vérifier que le client demandé n'a pas déja une consultation en attente
-         if (myclient.getStatus()!="free"){
+         if (!myclient.getStatus().equals("free")){
              throw new Exception("Sorry, " + myclient.getPrenom() +" "+ myclient.getNom() + " already have a consultation reserved");
          }
          
