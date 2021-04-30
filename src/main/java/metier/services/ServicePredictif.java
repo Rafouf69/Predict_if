@@ -519,7 +519,6 @@ public class ServicePredictif {
          try {
              myclient= trouverClientparId(idclient);
          }catch(Exception ex){
-             System.out.println("Ooops An error Ocured");
              throw ex;
          }
          
