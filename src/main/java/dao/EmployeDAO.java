@@ -34,6 +34,14 @@ public class EmployeDAO {
         return JpaUtil.obtenirContextePersistance().find(Employee.class, Id);
         
     }
+    
+    public List<Employee> chercherTous() throws Exception
+    {
+        String q = "select e from Employee e";
+        TypedQuery query = JpaUtil.obtenirContextePersistance().createQuery(q, Employee.class);
+        return query.getResultList();
+    }
+    
     public Employee authentifierEmp(String mail) {
         String s = "select e from Employee e where e.mail = :unmail";
         Query query = JpaUtil.obtenirContextePersistance().createQuery(s);

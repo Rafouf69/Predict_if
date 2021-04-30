@@ -14,8 +14,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import metier.modele.*;
@@ -77,6 +79,7 @@ public class ServicePredictif {
             Message.envoyerMail("contact@predict.if", Employee.getMail(), "Bienvenue chez PREDICT’IF", "Bonjour "+ Employee.getPrenom()+", nous vous confirmons votre inscription au service PREDICT’IF.Rendez-vous  vite  sur  notre  site  pour  consulter  votre profil  astrologique  et  profiter  des  dons incroyables de nos mediums.");
         }
         catch(Exception ex){
+            JpaUtil.annulerTransaction();
             System.out.println("ERREUR: " + ex);
             Message.envoyerMail("contact@predict.if", Employee.getMail(), "Echec de l’inscription chez PREDICT’IF", "Bonjour "+ Employee.getPrenom()+", votre inscription au service PREDICT’IF a malencontreusement échoué... Merci de recommencer ultérieurement.");
             throw ex;
@@ -99,6 +102,7 @@ public class ServicePredictif {
             
         }
         catch(Exception ex){
+            JpaUtil.annulerTransaction();
             System.out.println("ERREUR: " + ex);
             throw ex;
         }
@@ -167,6 +171,7 @@ public class ServicePredictif {
                  JpaUtil.validerTransaction();
                  
              }catch(Exception Ex){
+                  JpaUtil.annulerTransaction();
                   System.out.println("ERREUR creating consultation: " + Ex);
                  throw Ex;
              }
@@ -241,6 +246,7 @@ public class ServicePredictif {
              myConsultationDAO.beginconsult(myemp.getList().get(myemp.getList().size()-1));
              JpaUtil.validerTransaction();      
          }catch(Exception Ex){
+             JpaUtil.annulerTransaction();
              System.out.println("ERREUR updating consultation: " + Ex);
              throw Ex;
          }finally{
@@ -280,6 +286,7 @@ public class ServicePredictif {
              myConsultationDAO.endconsult(myemp.getList().get(myemp.getList().size()-1), message);
              JpaUtil.validerTransaction();      
          }catch(Exception Ex){
+             JpaUtil.annulerTransaction();
              System.out.println("ERREUR updating consultation: " + Ex);
              throw Ex;
          }finally{
@@ -341,7 +348,7 @@ public class ServicePredictif {
             throw ex;
         }
         finally { // dans tous les cas, on ferme l'entity manager
-        JpaUtil.fermerContextePersistance();
+            JpaUtil.fermerContextePersistance();
         }
         System.out.println("-----Top 3 des mediums hoisis par les clients-----");
         System.out.println("medium numéro 1 : " + listeMedium.get(0).getDenomination());
@@ -355,7 +362,36 @@ public class ServicePredictif {
             System.out.println(listeMedium1.getDenomination()+ " a " + listeMedium1.getConsultNumber() + " consultations");
         }
         System.out.println("----------");
+        
+        //répartition des clients par employé
+        System.out.println("-----répartition des clients par employé-----");
+        
+        EmployeDAO monEmployeDAO= new EmployeDAO();
+        List<Employee> listeEmployee=null;
+        
+        try{
+            JpaUtil.creerContextePersistance();
+            listeEmployee = monEmployeDAO.chercherTous();
+        }
+        catch(Exception ex){
+            System.out.println("ERREUR: " + ex);
+            throw ex;
+        }
+        finally { // dans tous les cas, on ferme l'entity manager
+            JpaUtil.fermerContextePersistance();
+        }
+        
+        for (Employee listeEmployee1 : listeEmployee) {
+            List<Consultation> listeConsultation = listeEmployee1.getList();
+            Set<Client> setClient = new HashSet<>();
+            for(Consultation listeConsultation1 : listeConsultation)
+            {
+                setClient.add(listeConsultation1.getClient());
+            }
+            System.out.println(listeEmployee1.getNom() + " " +listeEmployee1.getPrenom() + " a " + setClient.size() + " clients uniques");
+        }
     }
+    
      public void checkListConsultClient (long idclient) throws Exception{
          Client myclient;
          try {
