@@ -34,7 +34,7 @@ public class Employee implements Comparable {
     private String genre;
     private String telephone;
     private String motDePasse;
-    private String status;
+    private String status;//enumeration
     
     @Column(nullable = false, unique = true)
     private String mail;

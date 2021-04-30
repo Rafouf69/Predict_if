@@ -28,6 +28,7 @@ import metier.modele.*;
  * @author louislombard
  */
 public class ServicePredictif {
+    //inscritclient
     public Client creerClient(Client client) throws Exception{
         ClientDAO monClientDAO= new ClientDAO();
         Client newClient;
@@ -108,6 +109,7 @@ public class ServicePredictif {
         }     
         return newmed;
     }
+    //change en d majuscule, long -> Long => 0 -> null, enlève le mdp => 
      public Consultation DemandedeConsultation(long idclient,String mdp,long idmedium, Date date) throws Exception{
         
        

@@ -253,7 +253,7 @@ public class ControleService {
        ServicePredictif Servicepredictif = new ServicePredictif();
       
        long idmedium= Saisie.lireInteger("Id du medium :");
-       
+       //enlever les mdp
        try {
             Servicepredictif.DemandedeConsultation(myClient.getId(),myClient.getMotDePasse(),idmedium, new Date());
        }catch(Exception Ex){
