@@ -14,8 +14,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import metier.modele.*;
@@ -341,7 +343,7 @@ public class ServicePredictif {
             throw ex;
         }
         finally { // dans tous les cas, on ferme l'entity manager
-        JpaUtil.fermerContextePersistance();
+            JpaUtil.fermerContextePersistance();
         }
         System.out.println("-----Top 3 des mediums hoisis par les clients-----");
         System.out.println("medium numéro 1 : " + listeMedium.get(0).getDenomination());
@@ -355,7 +357,36 @@ public class ServicePredictif {
             System.out.println(listeMedium1.getDenomination()+ " a " + listeMedium1.getConsultNumber() + " consultations");
         }
         System.out.println("----------");
+        
+        //répartition des clients par employé
+        System.out.println("-----répartition des clients par employé-----");
+        
+        EmployeDAO monEmployeDAO= new EmployeDAO();
+        List<Employee> listeEmployee=null;
+        
+        try{
+            JpaUtil.creerContextePersistance();
+            listeEmployee = monEmployeDAO.chercherTous();
+        }
+        catch(Exception ex){
+            System.out.println("ERREUR: " + ex);
+            throw ex;
+        }
+        finally { // dans tous les cas, on ferme l'entity manager
+            JpaUtil.fermerContextePersistance();
+        }
+        
+        for (Employee listeEmployee1 : listeEmployee) {
+            List<Consultation> listeConsultation = listeEmployee1.getList();
+            Set<Client> setClient = new HashSet<>();
+            for(Consultation listeConsultation1 : listeConsultation)
+            {
+                setClient.add(listeConsultation1.getClient());
+            }
+            System.out.println(listeEmployee1.getNom() + " " +listeEmployee1.getPrenom() + " a " + setClient.size() + " clients uniques");
+        }
     }
+    
      public void checkListConsultClient (long idclient) throws Exception{
          Client myclient;
          try {

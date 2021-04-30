@@ -5,6 +5,7 @@
  */
 package ihm.console;
 
+import dao.EmployeDAO;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -108,7 +109,7 @@ public class ControleService {
      }
     public void initdevversion(int nbclient, int nbemployee, int nbmedium){
     
-        ServicePredictif ServiceClient = new ServicePredictif();
+        ServicePredictif serviceClient = new ServicePredictif();
         //initialize Client
         for(int i=0;i<nbclient;i++){
             String nom= "NomClient"+i;
@@ -118,7 +119,7 @@ public class ControleService {
             String phonenumber="060000000"+i;
             Client newClient= new Client(nom,prenom,mail,new Date(),mdp,phonenumber);
             try{
-            ServiceClient.creerClient(newClient);
+            serviceClient.creerClient(newClient);
             }catch (Exception Ex){
              System.out.println("> Echec initialization: ta base de données est sans doute déja remplie garçon");
             }
@@ -136,7 +137,7 @@ public class ControleService {
             String genre= (i%2==1?"H":"F");
             Employee newEmployee= new Employee(nom,prenom,mail,genre,mdp,phonenumber);
             try{
-            ServiceClient.creerEmployee(newEmployee);
+            serviceClient.creerEmployee(newEmployee);
             }catch (Exception Ex){
              System.out.println("> Echec initialization: ta base de données est sans doute déja remplie garçon");
             }
@@ -153,7 +154,7 @@ public class ControleService {
             if (i%3==0){
                 Medium newMed= new Medium(nom,genre,presentation);
                 try{
-                    ServiceClient.creerMedium(newMed);
+                    serviceClient.creerMedium(newMed);
                 }catch (Exception Ex){
                     System.out.println("> Echec initialization: ta base de données est sans doute déja remplie garçon");
                 }
@@ -163,7 +164,7 @@ public class ControleService {
                 String support ="supportMedium"+i;
                 Medium newMed= new Medium(nom,genre,presentation,support);
                 try{
-                    ServiceClient.creerMedium(newMed);
+                    serviceClient.creerMedium(newMed);
                 }catch (Exception Ex){
                     System.out.println("> Echec initialization: ta base de données est sans doute déja remplie garçon");
                 }
@@ -173,15 +174,15 @@ public class ControleService {
                 String promotion ="200"+i;
                 Medium newMed= new Medium(nom,genre,presentation,formation,promotion);
                 try{
-                    ServiceClient.creerMedium(newMed);
+                    serviceClient.creerMedium(newMed);
                 }catch (Exception Ex){
                     System.out.println("> Echec initialization: ta base de données est sans doute déja remplie garçon");
                 }
-            }
-   
+            }   
+            
             
         }
-      
+
     }
 
     public Client testerAuthentificationClient() throws Exception{
@@ -217,8 +218,8 @@ public class ControleService {
     }
 //    public void testerRechercheClient() {
 //        long id= Saisie.lireInteger("Id du client :");
-//        ServicePredictif ServiceClient = new ServicePredictif();
-//        Client clientBD= ServiceClient.trouverClientparId(id) ;
+//        ServicePredictif serviceClient = new ServicePredictif();
+//        Client clientBD= serviceClient.trouverClientparId(id) ;
 //        if (clientBD==null){
 //             System.out.println("> Not any client found with this Id");
 //        }
