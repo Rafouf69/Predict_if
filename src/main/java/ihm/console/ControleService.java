@@ -318,6 +318,19 @@ public class ControleService {
         }
     }
     
+    public void testerClientInfos(Client myClient)
+    {
+        try
+        {
+            ServicePredictif ser = new ServicePredictif();
+            ser.clientInfos(myClient.getId(), myClient.getMotDePasse());
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+    
     public int runningserviceEmployee(Employee myEmp) {
             System.out.println("***************************************************************");
             System.out.println("******************** Welcome to Predict'if ********************");
@@ -392,7 +405,7 @@ public class ControleService {
                 //testergetListAllMedium();
                 break;
             case 3:
-                //testClient();
+                testerClientInfos(myClient);
                 break;
             default:
                 break;

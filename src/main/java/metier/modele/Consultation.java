@@ -71,6 +71,10 @@ public class Consultation {
     public Medium getMedium(){
         return this.medium;
     }
+    public Date getEndDate()
+    {
+        return this.enddate;
+    }
     public void setStatus(String newStat){
         this.status=newStat;
     }
