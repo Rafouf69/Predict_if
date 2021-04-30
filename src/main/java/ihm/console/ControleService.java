@@ -331,14 +331,14 @@ public class ControleService {
         System.out.println("medium numéro 1 : " + listeMedium.get(0).getDenomination());
         System.out.println("medium numéro 2 : " + listeMedium.get(1).getDenomination());
         System.out.println("medium numéro 3 : " + listeMedium.get(2).getDenomination());
-        System.out.println("----------");
+        System.out.println("");
         
         //nombre de consultations par medium
         System.out.println("-----Nombre de consultation par medium-----");
         for (Medium listeMedium1 : listeMedium) {
             System.out.println(listeMedium1.getDenomination()+ " a réalisé" + listeMedium1.getConsultNumber() + " consultations");
         }
-        System.out.println("----------");
+        System.out.println("");
         
         //repartition des clients par employee
         
@@ -352,6 +352,7 @@ public class ControleService {
             }
             System.out.println(listeEmployee1.getNom() + " " +listeEmployee1.getPrenom() + " a " + setClient.size() + " clients uniques");
         }
+        System.out.println("");
     }
     
     private void testerGetListAllMedium() {

@@ -43,8 +43,7 @@ public class ServicePredictif {
             client.setCouleur(listeAstrale.get(2));
             client.setAnimalTotem(listeAstrale.get(3));
         } catch (IOException ex) {
-            System.out.println("Error creating liste Astral");
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            /*Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);*/
             throw ex;
         }
         
@@ -56,7 +55,6 @@ public class ServicePredictif {
             Message.envoyerMail("contact@predict.if", newClient.getMail(), "Bienvenue chez PREDICT’IF", "Bonjour "+ newClient.getPrenom()+", nous vous confirmons votre inscription au service PREDICT’IF.Rendez-vous  vite  sur  notre  site  pour  consulter  votre profil  astrologique  et  profiter  des  dons incroyables de nos mediums.");
         }
         catch(Exception ex){
-            //System.out.println("ERREUR: " + ex);
             JpaUtil.annulerTransaction();
             Message.envoyerMail("contact@predict.if", client.getMail(), "Echec de l’inscription chez PREDICT’IF", "Bonjour "+ client.getPrenom()+", votre inscription au service PREDICT’IF a malencontreusement échoué... Merci de recommencer ultérieurement.");
             throw ex;
@@ -80,7 +78,6 @@ public class ServicePredictif {
         }
         catch(Exception ex){
             JpaUtil.annulerTransaction();
-            System.out.println("ERREUR: " + ex);
             Message.envoyerMail("contact@predict.if", Employee.getMail(), "Echec de l’inscription chez PREDICT’IF", "Bonjour "+ Employee.getPrenom()+", votre inscription au service PREDICT’IF a malencontreusement échoué... Merci de recommencer ultérieurement.");
             throw ex;
         }
@@ -103,7 +100,6 @@ public class ServicePredictif {
         }
         catch(Exception ex){
             JpaUtil.annulerTransaction();
-            System.out.println("ERREUR: " + ex);
             throw ex;
         }
         
@@ -135,7 +131,7 @@ public class ServicePredictif {
              mymedium= trouverMediumparId(idmedium);
          }catch(Exception ex){
              throw ex;
-         };
+         }
          
          
          //Etape 4: Trouver la liste des employée pouvant executer le role
@@ -146,7 +142,6 @@ public class ServicePredictif {
              EmployeDAO myDAOemp= new EmployeDAO();
              MatchingEmployees=myDAOemp.chercherEmployeDispo(mymedium.getGender());
          }catch(Exception Ex){
-            System.out.println("ERREUR DAO.EMPLOYEE.chercherEmployedispo: " + Ex);
             throw Ex;
          }
          finally{
@@ -170,28 +165,25 @@ public class ServicePredictif {
                  myConsultationDAO.creer(myConsult);
                  JpaUtil.validerTransaction();
                  
-             }catch(Exception Ex){
-                  JpaUtil.annulerTransaction();
-                  System.out.println("ERREUR creating consultation: " + Ex);
-                 throw Ex;
-             }
-             finally{
-                 JpaUtil.fermerContextePersistance();
-             }
+            }catch(Exception Ex){
+                JpaUtil.annulerTransaction();
+                throw Ex;
+            }
+            finally{
+                JpaUtil.fermerContextePersistance();
+            }
             
              
              
-         }
+        }
          
-         return myConsult;
+        return myConsult;
      
      }
      public String checkWork(long EmpId, String mdp) throws Exception{
          
          String returningString=null;
-         //Find Employeee concern
-        
-         
+
          Employee myemp=null;
          try {
              myemp=checkEmpIdentity(EmpId,mdp);
@@ -247,7 +239,6 @@ public class ServicePredictif {
              JpaUtil.validerTransaction();      
          }catch(Exception Ex){
              JpaUtil.annulerTransaction();
-             System.out.println("ERREUR updating consultation: " + Ex);
              throw Ex;
          }finally{
              JpaUtil.fermerContextePersistance();
@@ -287,7 +278,6 @@ public class ServicePredictif {
              JpaUtil.validerTransaction();      
          }catch(Exception Ex){
              JpaUtil.annulerTransaction();
-             System.out.println("ERREUR updating consultation: " + Ex);
              throw Ex;
          }finally{
              JpaUtil.fermerContextePersistance();
@@ -377,7 +367,7 @@ public class ServicePredictif {
         }
         catch(Exception ex) {
             throw ex;
-        };
+        }
         System.out.println(myClient);
     }
     
@@ -387,7 +377,7 @@ public class ServicePredictif {
              myclient= trouverClientparId(idclient);
          }catch(Exception ex){
              throw ex;
-         };
+         }
          List<Consultation> myconsultList = myclient.getList();
          myconsultList.stream().forEach((consult)-> System.out.println(consult));
          
@@ -400,7 +390,6 @@ public class ServicePredictif {
             returningClient= monClientDAO.chercherClientparID(id);
         }
         catch(Exception ex){
-            System.out.println("ERREUR: " + ex);
             throw ex;
         }
         finally { // dans tous les cas, on ferme l'entity manager
@@ -419,7 +408,6 @@ public class ServicePredictif {
             emptoreturn= monEmpDAO.chercherEmployeeparID(id);
         }
         catch(Exception ex){
-            System.out.println("ERREUR: " + ex);
             throw ex;
         }
         finally { // dans tous les cas, on ferme l'entity manager
@@ -439,7 +427,6 @@ public class ServicePredictif {
             mediumtoreturn= monMediumDAO.chercherMediumparID(id);
         }
         catch(Exception ex){
-            System.out.println("ERREUR: " + ex);
             throw ex;
         }
         finally { // dans tous les cas, on ferme l'entity manager
@@ -459,7 +446,6 @@ public class ServicePredictif {
             consulttorretrun= monConsultDAO.chercherConsultparID(id);
         }
         catch(Exception ex){
-            System.out.println("ERREUR: " + ex);
             throw ex;
         }
         finally { // dans tous les cas, on ferme l'entity manager
@@ -480,7 +466,6 @@ public class ServicePredictif {
             monclient= monClientDAO.authentifierClient(mail) ;
         }
         catch(Exception ex){
-            System.out.println("ERREUR: " + ex);
             throw ex;
             
         }
@@ -509,7 +494,6 @@ public class ServicePredictif {
             monEmp= monEmpDAO.authentifierEmp(mail) ;
         }
         catch(Exception ex){
-            System.out.println("ERREUR: " + ex);
             throw ex;
         }
         finally { // dans tous les cas, on ferme l'entity manager
@@ -537,7 +521,7 @@ public class ServicePredictif {
          }catch(Exception ex){
              System.out.println("Ooops An error Ocured");
              throw ex;
-         };
+         }
          
          //Etape 2: Verifier que le client existe: si on recherche un id qui existe pas cela ne renvoie pas une erreur: Nous devons la créer
          if (myclient==null){
@@ -556,9 +540,8 @@ public class ServicePredictif {
          try {
              myemp= trouverEmpparId(idEmp);
          }catch(Exception ex){
-             System.out.println("Ooops An error Ocured");
              throw ex;
-         };
+         }
          
          //Etape 2: Verifier que le client existe: si on recherche un id qui existe pas cela ne renvoie pas une erreur: Nous devons la créer
          if (myemp==null){
@@ -580,7 +563,6 @@ public class ServicePredictif {
             return monClientDAO.chercherTous() ;
         }
         catch(Exception ex){
-            System.out.println("ERREUR: " + ex);
             return null;
         }
         finally { // dans tous les cas, on ferme l'entity manager
@@ -596,7 +578,6 @@ public class ServicePredictif {
             listeMedium = mediumDAO.chercherTous();
         }
         catch(Exception ex){
-            System.out.println("ERREUR: " + ex);
             throw ex;
         }
         finally { // dans tous les cas, on ferme l'entity manager
