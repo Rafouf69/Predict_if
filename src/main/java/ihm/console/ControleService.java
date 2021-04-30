@@ -311,8 +311,17 @@ public class ControleService {
     public void testerCompanyStats(Employee myEmp)
     {
         try {
-            ServicePredictif Servicepredictif = new ServicePredictif();
-            Servicepredictif.companyStats(myEmp.getId(),myEmp.getMotDePasse());
+            ServicePredictif servicePredictif = new ServicePredictif();
+            servicePredictif.companyStats(myEmp.getId(),myEmp.getMotDePasse());
+        }catch(Exception Ex){
+            System.out.println(Ex);
+        }
+    }
+    
+    private void testerGetListAllMedium() {
+        try {
+            ServicePredictif servicePredictif = new ServicePredictif();
+            servicePredictif.getListAllMedium();
         }catch(Exception Ex){
             System.out.println(Ex);
         }
@@ -340,7 +349,7 @@ public class ControleService {
             System.out.println("*************************   Exit (0)  *************************");
             System.out.println("***************************************************************");
             System.out.println("***************************************************************");
-            int integ= Saisie.lireInteger("Choisir un chiffre entre 0 et 10 : ");
+            int integ= Saisie.lireInteger("Choisir un chiffre entre 0 et 6 : ");
         switch (integ) {
             case 1:
                 testercheckwork(myEmp);
@@ -383,13 +392,13 @@ public class ControleService {
             System.out.println("*************************   Exit (0)  *************************");
             System.out.println("***************************************************************");
             System.out.println("***************************************************************");
-            int integ= Saisie.lireInteger("Choisir un chiffre entre 0 et 10 : ");
+            int integ= Saisie.lireInteger("Choisir un chiffre entre 0 et 3 : ");
         switch (integ) {
             case 1:
                 testerdemandesconsult(myClient);
                 break;     
             case 2:
-                //testergetListAllMedium();
+                testerGetListAllMedium();
                 break;
             case 3:
                 //testClient();
@@ -400,5 +409,5 @@ public class ControleService {
             return integ;
        
     }
-    
+
 }

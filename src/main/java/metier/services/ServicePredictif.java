@@ -364,7 +364,6 @@ public class ServicePredictif {
         System.out.println("----------");
         
         //répartition des clients par employé
-        System.out.println("-----répartition des clients par employé-----");
         
         EmployeDAO monEmployeDAO= new EmployeDAO();
         List<Employee> listeEmployee=null;
@@ -380,7 +379,7 @@ public class ServicePredictif {
         finally { // dans tous les cas, on ferme l'entity manager
             JpaUtil.fermerContextePersistance();
         }
-        
+        System.out.println("-----répartition des clients par employée-----");
         for (Employee listeEmployee1 : listeEmployee) {
             List<Consultation> listeConsultation = listeEmployee1.getList();
             Set<Client> setClient = new HashSet<>();
@@ -539,7 +538,8 @@ public class ServicePredictif {
         
         
     }
-      private Client checkClientIdentity(long idclient, String mdp)throws Exception{
+       
+    private Client checkClientIdentity(long idclient, String mdp)throws Exception{
         Client myclient;
         //Etape 1: on récupère le client
          try {
@@ -597,6 +597,28 @@ public class ServicePredictif {
             JpaUtil.fermerContextePersistance();
         }
       }
+
+    public void getListAllMedium() throws Exception{
+        MediumDAO mediumDAO= new MediumDAO();
+        List<Medium> listeMedium=null;
+        try{
+            JpaUtil.creerContextePersistance();
+            listeMedium = mediumDAO.chercherTous();
+        }
+        catch(Exception ex){
+            System.out.println("ERREUR: " + ex);
+            throw ex;
+        }
+        finally { // dans tous les cas, on ferme l'entity manager
+            JpaUtil.fermerContextePersistance();
+        }
+        
+        System.out.println("Les medium disponibles sont les suivants : ");
+        for(Medium listeMedium1 : listeMedium)
+        {
+            System.out.println(listeMedium1.toString());
+        }
+    }
 
     
 }

@@ -97,5 +97,20 @@ public class Medium implements Comparator<Medium> {
         return o2.listconsult.size() - o1.listconsult.size();
     }
     
+    @Override
+    public String toString()
+    {
+        String newLine = System.getProperty("line.separator");
+        String s = "Denomination : "+denomination+newLine+"Type de Medium : "+typeMedium+newLine+"Genre : "+genre;
+        switch(typeMedium)
+        {
+            case "Spirite":
+                s=s+newLine+"Support : "+support;
+                break;
+            case "Astrologue":
+                s=s+newLine+"formation : "+formation+newLine+"Promotion : "+promotion;
+        }
+        return s+newLine+"Presentation : "+presentation+newLine;
+    }
 }
 
