@@ -74,6 +74,8 @@ public class Main {
                   i=Controle.runningserviceClient(UserClient);
               }
           }
+          UserClient=null;
+          UserEmp= null;
         }
         
         

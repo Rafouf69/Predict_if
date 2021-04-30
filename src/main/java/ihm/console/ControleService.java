@@ -391,7 +391,7 @@ public class ControleService {
                 //testergetListAllMedium();
                 break;
             case 3:
-                //testerEmployeeInfos();
+                //testClient();
                 break;
             default:
                 break;
