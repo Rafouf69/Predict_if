@@ -146,4 +146,30 @@ public class Client {
         this.listconsult.add(myconsulToAdd);
         return this.listconsult;
     }
+    
+    public String toString()
+    {
+        String s = "";
+        s += "Chèr(e)" + prenom + " " + nom + "\n";
+        s += "Votre adresse e-mail : " + mail + "\n";
+        s += "Votre signe du zodiaque : " + zodiaque + "\n";
+        s += "Votre signe du zodiaque chinois : " + signeChinois + "\n";
+        s += "Votre couleur porte-bonheur : " + couleur + "\n";
+        s += "Votre animal totem : " + animalTotem + "\n\n";
+        
+        if(listconsult.size() > 0)
+        {
+            s += "Vos dernières consultations :\n";
+            for(Consultation c : listconsult)
+            {
+                s += c.getEndDate().toString() + " - " + c.getMedium().getDenomination() + "\n";
+            }
+            s += "\n";
+        }
+        
+        s += "Merci d'utiliser Predict\'IF ;)\n"; 
+        s += "\n";
+        
+        return s;
+    }
 }

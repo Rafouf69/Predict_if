@@ -71,6 +71,10 @@ public class Consultation {
     public Medium getMedium(){
         return this.medium;
     }
+    public Date getEndDate()
+    {
+        return this.enddate;
+    }
     public void setStatus(String newStat){
         this.status=newStat;
     }
@@ -83,6 +87,8 @@ public class Consultation {
     public void setCommentaire(String comment){
         this.commentaire=comment;
     }
+    
+    @Override
     public String toString() {
         return "Consultation " + this.id + " : // Date de demande : " + this.askingdate+ " : // Date de début : " + this.begginignedate+ " : // Date de fin : " + this.enddate + " // Commentaire : "+ this.commentaire +" // Employee : " +this.employee.getId()+  " // Medium : " + this.medium.getId()+ " // Client : "+ this.client.getId();
     }

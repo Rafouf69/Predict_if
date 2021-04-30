@@ -22,6 +22,11 @@ public class EmployeDAO {
         return employe;
     }
     
+    public Employee modifier(Employee employe)
+    {
+        return JpaUtil.obtenirContextePersistance().merge(employe);
+    }
+    
     public List<Employee> chercherEmployeDispo(String genre) throws Exception
     {
         // Ne retenir que les employés free et dont le genre est compatible
