@@ -6,12 +6,16 @@
 package ihm.console;
 
 import dao.EmployeDAO;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import metier.modele.Client;
+import metier.modele.Consultation;
 import metier.modele.Employee;
 import metier.modele.Medium;
 import metier.services.ServicePredictif;
@@ -262,8 +266,6 @@ public class ControleService {
        {
            System.out.println("Fail : " + ex.getMessage());
        }
-       
-       ;
     }
     public void testercheckwork(Employee myEmp) {
        ServicePredictif Servicepredictif = new ServicePredictif();
@@ -312,20 +314,59 @@ public class ControleService {
     
     public void testerCompanyStats(Employee myEmp)
     {
+        ArrayList<List> array = new ArrayList<>();
         try {
             ServicePredictif servicePredictif = new ServicePredictif();
-            servicePredictif.companyStats(myEmp.getId(),myEmp.getMotDePasse());
+            array = servicePredictif.companyStats(myEmp.getId(),myEmp.getMotDePasse());
         }catch(Exception Ex){
             System.out.println(Ex);
+        }
+        
+        List<Medium> listeMedium = array.get(0);
+        List<Employee> listeEmployee = array.get(1);
+        
+        //top 3 des medium
+        
+        System.out.println("-----Top 3 des mediums choisis par les clients-----");
+        System.out.println("medium numéro 1 : " + listeMedium.get(0).getDenomination());
+        System.out.println("medium numéro 2 : " + listeMedium.get(1).getDenomination());
+        System.out.println("medium numéro 3 : " + listeMedium.get(2).getDenomination());
+        System.out.println("----------");
+        
+        //nombre de consultations par medium
+        System.out.println("-----Nombre de consultation par medium-----");
+        for (Medium listeMedium1 : listeMedium) {
+            System.out.println(listeMedium1.getDenomination()+ " a réalisé" + listeMedium1.getConsultNumber() + " consultations");
+        }
+        System.out.println("----------");
+        
+        //repartition des clients par employee
+        
+        System.out.println("-----répartition des clients par employée-----");
+        for (Employee listeEmployee1 : listeEmployee) {
+            List<Consultation> listeConsultation = listeEmployee1.getList();
+            Set<Client> setClient = new HashSet<>();
+            for(Consultation listeConsultation1 : listeConsultation)
+            {
+                setClient.add(listeConsultation1.getClient());
+            }
+            System.out.println(listeEmployee1.getNom() + " " +listeEmployee1.getPrenom() + " a " + setClient.size() + " clients uniques");
         }
     }
     
     private void testerGetListAllMedium() {
+        List<Medium> listeMedium=null;
         try {
             ServicePredictif servicePredictif = new ServicePredictif();
-            servicePredictif.getListAllMedium();
+            listeMedium = servicePredictif.getListAllMedium();
         }catch(Exception Ex){
             System.out.println(Ex);
+        }
+        
+        System.out.println("Les medium disponibles sont les suivants : ");
+        for(Medium listeMedium1 : listeMedium)
+        {
+            System.out.println(listeMedium1.toString());
         }
     }
     
