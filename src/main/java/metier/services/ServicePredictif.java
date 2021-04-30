@@ -10,13 +10,18 @@ import dao.EmployeDAO;
 import dao.ClientDAO;
 import dao.MediumDAO;
 import dao.JpaUtil;
+import java.util.stream.Collectors;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.TreeMap;
+import java.util.LinkedHashMap;
 import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -391,7 +396,48 @@ public class ServicePredictif {
             System.out.println(listeEmployee1.getNom() + " " +listeEmployee1.getPrenom() + " a " + setClient.size() + " clients uniques");
         }
     }
-    
+    public String EmployeeStats(long EmpId, String mdp) throws Exception
+    {
+        Employee myEmp=null;
+        try {
+            myEmp=checkEmpIdentity(EmpId,mdp);
+        }catch(Exception Ex){
+            throw Ex;
+        }
+        List<Consultation> emplistconsult= myEmp.getList();
+        TreeMap <Client, Integer> mapclient = new TreeMap<Client,  Integer>();
+        TreeMap <Medium, Integer> mapMedium = new TreeMap<Medium,  Integer>();
+        
+        for (Consultation consult : emplistconsult){
+            //recuperer les mediums et client
+            Client client= consult.getClient();
+            Medium medium= consult.getMedium();
+            
+            //stocker dans une map avec l'objetc comme clefs et le nombre de consultation comme valeurs
+            mapMedium.put(medium,( (mapMedium.get(medium)==null) ? 1 : (mapMedium.get(medium)+1)));
+            mapclient.put(client,( (mapclient.get(client)==null) ? 1 : (mapclient.get(client)+1)));
+   
+        }
+        //TEST
+        Medium medium1= new Medium("A","B","C");
+        Medium medium2= new Medium("B","C","D");
+        mapMedium.put(medium1,((mapMedium.get(medium1)==null) ? 1 : (mapMedium.get(medium1)+1)));
+        mapMedium.put(medium1,((mapMedium.get(medium1)==null) ? 1 : (mapMedium.get(medium1)+1)));
+        mapMedium.put(medium1,((mapMedium.get(medium1)==null) ? 1 : (mapMedium.get(medium1)+1)));
+        mapMedium.put(medium1,((mapMedium.get(medium1)==null) ? 1 : (mapMedium.get(medium1)+1)));
+        mapMedium.put(medium2,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
+        mapMedium.put(medium2,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
+        mapMedium.put(medium2,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
+        
+       
+        System.out.println(mapMedium);
+        
+        
+        final Map<Medium, Integer> sortedByCount = mapMedium.entrySet().stream().sorted(Map.Entry.comparingByValue()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+        System.out.println(sortedByCount);
+        return sortedByCount.toString();
+        
+    }
      public void checkListConsultClient (long idclient) throws Exception{
          Client myclient;
          try {
