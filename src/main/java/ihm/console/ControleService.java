@@ -9,6 +9,8 @@ import dao.EmployeDAO;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import metier.modele.Client;
 import metier.modele.Employee;
 import metier.modele.Medium;
@@ -327,6 +329,19 @@ public class ControleService {
         }
     }
     
+    public void testerClientInfos(Client myClient)
+    {
+        try
+        {
+            ServicePredictif ser = new ServicePredictif();
+            ser.clientInfos(myClient.getId(), myClient.getMotDePasse());
+        }
+        catch(Exception e)
+        {
+            Logger.getLogger(ControleService.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    
     public int runningserviceEmployee(Employee myEmp) {
             System.out.println("***************************************************************");
             System.out.println("******************** Welcome to Predict'if ********************");
@@ -401,7 +416,7 @@ public class ControleService {
                 testerGetListAllMedium();
                 break;
             case 3:
-                //testClient();
+                testerClientInfos(myClient);
                 break;
             default:
                 break;

@@ -391,6 +391,18 @@ public class ServicePredictif {
         }
     }
     
+    public void clientInfos(long clientId, String mdp) throws Exception
+    {
+        Client myClient;
+        try {
+            myClient = trouverClientparId(clientId);
+        }
+        catch(Exception ex) {
+            throw ex;
+        };
+        System.out.println(myClient);
+    }
+    
      public void checkListConsultClient (long idclient) throws Exception{
          Client myclient;
          try {
