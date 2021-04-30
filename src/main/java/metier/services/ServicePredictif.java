@@ -392,7 +392,7 @@ public class ServicePredictif {
         }
     }
     
-    public void clientInfos(long clientId, String mdp)
+    public void clientInfos(long clientId, String mdp) throws Exception
     {
         Client myClient;
         try {

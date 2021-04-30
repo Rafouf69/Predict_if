@@ -9,6 +9,8 @@ import dao.EmployeDAO;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import metier.modele.Client;
 import metier.modele.Employee;
 import metier.modele.Medium;
@@ -327,7 +329,7 @@ public class ControleService {
         }
         catch(Exception e)
         {
-            System.out.println(e);
+            Logger.getLogger(ControleService.class.getName()).log(Level.SEVERE, null, e);
         }
     }
     
