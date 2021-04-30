@@ -6,12 +6,12 @@
     <class>metier.modele.Medium</class>
     <class>metier.modele.Employee</class>
     <class>metier.modele.Consultation</class>
+    <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/tpdazi"/>
       <property name="javax.persistence.jdbc.user" value="tpdazi"/>
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
       <property name="javax.persistence.jdbc.password" value="tpdazi"/>
-      <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
     </properties>
   </persistence-unit>
 </persistence>

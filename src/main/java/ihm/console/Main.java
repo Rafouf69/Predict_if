@@ -28,47 +28,54 @@ public class Main {
         Controle.initdevversion(20,20,20);
         
         //Definir quelle version de l'app
-        List<Integer> listvalue = Arrays.asList(new Integer[]{1,2,3});
+        List<Integer> listvalue = Arrays.asList(new Integer[]{0,1,2,3});
         Client UserClient=null;
         Employee UserEmp=null;
-        int role= Saisie.lireInteger("EMPLOYEE (1) ou CLIENT-INSCRIT (2) ou NOUVEAU-CLIENT(3)  : ",listvalue);
         
-        if (role==2){    
-            while(UserClient==null){
-                try {
-                    UserClient=Controle.testerAuthentificationClient();
-                }catch(Exception Ex){
-                    System.out.println(Ex);
-                } 
+        int role=-1;
+      
+        while (role!=0){
+           
+            role= Saisie.lireInteger("EMPLOYEE (1) ou CLIENT-INSCRIT (2) ou NOUVEAU-CLIENT(3) ou QUITTER(0) : ",listvalue);
+
+          if (role==2){    
+              while(UserClient==null){
+                  try {
+                      UserClient=Controle.testerAuthentificationClient();
+                  }catch(Exception Ex){
+                      System.out.println(Ex);
+                  } 
+          }
+          }else if (role==1){
+              while(UserEmp==null){
+                  try {
+                      UserEmp=Controle.testerAuthentificationEmployee();
+                  }catch(Exception Ex){
+                      System.out.println(Ex);
+                  } 
+              }
+          } else if (role==3){
+              while(UserClient==null){
+                  try {
+                      UserClient=Controle.testerInscriptionClient();
+                  }catch(Exception Ex){
+                      System.out.println(Ex);
+                  } 
+              }
+          } 
+
+          //rentrer dans la boucle des actions
+          int i=-1;
+          while(i!=0 && role!=0){
+              if (role==1){
+                   i=Controle.runningserviceEmployee(UserEmp);
+
+              }else if (role==2){
+                  i=Controle.runningserviceClient(UserClient);
+              }
+          }
         }
-        }else if (role==1){
-            while(UserEmp==null){
-                try {
-                    UserEmp=Controle.testerAuthentificationEmployee();
-                }catch(Exception Ex){
-                    System.out.println(Ex);
-                } 
-            }
-        } else{
-            while(UserClient==null){
-                try {
-                    UserClient=Controle.testerInscriptionClient();
-                }catch(Exception Ex){
-                    System.out.println(Ex);
-                } 
-            }
-        } 
         
-        //rentrer dans la boucle des actions
-        int i=-1;
-        while(i!=0){
-            if (role==1){
-                 i=Controle.runningserviceEmployee(UserEmp);
-                
-            }else{
-                i=Controle.runningserviceClient(UserClient);
-            }
-        }
         
         
         JpaUtil.destroy();
