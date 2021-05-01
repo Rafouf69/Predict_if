@@ -301,7 +301,7 @@ public class ServicePredictif {
         return returningString;
      }
      
-    public List<String> AskingHelp(Employee myEmp, int amour, int sante, int travail) throws Exception{
+    public List<String> askingHelp(Employee myEmp, int amour, int sante, int travail) throws Exception{
         List<String> result=null;
         
         //check currently conversing
