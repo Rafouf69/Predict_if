@@ -7,12 +7,15 @@ package ihm.console;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.HashMap;
+import java.util.Objects;
 import metier.modele.Client;
 import metier.modele.Consultation;
 import metier.modele.Employee;
@@ -279,8 +282,40 @@ public class ControleService {
     public void testerEmployeeInfos(Employee myEmp) {
        ServicePredictif service = new ServicePredictif();
        try {
-            String Result= service.EmployeeStats(myEmp);
-            System.out.println(Result);
+            ArrayList<HashMap> result= service.EmployeeStats(myEmp);
+            HashMap<Medium,Integer> mapMedium =result.get(0);
+              
+        List<Integer> nboftimessorted= new ArrayList(mapMedium.values());
+        Collections.sort(nboftimessorted,Collections.reverseOrder());
+        
+        System.out.println("BBB "+nboftimessorted);
+        
+        Medium[] mostMedium = new  Medium[3];
+        int[] mostMediumTime = new int [3];
+        for (int i= 0;i<3;i++){
+            mostMediumTime[i]=nboftimessorted.get(i);
+        }
+        System.out.println("DDD "+mostMediumTime[0]+mostMediumTime[1]+mostMediumTime[2]);
+        
+        mapMedium.entrySet().forEach(entry -> {
+            if (Objects.equals(entry.getValue(), mostMediumTime[0]) && mostMedium[0]==null){
+                mostMedium[0]=entry.getKey();
+            }else if(Objects.equals(entry.getValue(), mostMediumTime[1]) && mostMedium[1]==null){
+                mostMedium[1]=entry.getKey();
+            }else if(Objects.equals(entry.getValue(), mostMediumTime[2]) && mostMedium[2]==null){
+                mostMedium[2]=entry.getKey();
+            }
+        });
+ 
+        System.out.println("-----Top 3 des mediums incarnés par "+myEmp.getPrenom()+" "+myEmp.getNom()+" -----");
+        System.out.println("medium numéro 1 : " + mostMedium[0].getDenomination()+" incarné "+mostMediumTime[0]+ "fois");
+        System.out.println("medium numéro 2 : " + mostMedium[1].getDenomination()+" incarné "+mostMediumTime[1]+ "fois");
+        System.out.println("medium numéro 3 : " + mostMedium[2].getDenomination()+" incarné "+mostMediumTime[2]+ "fois");
+        System.out.println("-----Top 3 des clients incarnés par "+myEmp.getPrenom()+" "+myEmp.getNom()+" -----");
+        System.out.println("medium numéro 1 : " + mostMedium[0].getDenomination()+" incarné "+mostMediumTime[0]+ "fois");
+        System.out.println("medium numéro 2 : " + mostMedium[1].getDenomination()+" incarné "+mostMediumTime[1]+ "fois");
+        System.out.println("medium numéro 3 : " + mostMedium[2].getDenomination()+" incarné "+mostMediumTime[2]+ "fois");
+      
        }catch(Exception Ex){
             System.out.println(Ex);
        }
@@ -383,7 +418,7 @@ public class ControleService {
     public void testerClientInfos(Client myClient)
     {
         ServicePredictif ser = new ServicePredictif();
-        ser.ClientInfos(myClient);
+        ser.clientInfos(myClient);
     }
     
     public int runningserviceEmployee(Employee myEmp) {
