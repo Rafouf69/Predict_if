@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package dao;
-import java.util.Date;
 import metier.modele.*;
 /**
  *

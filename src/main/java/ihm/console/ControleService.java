@@ -300,7 +300,7 @@ public class ControleService {
        ServicePredictif service = new ServicePredictif();
        String Comment= Saisie.lireChaine("Commentaire : ");
        try {
-            String Result= service.EndingConsult(myEmp, Comment);
+            String Result= service.endingConsult(myEmp, Comment);
             System.out.println(Result);
        }catch(Exception Ex){
             System.out.println(Ex);
