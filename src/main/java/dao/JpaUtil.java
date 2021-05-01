@@ -113,7 +113,7 @@ public class JpaUtil {
             EntityManager em = threadLocalEntityManager.get();
             em.getTransaction().begin();
         } catch (Exception ex) {
-            log("Erreur lors de l'ouverture de la transaction");
+            log("Erreur lors de l'ouverture de la transaction" + ex);
             throw ex;
         }
     }
@@ -130,7 +130,7 @@ public class JpaUtil {
             EntityManager em = threadLocalEntityManager.get();
             em.getTransaction().commit();
         } catch (Exception ex) {
-            log("Erreur lors de la validation (commit) de la transaction");
+            log("Erreur lors de la validation (commit) de la transaction"+ex);
             throw ex;
         }
     }

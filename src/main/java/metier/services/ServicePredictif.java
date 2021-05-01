@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.TreeMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import metier.modele.*;
 
 
@@ -28,18 +30,17 @@ import metier.modele.*;
 public class ServicePredictif {
     //inscritclient
     public Client creerClient(Client client) throws Exception{
+        
         ClientDAO monClientDAO= new ClientDAO();
         Client newClient;
-        
         AstroNetApi astroNetApi = new AstroNetApi();
-        
-        ArrayList<String>  listeAstrale = (ArrayList<String>) astroNetApi.getProfil(client.getPrenom(), client.getDate());
-        client.setZodiaque(listeAstrale.get(0));
-        client.setSigneChinois(listeAstrale.get(1));
-        client.setCouleur(listeAstrale.get(2));
-        client.setAnimalTotem(listeAstrale.get(3));
-        
+  
         try{
+            ArrayList<String>  listeAstrale = (ArrayList<String>) astroNetApi.getProfil(client.getPrenom(), client.getDate());
+            client.setZodiaque(listeAstrale.get(0));
+            client.setSigneChinois(listeAstrale.get(1));
+            client.setCouleur(listeAstrale.get(2));
+            client.setAnimalTotem(listeAstrale.get(3));
             JpaUtil.creerContextePersistance();
             JpaUtil.ouvrirTransaction();
             newClient= monClientDAO.creer(client);
@@ -47,6 +48,7 @@ public class ServicePredictif {
             Message.envoyerMail("contact@predict.if", newClient.getMail(), "Bienvenue chez PREDICT’IF", "Bonjour "+ newClient.getPrenom()+", nous vous confirmons votre inscription au service PREDICT’IF.Rendez-vous  vite  sur  notre  site  pour  consulter  votre profil  astrologique  et  profiter  des  dons incroyables de nos mediums.");
         }
         catch(Exception ex){
+            Logger.getAnonymousLogger().log(Level.INFO, "[Service predictif:Log] " + ex);
             JpaUtil.annulerTransaction();
             Message.envoyerMail("contact@predict.if", client.getMail(), "Echec de l’inscription chez PREDICT’IF", "Bonjour "+ client.getPrenom()+", votre inscription au service PREDICT’IF a malencontreusement échoué... Merci de recommencer ultérieurement.");
             throw ex;
@@ -55,6 +57,7 @@ public class ServicePredictif {
         finally { // dans tous les cas, on ferme l'entity manager
             JpaUtil.fermerContextePersistance();
         }     
+        
         return newClient;
     }
     public Employee creerEmployee(Employee employee) throws Exception{
@@ -75,8 +78,9 @@ public class ServicePredictif {
         }
         
         finally { // dans tous les cas, on ferme l'entity manager
-        JpaUtil.fermerContextePersistance();
-        }     
+            JpaUtil.fermerContextePersistance();
+        }    
+        
         return newEmp;
     }
     public Medium creerMedium(Medium newMedium) throws Exception{
