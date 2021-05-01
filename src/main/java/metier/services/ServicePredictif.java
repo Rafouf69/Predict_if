@@ -388,51 +388,7 @@ public class ServicePredictif {
             mapClient.put(client,( (mapClient.get(client)==null) ? 1 : (mapClient.get(client)+1)));
    
         }
-         //TEST
-        Medium medium1= new Medium("A","B","C");
-        Medium medium2= new Medium("B","C","D");
-        Medium medium3= new Medium("C","D","E");
-        Medium medium4= new Medium("D","E","F");
-        mapMedium.put(medium1,((mapMedium.get(medium1)==null) ? 1 : (mapMedium.get(medium1)+1)));
-        mapMedium.put(medium1,((mapMedium.get(medium1)==null) ? 1 : (mapMedium.get(medium1)+1)));
-        mapMedium.put(medium1,((mapMedium.get(medium1)==null) ? 1 : (mapMedium.get(medium1)+1)));
-        mapMedium.put(medium1,((mapMedium.get(medium1)==null) ? 1 : (mapMedium.get(medium1)+1)));
-        mapMedium.put(medium4,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
-        mapMedium.put(medium4,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
-        mapMedium.put(medium4,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
-        mapMedium.put(medium3,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
-        mapMedium.put(medium2,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
-        mapMedium.put(medium2,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
-        mapMedium.put(medium2,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
-        mapMedium.put(medium2,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
-        mapMedium.put(medium2,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
-        mapMedium.put(medium2,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
-        
-        System.out.println("AAA "+mapMedium);
-        
-        List<Integer> nboftimessorted= new ArrayList(mapMedium.values());
-        Collections.sort(nboftimessorted,Collections.reverseOrder());
-        
-        System.out.println("BBB "+nboftimessorted);
-        
-        Medium[] mostMedium = new  Medium[3];
-        int[] mostMediumTime = new int [3];
-        for (int i= 0;i<3;i++){
-            mostMediumTime[i]=nboftimessorted.get(i);
-        }
-        System.out.println("DDD "+mostMediumTime[0]+mostMediumTime[1]+mostMediumTime[2]);
-        
-        mapMedium.entrySet().forEach(entry -> {
-            if (Objects.equals(entry.getValue(), mostMediumTime[0]) && mostMedium[0]==null){
-                mostMedium[0]=entry.getKey();
-            }else if(Objects.equals(entry.getValue(), mostMediumTime[1]) && mostMedium[1]==null){
-                mostMedium[1]=entry.getKey();
-            }else if(Objects.equals(entry.getValue(), mostMediumTime[2]) && mostMedium[2]==null){
-                mostMedium[2]=entry.getKey();
-            }
-        });
-        System.out.println("CCC "+mostMedium[0]+mostMedium[1]+mostMedium[2]);
-        
+       
         ArrayList<HashMap> array = new ArrayList<>();
         
         array.add(mapMedium);

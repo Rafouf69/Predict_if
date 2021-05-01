@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.HashMap;
 import java.util.Objects;
+import java.lang.Math;
 import metier.modele.Client;
 import metier.modele.Consultation;
 import metier.modele.Employee;
@@ -284,38 +285,63 @@ public class ControleService {
        try {
             ArrayList<HashMap> result= service.EmployeeStats(myEmp);
             HashMap<Medium,Integer> mapMedium =result.get(0);
-              
-        List<Integer> nboftimessorted= new ArrayList(mapMedium.values());
-        Collections.sort(nboftimessorted,Collections.reverseOrder());
-        
-        System.out.println("BBB "+nboftimessorted);
-        
-        Medium[] mostMedium = new  Medium[3];
-        int[] mostMediumTime = new int [3];
-        for (int i= 0;i<3;i++){
-            mostMediumTime[i]=nboftimessorted.get(i);
-        }
-        System.out.println("DDD "+mostMediumTime[0]+mostMediumTime[1]+mostMediumTime[2]);
-        
-        mapMedium.entrySet().forEach(entry -> {
-            if (Objects.equals(entry.getValue(), mostMediumTime[0]) && mostMedium[0]==null){
-                mostMedium[0]=entry.getKey();
-            }else if(Objects.equals(entry.getValue(), mostMediumTime[1]) && mostMedium[1]==null){
-                mostMedium[1]=entry.getKey();
-            }else if(Objects.equals(entry.getValue(), mostMediumTime[2]) && mostMedium[2]==null){
-                mostMedium[2]=entry.getKey();
+            HashMap<Client,Integer> mapclient =result.get(1);
+            List<Integer> nbofclientlist= new ArrayList(mapclient.values());
+            List<Integer> nboftimessorted= new ArrayList(mapMedium.values());
+            Collections.sort(nboftimessorted,Collections.reverseOrder());
+            Collections.sort(nbofclientlist,Collections.reverseOrder());
+            
+            int tailleClient= Math.min(nbofclientlist.size(),3);
+            int tailleMedium= Math.min(nboftimessorted.size(),3);
+            
+            System.out.println("BBB "+nboftimessorted);
+            System.out.println("BBB "+nbofclientlist);
+            
+            
+            Client[] mostClient = new  Client[tailleClient];
+            int[] mostClientTime = new int [tailleClient];
+            
+            for (int i= 0;i<tailleClient;i++){
+                mostClientTime[i]=nbofclientlist.get(i);
             }
-        });
- 
-        System.out.println("-----Top 3 des mediums incarnés par "+myEmp.getPrenom()+" "+myEmp.getNom()+" -----");
-        System.out.println("medium numéro 1 : " + mostMedium[0].getDenomination()+" incarné "+mostMediumTime[0]+ "fois");
-        System.out.println("medium numéro 2 : " + mostMedium[1].getDenomination()+" incarné "+mostMediumTime[1]+ "fois");
-        System.out.println("medium numéro 3 : " + mostMedium[2].getDenomination()+" incarné "+mostMediumTime[2]+ "fois");
-        System.out.println("-----Top 3 des clients incarnés par "+myEmp.getPrenom()+" "+myEmp.getNom()+" -----");
-        System.out.println("medium numéro 1 : " + mostMedium[0].getDenomination()+" incarné "+mostMediumTime[0]+ "fois");
-        System.out.println("medium numéro 2 : " + mostMedium[1].getDenomination()+" incarné "+mostMediumTime[1]+ "fois");
-        System.out.println("medium numéro 3 : " + mostMedium[2].getDenomination()+" incarné "+mostMediumTime[2]+ "fois");
-      
+            
+            
+            Medium[] mostMedium = new  Medium[tailleMedium];
+            int[] mostMediumTime = new int [tailleMedium];
+            
+            for (int i= 0;i<tailleMedium;i++){
+                mostMediumTime[i]=nboftimessorted.get(i);
+            }
+            
+  
+
+            mapMedium.entrySet().forEach(entry -> {
+                boolean insert= false;
+                for (int i= 0;i<tailleMedium;i++){
+                    if (Objects.equals(entry.getValue(), mostMediumTime[i]) && mostMedium[i]==null && !insert){
+                        mostMedium[i]=entry.getKey();
+                    }
+                }
+            });
+            mapclient.entrySet().forEach(entry -> {
+                boolean insert= false;
+                for (int i= 0;i<tailleClient;i++){
+                    if (Objects.equals(entry.getValue(), mostClientTime[i]) && mostClient[i]==null && !insert){
+                        mostClient[i]=entry.getKey();
+                    }
+                }
+            });
+
+            System.out.println("-----Top 3 des mediums incarnés par "+myEmp.getPrenom()+" "+myEmp.getNom()+" -----");
+            for(int i=0;i<tailleMedium;i++){
+                System.out.println("medium numéro "+ (i+1)+ " : " + mostMedium[i].getDenomination()+" incarné "+mostMediumTime[i]+ "fois");
+            }
+            System.out.println("-----Top 3 des clients consulté par "+myEmp.getPrenom()+" "+myEmp.getNom()+" -----");
+             for(int i=0;i<tailleClient;i++){
+                 System.out.println("client numéro "+(i+1) + " : " + mostClient[i].getPrenom()+" "+ mostClient[i].getNom()+" vous à consulté "+mostClientTime[i]+ "fois");
+            }
+        
+
        }catch(Exception Ex){
             System.out.println(Ex);
        }
