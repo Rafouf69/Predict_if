@@ -206,7 +206,7 @@ public class ServicePredictif {
             JpaUtil.creerContextePersistance();
             JpaUtil.ouvrirTransaction();
             ConsultationDAO myConsultationDAO= new ConsultationDAO();
-            myConsultationDAO.beginconsult(myEmp.getList().get(myEmp.getList().size()-1));
+            myConsultationDAO.beginConsult(myEmp.getList().get(myEmp.getList().size()-1));
             JpaUtil.validerTransaction();      
         }catch(Exception Ex){
             JpaUtil.annulerTransaction();

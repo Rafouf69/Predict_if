@@ -44,7 +44,7 @@ public class Client {
     private String status;
     
     @OneToMany(mappedBy="Client")
-    private List<Consultation> listconsult;
+    private List<Consultation> listConsult;
     
     @Column(nullable = false, unique = true)
     private String mail;
@@ -54,12 +54,12 @@ public class Client {
     
     public Client(){    
     }
-    public Client(String nom,String prenom, String mail, Date date, String modDePasse, String telephone){
+    public Client(String nom,String prenom, String mail, Date date, String motDePasse, String telephone){
         this.nom=nom;
         this.prenom=prenom;
         this.mail=mail;
         this.dateNaissance=date;
-        this.motDePasse=modDePasse;
+        this.motDePasse=motDePasse;
         this.telephone=telephone;
         this.status="free";
     }
@@ -112,7 +112,7 @@ public class Client {
         return status;
     }
     public List<Consultation>getList(){
-        return this.listconsult;
+        return this.listConsult;
     }
     //Setters
     public void setNom(String nom){
@@ -142,9 +142,9 @@ public class Client {
     public void setStatus(String status){
         this.status=status;
     }
-    public List<Consultation> addnewconsult(Consultation myconsulToAdd){
-        this.listconsult.add(myconsulToAdd);
-        return this.listconsult;
+    public List<Consultation> addNewConsult(Consultation myConsulToAdd){
+        this.listConsult.add(myConsulToAdd);
+        return this.listConsult;
     }
     
     @Override
@@ -158,10 +158,10 @@ public class Client {
         s += "Votre couleur porte-bonheur : " + couleur + "\n";
         s += "Votre animal totem : " + animalTotem + "\n\n";
         
-        if(listconsult.size() > 0)
+        if(listConsult.size() > 0)
         {
             s += "Vos dernières consultations :\n";
-            for(Consultation c : listconsult)
+            for(Consultation c : listConsult)
             {
                 s += c.getEndDate().toString() + " - " + c.getMedium().getDenomination() + "\n";
             }

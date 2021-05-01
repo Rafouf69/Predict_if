@@ -40,7 +40,7 @@ public class Employee implements Comparable {
     private String mail;
    
     @OneToMany(mappedBy="Employee")
-    private List<Consultation> listconsult;
+    private List<Consultation> listConsult;
     
     public Employee(){    
     }
@@ -77,7 +77,7 @@ public class Employee implements Comparable {
         return telephone;
     }
     public List<Consultation> getList(){
-        return listconsult;
+        return listConsult;
     }
     //Setters
     public void setNom(String nom){
@@ -95,19 +95,19 @@ public class Employee implements Comparable {
     public void setStatus(String status){
         this.status= status;
     }
-    public List<Consultation> addnewconsult(Consultation myconsulToAdd){
-        this.listconsult.add(myconsulToAdd);
-        return this.listconsult;
+    public List<Consultation> addNewConsult(Consultation myConsulToAdd){
+        this.listConsult.add(myConsulToAdd);
+        return this.listConsult;
     }
 
     @Override
     public int compareTo(Object o) {
         if(!(o instanceof Employee))
         {
-            throw new NullPointerException("Un exmploye n'est comparable qu'avec un autre employe");
+            throw new NullPointerException("Un employee n'est comparable qu'avec un autre employee");
         }
         Employee e2 = (Employee) o;
-        return this.listconsult.size() - e2.getList().size();
+        return this.listConsult.size() - e2.getList().size();
     }
      
    

@@ -29,9 +29,12 @@ public class Consultation {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     
-    private Date askingdate;
-    private Date begginignedate;
-    private Date enddate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date askingDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date begginingDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date endDate;
     private String commentaire;
     private String status;
     
@@ -46,11 +49,11 @@ public class Consultation {
    
     public Consultation(){    
     }
-    public Consultation(Employee emp, Date askingdate, Client client, Medium medium ){
+    public Consultation(Employee emp, Date askingDate, Client client, Medium medium ){
        this.client=client;
        this.medium=medium;
        this.employee=emp;
-       this.askingdate=askingdate; 
+       this.askingDate=askingDate; 
        this.status="Waiting";
     }
     
@@ -73,16 +76,16 @@ public class Consultation {
     }
     public Date getEndDate()
     {
-        return this.enddate;
+        return this.endDate;
     }
     public void setStatus(String newStat){
         this.status=newStat;
     }
     public void setDateBegin(Date mydate){
-        this.begginignedate=mydate;
+        this.begginingDate=mydate;
     }
     public void setDateEnd(Date mydate){
-        this.enddate=mydate;
+        this.endDate=mydate;
     }
     public void setCommentaire(String comment){
         this.commentaire=comment;
@@ -90,7 +93,7 @@ public class Consultation {
     
     @Override
     public String toString() {
-        return "Consultation " + this.id + " : // Date de demande : " + this.askingdate+ " : // Date de début : " + this.begginignedate+ " : // Date de fin : " + this.enddate + " // Commentaire : "+ this.commentaire +" // Employee : " +this.employee.getId()+  " // Medium : " + this.medium.getId()+ " // Client : "+ this.client.getId();
+        return "Consultation " + this.id + " : // Date de demande : " + this.askingDate+ " : // Date de début : " + this.begginingDate+ " : // Date de fin : " + this.endDate + " // Commentaire : "+ this.commentaire +" // Employee : " +this.employee.getId()+  " // Medium : " + this.medium.getId()+ " // Client : "+ this.client.getId();
     }
 }
     

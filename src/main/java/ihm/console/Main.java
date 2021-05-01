@@ -24,13 +24,13 @@ public class Main {
     
     public static void main(String[] args) {
         JpaUtil.init();
-        ControleService Controle= new ControleService();
-        Controle.initDevVersion(20,20,20);
+        ControleService controle= new ControleService();
+        controle.initDevVersion(20,20,20);
         
         //Definir quelle version de l'app
         List<Integer> listvalue = Arrays.asList(new Integer[]{0,1,2,3});
-        Client UserClient=null;
-        Employee UserEmp=null;
+        Client userClient=null;
+        Employee userEmp=null;
         
         int role=-1;
       
@@ -39,27 +39,27 @@ public class Main {
             role= Saisie.lireInteger("EMPLOYEE (1) ou CLIENT-INSCRIT (2) ou NOUVEAU-CLIENT(3) ou QUITTER(0) : ",listvalue);
 
           if (role==2){    
-              while(UserClient==null){
+              while(userClient==null){
                   try {
-                      UserClient=Controle.testerAuthentificationClient();
+                      userClient=controle.testerAuthentificationClient();
                   }catch(Exception Ex){
                       System.out.println(Ex);
                   } 
           }
           }else if (role==1){
-              while(UserEmp==null){
+              while(userEmp==null){
                   try {
-                      UserEmp=Controle.testerAuthentificationEmployee();
-                  }catch(Exception Ex){
-                      System.out.println(Ex);
+                      userEmp=controle.testerAuthentificationEmployee();
+                  }catch(Exception ex){
+                      System.out.println(ex);
                   } 
               }
           } else if (role==3){
-              while(UserClient==null){
+              while(userClient==null){
                   try {
-                      UserClient=Controle.testerInscriptionClient();
-                  }catch(Exception Ex){
-                      System.out.println(Ex);
+                      userClient=controle.testerInscriptionClient();
+                  }catch(Exception ex){
+                      System.out.println(ex);
                   } 
               }
           } 
@@ -68,24 +68,16 @@ public class Main {
           int i=-1;
           while(i!=0 && role!=0){
               if (role==1){
-                   i=Controle.runningserviceEmployee(UserEmp);
+                   i=controle.runningserviceEmployee(userEmp);
 
               }else if (role==2){
-                  i=Controle.runningserviceClient(UserClient);
+                  i=controle.runningserviceClient(userClient);
               }
           }
-          UserClient=null;
-          UserEmp= null;
+          userClient=null;
+          userEmp= null;
         }
-        
-        
-        
+   
         JpaUtil.destroy();
-    }
-
-    
-    
-    
-    
-    
+    }    
 }

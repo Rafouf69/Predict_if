@@ -125,7 +125,7 @@ public class ControleService {
             Client newClient= new Client(nom,prenom,mail,new Date(),mdp,phoneNumber);
             try{
             serviceClient.creerClient(newClient);
-            }catch (Exception Ex){
+            }catch (Exception ex){
              System.out.println("> Echec initialization: ta base de données est sans doute déja remplie garçon");
             }
             

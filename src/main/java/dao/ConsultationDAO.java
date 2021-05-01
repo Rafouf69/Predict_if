@@ -20,11 +20,11 @@ public class ConsultationDAO {
         Employee workingEmployee= myConsult.getEmployee();
         
         //Changer status client et ajouter consultation dans sa liste
-        consultingClient.addnewconsult(myConsult);
+        consultingClient.addNewConsult(myConsult);
         consultingClient.setStatus("Waiting");
         
         //Changer status employee et ajouter consultation dans sa liste
-        workingEmployee.addnewconsult(myConsult);
+        workingEmployee.addNewConsult(myConsult);
         workingEmployee.setStatus("Waiting");
         
         //ajouter consultation dans la liste de consultaiton du medium
@@ -44,7 +44,7 @@ public class ConsultationDAO {
         return JpaUtil.obtenirContextePersistance().merge(consultation);
     }
     
-    public Consultation beginconsult(Consultation myConsult) {
+    public Consultation beginConsult(Consultation myConsult) {
         
         //obtenir les élements important de la consultation (clefs étrangères) 
         Client consultingClient= myConsult.getClient();

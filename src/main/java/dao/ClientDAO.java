@@ -19,6 +19,11 @@ public class ClientDAO {
         return client;
     }
     
+    public Client modifier(Client client)
+    {
+        return JpaUtil.obtenirContextePersistance().merge(client);
+    }
+    
     public List<Client> chercherTous() {
         String s = "select e from Client e";
         TypedQuery query = JpaUtil.obtenirContextePersistance().createQuery(s,Client.class);
