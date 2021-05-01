@@ -28,8 +28,8 @@ import metier.modele.*;
  * @author louislombard
  */
 public class ServicePredictif {
-    //inscritclient
-    public Client creerClient(Client client) throws Exception{
+   
+    public Client inscrireClient(Client client) throws Exception{
         
         ClientDAO monClientDAO= new ClientDAO();
         Client newClient;
@@ -48,7 +48,7 @@ public class ServicePredictif {
             Message.envoyerMail("contact@predict.if", newClient.getMail(), "Bienvenue chez PREDICT’IF", "Bonjour "+ newClient.getPrenom()+", nous vous confirmons votre inscription au service PREDICT’IF.Rendez-vous  vite  sur  notre  site  pour  consulter  votre profil  astrologique  et  profiter  des  dons incroyables de nos mediums.");
         }
         catch(Exception ex){
-            Logger.getAnonymousLogger().log(Level.INFO, "[Service predictif:Log] " + ex);
+            //Logger.getAnonymousLogger().log(Level.INFO, "[Service predictif:Log] " + ex); //in debug mode
             JpaUtil.annulerTransaction();
             Message.envoyerMail("contact@predict.if", client.getMail(), "Echec de l’inscription chez PREDICT’IF", "Bonjour "+ client.getPrenom()+", votre inscription au service PREDICT’IF a malencontreusement échoué... Merci de recommencer ultérieurement.");
             throw ex;
@@ -60,7 +60,9 @@ public class ServicePredictif {
         
         return newClient;
     }
+    
     public Employee creerEmployee(Employee employee) throws Exception{
+        
         EmployeDAO monEmpDAO= new EmployeDAO();
         Employee newEmp;
         
@@ -72,6 +74,7 @@ public class ServicePredictif {
             Message.envoyerMail("contact@predict.if", employee.getMail(), "Bienvenue chez PREDICT’IF", "Bonjour "+ employee.getPrenom()+", nous vous confirmons votre inscription au service PREDICT’IF.Rendez-vous  vite  sur  notre  site  pour  consulter  votre profil  astrologique  et  profiter  des  dons incroyables de nos mediums.");
         }
         catch(Exception ex){
+             //Logger.getAnonymousLogger().log(Level.INFO, "[Service predictif:Log] " + ex); //in debug mode
             JpaUtil.annulerTransaction();
             Message.envoyerMail("contact@predict.if", employee.getMail(), "Echec de l’inscription chez PREDICT’IF", "Bonjour "+ employee.getPrenom()+", votre inscription au service PREDICT’IF a malencontreusement échoué... Merci de recommencer ultérieurement.");
             throw ex;
@@ -95,79 +98,89 @@ public class ServicePredictif {
             
         }
         catch(Exception ex){
+             //Logger.getAnonymousLogger().log(Level.INFO, "[Service predictif:Log] " + ex); //in debug mode
             JpaUtil.annulerTransaction();
             throw ex;
         }
         
         finally { // dans tous les cas, on ferme l'entity manager
-        JpaUtil.fermerContextePersistance();
+            JpaUtil.fermerContextePersistance();
         }     
+        
         return newMed;
     }
 
     public Consultation DemandeDeConsultation(Client myClient,Long idmedium, Date date) throws Exception{
-           
-        //Etape 1: Retrouver le client demandé
-         
-        //Etape 2:Vérifier que le client demandé n'a pas déja une consultation en attente
+             
+        List<Employee> matchingEmployees;
+        Employee employeChoisi ;
+        Consultation myConsult;
+        Medium mymedium;
+       
+        
+        //Etape 1: Vérifier que le client demandé n'a pas déja une consultation en attente
         if (!myClient.getStatus().equals("free")){
             throw new Exception("Sorry, " + myClient.getPrenom() +" "+ myClient.getNom() + " already have a consultation reserved");
         }
         
          
-        //Etape 3: Retrouver le medium demandée
-        Medium mymedium;
+        //Etape 2: Retrouver le medium demandée
         try {
             mymedium= trouverMediumParId(idmedium);
         }catch(Exception ex){
+             //Logger.getAnonymousLogger().log(Level.INFO, "[Service predictif:Log] " + ex); //in debug mode
             throw ex;
         }
          
          
-         //Etape 4: Trouver la liste des employée pouvant executer le role
-         List<Employee> MatchingEmployees;
-         Consultation myConsult;
+         //Un seul try catch ou lieu de plusieurs ????
+         
          try{
+             //Etape 3: Assigner le bon employé
              JpaUtil.creerContextePersistance();
+             JpaUtil.ouvrirTransaction();
+             
              EmployeDAO myDAOemp= new EmployeDAO();
-             MatchingEmployees=myDAOemp.chercherEmployeDispo(mymedium.getGender());
+             ConsultationDAO myConsultationDAO= new ConsultationDAO();
+             ClientDAO myClientDAO= new ClientDAO();
+             MediumDAO myMediumDAO= new MediumDAO();
+             
+             matchingEmployees=myDAOemp.chercherEmployeDispo(mymedium.getGender()); //trouver les potentiels employées correspondant
+             
+             if (matchingEmployees.isEmpty()){
+                 
+                throw new Exception("Sorry, " + mymedium.getDenomination() + " is unavailable for the moment, please come back later"); //Dans le cas ou aucun employé est possible
+                
+             }else{
+                 
+                employeChoisi = Collections.min(matchingEmployees); //prendre l'employée le plus faible
+           
+                myConsult= new Consultation(employeChoisi,date,myClient, mymedium);
+                 
+                //changer le status de objets concernés et ajouter objet concernés
+                employeChoisi.setStatus("Waiting");
+                myClient.setStatus("Waiting");
+                employeChoisi.addNewConsult(myConsult);
+                myClient.addNewConsult(myConsult);
+                mymedium.addnewconsult(myConsult);
+                
+                //Sauvegarder changement et modifications dans BD
+                myMediumDAO.modifier(mymedium);
+                myClientDAO.modifier(myClient);
+                myDAOemp.modifier(employeChoisi);
+                
+                JpaUtil.validerTransaction();
+             }     
          }catch(Exception Ex){
-            throw Ex;
+            //Logger.getAnonymousLogger().log(Level.INFO, "[Service predictif:Log] " + ex); //in debug mode
+            JpaUtil.annulerTransaction();
+            throw Ex;   
          }
          finally{
             JpaUtil.fermerContextePersistance();
          }
          
-         //Etape 5: Vérifier que la liste d'employée pouvant faire le role n'est pas vide
-         if (MatchingEmployees.isEmpty()){
-             throw new Exception("Sorry, " + mymedium.getDenomination() + " is unavailable for the moment, please come back later");
-         }
-         else{
-             //Etape 6: créer la consultation
-             try{
-                 //A faire: Algorithm pour trouver l'employee qui est le moins prix et pas le premier de la liste pour essayer de rééquilibrer le nombre d'apparition des demployee
-                 Employee employeChose = Collections.min(MatchingEmployees);
-                 
-                 
-                 //changer etat employee dans la classe de service 
-                 myConsult= new Consultation(employeChose,date,myClient, mymedium);
-                 JpaUtil.creerContextePersistance();
-                 JpaUtil.ouvrirTransaction();
-                 ConsultationDAO myConsultationDAO= new ConsultationDAO();
-                 myConsultationDAO.creer(myConsult);
-                 JpaUtil.validerTransaction();
-                 
-            }catch(Exception ex){
-                JpaUtil.annulerTransaction();
-                throw ex;
-            }
-            finally{
-                JpaUtil.fermerContextePersistance();
-            }
-            
-             
-             
-        }
+       
          
         return myConsult;
      

@@ -79,7 +79,7 @@ public class ControleService {
         Client newClient= ImportingClientIHMClient();
         Client newClientBD=null;
         try{
-            newClientBD= serviceClient.creerClient(newClient);
+            newClientBD= serviceClient.inscrireClient(newClient);
             System.out.println("> Succès inscription");
             System.out.println("-> Client: id= " + newClientBD.getId()+ " ;nom= "+ newClientBD.getNom()+" ;mail= "+ newClientBD.getMail()+" ;motDePasse= "+newClientBD.getMotDePasse());
         }catch(Exception ex){
@@ -124,7 +124,7 @@ public class ControleService {
             String phoneNumber="060000000"+i;
             Client newClient= new Client(nom,prenom,mail,new Date(),mdp,phoneNumber);
             try{
-            serviceClient.creerClient(newClient);
+            serviceClient.inscrireClient(newClient);
             }catch (Exception ex){
              System.out.println("> Echec initialization: ta base de données est sans doute déja remplie garçon");
             }
