@@ -10,14 +10,16 @@ import dao.EmployeDAO;
 import dao.ClientDAO;
 import dao.MediumDAO;
 import dao.JpaUtil;
+import java.util.Arrays;   
 import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import metier.modele.*;
@@ -171,10 +173,10 @@ public class ServicePredictif {
                 
                 JpaUtil.validerTransaction();
              }     
-         }catch(Exception Ex){
+         }catch(Exception ex){
             //Logger.getAnonymousLogger().log(Level.INFO, "[Service predictif:Log] " + ex); //in debug mode
             JpaUtil.annulerTransaction();
-            throw Ex;   
+            throw ex;   
          }
          finally{
             JpaUtil.fermerContextePersistance();
@@ -302,16 +304,19 @@ public class ServicePredictif {
      }
      
     public List<String> askingHelp(Employee myEmp, int amour, int sante, int travail) throws Exception{
+        
         List<String> result=null;
         
         //check currently conversing
         if (!"Conversing".equals(myEmp.getStatus())){
            throw new Exception("This feature can only be called when conversing. Sorry.");
         }
+        
         try{
             AstroNetApi astroNetApi = new AstroNetApi();
             result=astroNetApi.getPredictions(myEmp.getList().get(myEmp.getList().size()-1).getClient().getCouleur(), myEmp.getList().get(myEmp.getList().size()-1).getClient().getAnimalTotem(), amour, sante, travail);       
         }catch(Exception ex){
+            //Logger.getAnonymousLogger().log(Level.INFO, "[Service predictif:Log] " + ex); //in debug mode
            throw ex;
         }
         return result;
@@ -348,7 +353,7 @@ public class ServicePredictif {
         return array;
     }
     
-    public void ClientInfos(Client myClient)
+    public void clientInfos(Client myClient)
     {
         System.out.println(myClient);
     }
@@ -365,12 +370,13 @@ public class ServicePredictif {
          
     }
 
-    public String EmployeeStats(Employee myEmp) throws Exception
+    public ArrayList EmployeeStats(Employee myEmp) throws Exception
     {
-        
+       
         List<Consultation> empListConsult= myEmp.getList();
-        TreeMap <Client, Integer> mapClient = new TreeMap<Client,  Integer>();
-        TreeMap <Medium, Integer> mapMedium = new TreeMap<Medium,  Integer>();
+        HashMap <Client, Integer> mapClient = new HashMap<Client,  Integer>();
+        HashMap <Medium, Integer> mapMedium = new HashMap<Medium,  Integer>();
+        
         
         for (Consultation consult : empListConsult){
             //recuperer les mediums et client
@@ -382,24 +388,58 @@ public class ServicePredictif {
             mapClient.put(client,( (mapClient.get(client)==null) ? 1 : (mapClient.get(client)+1)));
    
         }
-        //TEST
+         //TEST
         Medium medium1= new Medium("A","B","C");
         Medium medium2= new Medium("B","C","D");
+        Medium medium3= new Medium("C","D","E");
+        Medium medium4= new Medium("D","E","F");
         mapMedium.put(medium1,((mapMedium.get(medium1)==null) ? 1 : (mapMedium.get(medium1)+1)));
         mapMedium.put(medium1,((mapMedium.get(medium1)==null) ? 1 : (mapMedium.get(medium1)+1)));
         mapMedium.put(medium1,((mapMedium.get(medium1)==null) ? 1 : (mapMedium.get(medium1)+1)));
         mapMedium.put(medium1,((mapMedium.get(medium1)==null) ? 1 : (mapMedium.get(medium1)+1)));
+        mapMedium.put(medium4,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
+        mapMedium.put(medium4,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
+        mapMedium.put(medium4,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
+        mapMedium.put(medium3,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
+        mapMedium.put(medium2,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
+        mapMedium.put(medium2,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
+        mapMedium.put(medium2,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
         mapMedium.put(medium2,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
         mapMedium.put(medium2,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
         mapMedium.put(medium2,((mapMedium.get(medium2)==null) ? 1 : (mapMedium.get(medium2)+1)));
         
-       
-        System.out.println(mapMedium);
+        System.out.println("AAA "+mapMedium);
         
+        List<Integer> nboftimessorted= new ArrayList(mapMedium.values());
+        Collections.sort(nboftimessorted,Collections.reverseOrder());
         
-        final Map<Medium, Integer> sortedByCount = mapMedium.entrySet().stream().sorted(Map.Entry.comparingByValue()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-        System.out.println(sortedByCount);
-        return sortedByCount.toString();
+        System.out.println("BBB "+nboftimessorted);
+        
+        Medium[] mostMedium = new  Medium[3];
+        int[] mostMediumTime = new int [3];
+        for (int i= 0;i<3;i++){
+            mostMediumTime[i]=nboftimessorted.get(i);
+        }
+        System.out.println("DDD "+mostMediumTime[0]+mostMediumTime[1]+mostMediumTime[2]);
+        
+        mapMedium.entrySet().forEach(entry -> {
+            if (Objects.equals(entry.getValue(), mostMediumTime[0]) && mostMedium[0]==null){
+                mostMedium[0]=entry.getKey();
+            }else if(Objects.equals(entry.getValue(), mostMediumTime[1]) && mostMedium[1]==null){
+                mostMedium[1]=entry.getKey();
+            }else if(Objects.equals(entry.getValue(), mostMediumTime[2]) && mostMedium[2]==null){
+                mostMedium[2]=entry.getKey();
+            }
+        });
+        System.out.println("CCC "+mostMedium[0]+mostMedium[1]+mostMedium[2]);
+        
+        ArrayList<HashMap> array = new ArrayList<>();
+        
+        array.add(mapMedium);
+        array.add(mapClient);
+        
+        return array;
+        
         
     }
     
