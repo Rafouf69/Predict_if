@@ -185,6 +185,7 @@ public class ServicePredictif {
         return myConsult;
      
      }
+    
     public String checkWork(Employee myEmp) throws Exception{
          
         String returningString;
@@ -208,12 +209,14 @@ public class ServicePredictif {
         }
         return returningString;
     }
-    public String BegginingConsult(Employee myEmp) throws Exception{
+    
+    public String begginingConsult(Employee myEmp) throws Exception{
         
         //check employee is phoning
         if (!myEmp.getStatus().equals("Waiting")){
             throw new Exception("You cannot begin a conversation because they are not conversation waitings for you");
         }
+        
         //should never happen. just incase.
         if (!myEmp.getList().get(myEmp.getList().size()-1).getStatus().equals("Waiting")){
             throw new Exception("Hmmm An error occured. please call us.");
@@ -222,10 +225,26 @@ public class ServicePredictif {
         try{
             JpaUtil.creerContextePersistance();
             JpaUtil.ouvrirTransaction();
+            
             ConsultationDAO myConsultationDAO= new ConsultationDAO();
-            myConsultationDAO.beginConsult(myEmp.getList().get(myEmp.getList().size()-1));
+            EmployeDAO myEmpDAO= new EmployeDAO();
+            ClientDAO myClientDAO= new ClientDAO();
+            
+            Consultation consultToChange= myEmp.getList().get(myEmp.getList().size()-1);
+            Client clientToChange=consultToChange.getClient();
+            
+            myEmp.setStatus("Conversing");
+            clientToChange.setStatus("Conversing");
+            consultToChange.setStatus("Running");
+            consultToChange.setDateBegin(new Date());
+            
+            myConsultationDAO.modifier(consultToChange);
+            myEmpDAO.modifier(myEmp);
+            myClientDAO.modifier(clientToChange);
+            
             JpaUtil.validerTransaction();      
         }catch(Exception Ex){
+            //Logger.getAnonymousLogger().log(Level.INFO, "[Service predictif:Log] " + ex); //in debug mode
             JpaUtil.annulerTransaction();
             throw Ex;
         }finally{
@@ -233,7 +252,6 @@ public class ServicePredictif {
         }
 
         String returningString="Conversation started!";
-
         return returningString;
      }
     public String EndingConsult(Employee myEmp, String message) throws Exception{
@@ -250,10 +268,27 @@ public class ServicePredictif {
         try{
             JpaUtil.creerContextePersistance();
             JpaUtil.ouvrirTransaction();
+            
             ConsultationDAO myConsultationDAO= new ConsultationDAO();
-            myConsultationDAO.endConsult(myEmp.getList().get(myEmp.getList().size()-1), message);
+            EmployeDAO myEmpDAO= new EmployeDAO();
+            ClientDAO myClientDAO= new ClientDAO();
+            
+            Consultation consultToChange= myEmp.getList().get(myEmp.getList().size()-1);
+            Client clientToChange=consultToChange.getClient();
+            
+            myEmp.setStatus("free");
+            clientToChange.setStatus("free");
+            consultToChange.setStatus("Finish");
+            consultToChange.setDateEnd(new Date());
+            consultToChange.setCommentaire(message);
+            
+            myConsultationDAO.modifier(consultToChange);
+            myEmpDAO.modifier(myEmp);
+            myClientDAO.modifier(clientToChange);
+            
             JpaUtil.validerTransaction();      
         }catch(Exception ex){
+            //Logger.getAnonymousLogger().log(Level.INFO, "[Service predictif:Log] " + ex); //in debug mode
             JpaUtil.annulerTransaction();
             throw ex;
         }finally{

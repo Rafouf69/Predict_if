@@ -289,7 +289,7 @@ public class ControleService {
     public void testerBeginConsult(Employee myEmp) {
        ServicePredictif service = new ServicePredictif();
        try {
-            String Result= service.BegginingConsult(myEmp);
+            String Result= service.begginingConsult(myEmp);
             System.out.println(Result);
        }catch(Exception Ex){
             System.out.println(Ex);
@@ -313,7 +313,7 @@ public class ControleService {
        int niveauTravail= Saisie.lireInteger("Niveau de travail : ",listvalue);
        try {
             ServicePredictif service = new ServicePredictif();
-            List<String> result= service.AskingHelp(myEmp, niveauAmour, niveauSante, niveauTravail);
+            List<String> result= service.askingHelp(myEmp, niveauAmour, niveauSante, niveauTravail);
             System.out.println(result);
        }catch(Exception ex){
             System.out.println(ex);
