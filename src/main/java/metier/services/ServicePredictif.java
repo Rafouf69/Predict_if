@@ -256,7 +256,7 @@ public class ServicePredictif {
         String returningString="Conversation started!";
         return returningString;
      }
-    public String EndingConsult(Employee myEmp, String message) throws Exception{
+    public String endingConsult(Employee myEmp, String message) throws Exception{
         
         //check employee is phoning
         if (!myEmp.getStatus().equals("Conversing")){
