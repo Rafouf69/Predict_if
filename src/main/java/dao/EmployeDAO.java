@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import metier.modele.Employee;
+import metier.modele.Status;
 
 /**
  *
@@ -29,9 +30,10 @@ public class EmployeDAO {
     public List<Employee> chercherEmployeDispo(String genre)
     {
         // Ne retenir que les employés free et dont le genre est compatible
-        String q = "select e from Employee e where e.genre = :ungenre and e.status = 0";
+        String q = "select e from Employee e where e.genre = :ungenre and e.status = :unstatus";
         TypedQuery query = JpaUtil.obtenirContextePersistance().createQuery(q, Employee.class);
         query.setParameter("ungenre", genre);
+        query.setParameter("unstatus", Status.FREE);
         return query.getResultList();
     }
     

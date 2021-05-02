@@ -204,7 +204,7 @@ public class ServicePredictif {
             Consultation waitingconsult= myEmp.getList().get(myEmp.getList().size()-1);
             
             //This should never happen with our logic. Just in case.
-            if (!"Waiting".equals(waitingconsult.getStatus())){
+            if (!ConsultationStatus.WAITING.equals(waitingconsult.getStatus())){
                 throw new Exception("Hmmm An error Occurred. PLease contact Predictif");
             }
             returningString="It seems that you have one client waiting for you. Please begin the consultation n° " +waitingconsult.getId() +" with the client n° "+ waitingconsult.getClient().getId()+". You shoul incarn Medium "+waitingconsult.getMedium().getDenomination();
@@ -220,7 +220,7 @@ public class ServicePredictif {
         }
         
         //should never happen. just incase.
-        if (!myEmp.getList().get(myEmp.getList().size()-1).getStatus().equals(Status.WAITING)){
+        if (!myEmp.getList().get(myEmp.getList().size()-1).getStatus().equals(ConsultationStatus.WAITING)){
             throw new Exception("Hmmm An error occured. please call us.");
         }   
           
@@ -263,7 +263,7 @@ public class ServicePredictif {
             throw new Exception("You cannot en a conversation if you are not consultating");
         }
         //should never happen. just incase.
-        if (!myEmp.getList().get(myEmp.getList().size()-1).getStatus().equals("Running")){
+        if (!myEmp.getList().get(myEmp.getList().size()-1).getStatus().equals(ConsultationStatus.RUNNING)){
             throw new Exception("Hmmm An error occured. please call us.");
         }
          
