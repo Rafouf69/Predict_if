@@ -36,7 +36,7 @@ public class Consultation {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date endDate;
     private String commentaire;
-    private String status;
+    private ConsultationStatus status;
     
     @ManyToOne
     private Employee employee;
@@ -54,7 +54,7 @@ public class Consultation {
        this.medium=medium;
        this.employee=emp;
        this.askingDate=askingDate; 
-       this.status="Waiting";
+       this.status=ConsultationStatus.WAITING;
        this.commentaire="aucun";
     }
     
@@ -66,7 +66,7 @@ public class Consultation {
     public Long getId(){
         return this.id;
     }
-    public String getStatus(){
+    public ConsultationStatus getStatus(){
         return this.status;
     }
     public Employee getEmployee(){
@@ -79,7 +79,7 @@ public class Consultation {
     {
         return this.endDate;
     }
-    public void setStatus(String newStat){
+    public void setStatus(ConsultationStatus newStat){
         this.status=newStat;
     }
     public void setDateBegin(Date mydate){
