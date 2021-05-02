@@ -34,7 +34,7 @@ public class Employee implements Comparable {
     private String genre;
     private String telephone;
     private String motDePasse;
-    private String status;//enumeration
+    private Status status;
     
     @Column(nullable = false, unique = true)
     private String mail;
@@ -51,7 +51,7 @@ public class Employee implements Comparable {
         this.mail=mail;
         this.motDePasse=modDePasse;
         this.telephone=telephone;
-        this.status="free";
+        this.status=Status.FREE;
     }
     
     //Getters
@@ -61,7 +61,7 @@ public class Employee implements Comparable {
     public String getNom(){
         return nom;
     }
-    public String getStatus(){
+    public Status getStatus(){
         return status;
     }
     public String getPrenom(){
@@ -92,7 +92,7 @@ public class Employee implements Comparable {
     public void setMotDePasse(String motDePasse){
         this.motDePasse= motDePasse;
     }
-    public void setStatus(String status){
+    public void setStatus(Status status){
         this.status= status;
     }
     public List<Consultation> addNewConsult(Consultation myConsulToAdd){

@@ -36,7 +36,7 @@ public class Consultation {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date endDate;
     private String commentaire;
-    private String status;
+    private ConsultationStatus status;
     
     @ManyToOne
     private Employee employee;
@@ -54,7 +54,8 @@ public class Consultation {
        this.medium=medium;
        this.employee=emp;
        this.askingDate=askingDate; 
-       this.status="Waiting";
+       this.status=ConsultationStatus.WAITING;
+       this.commentaire="aucun";
     }
     
     //Getters
@@ -65,7 +66,7 @@ public class Consultation {
     public Long getId(){
         return this.id;
     }
-    public String getStatus(){
+    public ConsultationStatus getStatus(){
         return this.status;
     }
     public Employee getEmployee(){
@@ -78,7 +79,7 @@ public class Consultation {
     {
         return this.endDate;
     }
-    public void setStatus(String newStat){
+    public void setStatus(ConsultationStatus newStat){
         this.status=newStat;
     }
     public void setDateBegin(Date mydate){
@@ -93,7 +94,9 @@ public class Consultation {
     
     @Override
     public String toString() {
-        return "Consultation " + this.id + " : // Date de demande : " + this.askingDate+ " : // Date de début : " + this.begginingDate+ " : // Date de fin : " + this.endDate + " // Commentaire : "+ this.commentaire +" // Employee : " +this.employee.getId()+  " // Medium : " + this.medium.getId()+ " // Client : "+ this.client.getId();
+        String beginningDateLocal = this.begginingDate==null ? "non fixé" : this.begginingDate.toString();
+        String endDateLocal = this.endDate==null ? "non fixé" : this.endDate.toString();
+        return "Consultation " + this.id + " : // Date de demande : " + this.askingDate+ " : // Date de début : " + beginningDateLocal + " : // Date de fin : " + endDateLocal + " // Commentaire : "+ this.commentaire +" // Employee : " +this.employee.getId()+  " // Medium : " + this.medium.getId()+ " // Client : "+ this.client.getId();
     }
 }
     

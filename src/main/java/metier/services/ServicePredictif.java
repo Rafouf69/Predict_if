@@ -121,7 +121,7 @@ public class ServicePredictif {
        
         
         //Etape 1: Vérifier que le client demandé n'a pas déja une consultation en attente
-        if (!myClient.getStatus().equals("free")){
+        if (!myClient.getStatus().equals(Status.FREE)){
             throw new Exception("Sorry, " + myClient.getPrenom() +" "+ myClient.getNom() + " already have a consultation reserved");
         }
         
@@ -160,8 +160,8 @@ public class ServicePredictif {
                 myConsult= new Consultation(employeChoisi,date,myClient, mymedium);
                  
                 //changer le status de objets concernés et ajouter objet concernés
-                employeChoisi.setStatus("Waiting");
-                myClient.setStatus("Waiting");
+                employeChoisi.setStatus(Status.WAITING);
+                myClient.setStatus(Status.WAITING);
                 employeChoisi.addNewConsult(myConsult);
                 myClient.addNewConsult(myConsult);
                 mymedium.addnewconsult(myConsult);
@@ -193,10 +193,10 @@ public class ServicePredictif {
         String returningString;
         
         //checkstatus
-        if (myEmp.getStatus().equals("free")){
+        if (myEmp.getStatus().equals(Status.FREE)){
             returningString="This is great: You have no work to do";
         }
-        else if (myEmp.getStatus().equals("consulting")){
+        else if (myEmp.getStatus().equals(Status.CONVERSING)){
             returningString="You cannot use this feature while you're with a client. Sorry. PLease end your consutation";
         }
         else{
@@ -204,7 +204,7 @@ public class ServicePredictif {
             Consultation waitingconsult= myEmp.getList().get(myEmp.getList().size()-1);
             
             //This should never happen with our logic. Just in case.
-            if (!"Waiting".equals(waitingconsult.getStatus())){
+            if (!ConsultationStatus.WAITING.equals(waitingconsult.getStatus())){
                 throw new Exception("Hmmm An error Occurred. PLease contact Predictif");
             }
             returningString="It seems that you have one client waiting for you. Please begin the consultation n° " +waitingconsult.getId() +" with the client n° "+ waitingconsult.getClient().getId()+". You shoul incarn Medium "+waitingconsult.getMedium().getDenomination();
@@ -215,12 +215,12 @@ public class ServicePredictif {
     public String begginingConsult(Employee myEmp) throws Exception{
         
         //check employee is phoning
-        if (!myEmp.getStatus().equals("Waiting")){
+        if (!myEmp.getStatus().equals(Status.WAITING)){
             throw new Exception("You cannot begin a conversation because they are not conversation waitings for you");
         }
         
         //should never happen. just incase.
-        if (!myEmp.getList().get(myEmp.getList().size()-1).getStatus().equals("Waiting")){
+        if (!myEmp.getList().get(myEmp.getList().size()-1).getStatus().equals(ConsultationStatus.WAITING)){
             throw new Exception("Hmmm An error occured. please call us.");
         }   
           
@@ -235,9 +235,9 @@ public class ServicePredictif {
             Consultation consultToChange= myEmp.getList().get(myEmp.getList().size()-1);
             Client clientToChange=consultToChange.getClient();
             
-            myEmp.setStatus("Conversing");
-            clientToChange.setStatus("Conversing");
-            consultToChange.setStatus("Running");
+            myEmp.setStatus(Status.CONVERSING);
+            clientToChange.setStatus(Status.CONVERSING);
+            consultToChange.setStatus(ConsultationStatus.RUNNING);
             consultToChange.setDateBegin(new Date());
             
             myConsultationDAO.modifier(consultToChange);
@@ -259,11 +259,11 @@ public class ServicePredictif {
     public String endingConsult(Employee myEmp, String message) throws Exception{
         
         //check employee is phoning
-        if (!myEmp.getStatus().equals("Conversing")){
+        if (!myEmp.getStatus().equals(Status.CONVERSING)){
             throw new Exception("You cannot en a conversation if you are not consultating");
         }
         //should never happen. just incase.
-        if (!myEmp.getList().get(myEmp.getList().size()-1).getStatus().equals("Running")){
+        if (!myEmp.getList().get(myEmp.getList().size()-1).getStatus().equals(ConsultationStatus.RUNNING)){
             throw new Exception("Hmmm An error occured. please call us.");
         }
          
@@ -278,9 +278,9 @@ public class ServicePredictif {
             Consultation consultToChange= myEmp.getList().get(myEmp.getList().size()-1);
             Client clientToChange=consultToChange.getClient();
             
-            myEmp.setStatus("free");
-            clientToChange.setStatus("free");
-            consultToChange.setStatus("Finish");
+            myEmp.setStatus(Status.FREE);
+            clientToChange.setStatus(Status.FREE);
+            consultToChange.setStatus(ConsultationStatus.DONE);
             consultToChange.setDateEnd(new Date());
             consultToChange.setCommentaire(message);
             
@@ -308,7 +308,7 @@ public class ServicePredictif {
         List<String> result=null;
         
         //check currently conversing
-        if (!"Conversing".equals(myEmp.getStatus())){
+        if (!Status.CONVERSING.equals(myEmp.getStatus())){
            throw new Exception("This feature can only be called when conversing. Sorry.");
         }
         

@@ -41,7 +41,7 @@ public class Client {
     private String couleur; 
     private String animalTotem;
     private String motDePasse;
-    private String status;
+    private Status status;
     
     @OneToMany(mappedBy="Client")
     private List<Consultation> listConsult;
@@ -61,7 +61,7 @@ public class Client {
         this.dateNaissance=date;
         this.motDePasse=motDePasse;
         this.telephone=telephone;
-        this.status="free";
+        this.status=Status.FREE;
     }
     
     //Getters
@@ -108,7 +108,7 @@ public class Client {
     public Date getDateNaissance(){
         return dateNaissance;
     }
-    public String getStatus(){
+    public Status getStatus(){
         return status;
     }
     public List<Consultation>getList(){
@@ -139,7 +139,7 @@ public class Client {
     public void setAnimalTotem(String animalTotem){
         this.animalTotem=animalTotem;
     }
-    public void setStatus(String status){
+    public void setStatus(Status status){
         this.status=status;
     }
     public List<Consultation> addNewConsult(Consultation myConsulToAdd){
@@ -157,7 +157,7 @@ public class Client {
         s += "Votre signe du zodiaque chinois : " + signeChinois + "\n";
         s += "Votre couleur porte-bonheur : " + couleur + "\n";
         s += "Votre animal totem : " + animalTotem + "\n\n";
-        
+/*
         if(listConsult.size() > 0)
         {
             s += "Vos dernières consultations :\n";
@@ -167,6 +167,7 @@ public class Client {
             }
             s += "\n";
         }
+*/
         
         s += "Merci d'utiliser Predict\'IF ;)\n"; 
         s += "\n";

@@ -10,5 +10,5 @@ package metier.modele;
  * @author louislombard
  */
 public enum Status {
-    
+    FREE, WAITING, CONVERSING
 }
