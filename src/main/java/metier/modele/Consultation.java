@@ -55,6 +55,7 @@ public class Consultation {
        this.employee=emp;
        this.askingDate=askingDate; 
        this.status="Waiting";
+       this.commentaire="aucun";
     }
     
     //Getters
@@ -93,7 +94,9 @@ public class Consultation {
     
     @Override
     public String toString() {
-        return "Consultation " + this.id + " : // Date de demande : " + this.askingDate+ " : // Date de début : " + this.begginingDate+ " : // Date de fin : " + this.endDate + " // Commentaire : "+ this.commentaire +" // Employee : " +this.employee.getId()+  " // Medium : " + this.medium.getId()+ " // Client : "+ this.client.getId();
+        String beginningDateLocal = this.begginingDate==null ? "non fixé" : this.begginingDate.toString();
+        String endDateLocal = this.endDate==null ? "non fixé" : this.endDate.toString();
+        return "Consultation " + this.id + " : // Date de demande : " + this.askingDate+ " : // Date de début : " + beginningDateLocal + " : // Date de fin : " + endDateLocal + " // Commentaire : "+ this.commentaire +" // Employee : " +this.employee.getId()+  " // Medium : " + this.medium.getId()+ " // Client : "+ this.client.getId();
     }
 }
     
