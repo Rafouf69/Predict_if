@@ -353,11 +353,6 @@ public class ServicePredictif {
         return array;
     }
     
-    public void clientInfos(Client myClient)
-    {
-        System.out.println(myClient);
-    }
-    
     public void checkListConsultClient (Long idClient) throws Exception{
         Client myClient;
         try {

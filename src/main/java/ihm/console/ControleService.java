@@ -443,8 +443,7 @@ public class ControleService {
     
     public void testerClientInfos(Client myClient)
     {
-        ServicePredictif ser = new ServicePredictif();
-        ser.clientInfos(myClient);
+        System.out.println(myClient);
     }
     
     public int runningserviceEmployee(Employee myEmp) {
