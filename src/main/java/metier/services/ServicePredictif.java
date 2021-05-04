@@ -112,12 +112,12 @@ public class ServicePredictif {
         return newMed;
     }
 
-    public Consultation DemandeDeConsultation(Client myClient,Long idmedium, Date date) throws Exception{
+    public Consultation demandeDeConsultation(Client myClient,Long idMedium, Date date) throws Exception{
              
         List<Employee> matchingEmployees;
         Employee employeChoisi ;
         Consultation myConsult;
-        Medium mymedium;
+        Medium myMedium;
        
         
         //Etape 1: Vérifier que le client demandé n'a pas déja une consultation en attente
@@ -128,7 +128,7 @@ public class ServicePredictif {
          
         //Etape 2: Retrouver le medium demandée
         try {
-            mymedium= trouverMediumParId(idmedium);
+            myMedium= trouverMediumParId(idMedium);
         }catch(Exception ex){
              //Logger.getAnonymousLogger().log(Level.INFO, "[Service predictif:Log] " + ex); //in debug mode
             throw ex;
@@ -147,27 +147,27 @@ public class ServicePredictif {
              ClientDAO myClientDAO= new ClientDAO();
              MediumDAO myMediumDAO= new MediumDAO();
              
-             matchingEmployees=myDAOemp.chercherEmployeDispo(mymedium.getGender()); //trouver les potentiels employées correspondant
+             matchingEmployees=myDAOemp.chercherEmployeDispo(myMedium.getGender()); //trouver les potentiels employées correspondant
              
              if (matchingEmployees.isEmpty()){
                  
-                throw new Exception("Sorry, " + mymedium.getDenomination() + " is unavailable for the moment, please come back later"); //Dans le cas ou aucun employé est possible
+                throw new Exception("Sorry, " + myMedium.getDenomination() + " is unavailable for the moment, please come back later"); //Dans le cas ou aucun employé est possible
                 
              }else{
                  
                 employeChoisi = Collections.min(matchingEmployees); //prendre l'employée le plus faible
            
-                myConsult= new Consultation(employeChoisi,date,myClient, mymedium);
+                myConsult= new Consultation(employeChoisi,date,myClient, myMedium);
                  
                 //changer le status de objets concernés et ajouter objet concernés
                 employeChoisi.setStatus(Status.WAITING);
                 myClient.setStatus(Status.WAITING);
                 employeChoisi.addNewConsult(myConsult);
                 myClient.addNewConsult(myConsult);
-                mymedium.addnewconsult(myConsult);
+                myMedium.addnewconsult(myConsult);
                 
                 //Sauvegarder changement et modifications dans BD
-                myMediumDAO.modifier(mymedium);
+                myMediumDAO.modifier(myMedium);
                 myClientDAO.modifier(myClient);
                 myDAOemp.modifier(employeChoisi);
                 

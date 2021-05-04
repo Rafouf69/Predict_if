@@ -258,9 +258,9 @@ public class ControleService {
        long idMedium= Saisie.lireInteger("Id du medium :");
        //enlever les mdp
        try {
-            service.DemandeDeConsultation(myClient,idMedium, new Date());
-       }catch(Exception Ex){
-            System.out.println(Ex);
+            service.demandeDeConsultation(myClient,idMedium, new Date());
+       }catch(Exception ex){
+            System.out.println(ex);
        }
        
        try {
@@ -285,24 +285,24 @@ public class ControleService {
        try {
             ArrayList<HashMap> result= service.EmployeeStats(myEmp);
             HashMap<Medium,Integer> mapMedium =result.get(0);
-            HashMap<Client,Integer> mapclient =result.get(1);
-            List<Integer> nbofclientlist= new ArrayList(mapclient.values());
-            List<Integer> nboftimessorted= new ArrayList(mapMedium.values());
-            Collections.sort(nboftimessorted,Collections.reverseOrder());
-            Collections.sort(nbofclientlist,Collections.reverseOrder());
+            HashMap<Client,Integer> mapClient =result.get(1);
+            List<Integer> nbOfClientList= new ArrayList(mapClient.values());
+            List<Integer> nbOfTimesSorted= new ArrayList(mapMedium.values());
+            Collections.sort(nbOfTimesSorted,Collections.reverseOrder());
+            Collections.sort(nbOfClientList,Collections.reverseOrder());
             
-            int tailleClient= Math.min(nbofclientlist.size(),3);
-            int tailleMedium= Math.min(nboftimessorted.size(),3);
+            int tailleClient= Math.min(nbOfClientList.size(),3);
+            int tailleMedium= Math.min(nbOfTimesSorted.size(),3);
             
-            System.out.println("BBB "+nboftimessorted);
-            System.out.println("BBB "+nbofclientlist);
+            System.out.println("BBB "+nbOfTimesSorted);
+            System.out.println("BBB "+nbOfClientList);
             
             
             Client[] mostClient = new  Client[tailleClient];
             int[] mostClientTime = new int [tailleClient];
             
             for (int i= 0;i<tailleClient;i++){
-                mostClientTime[i]=nbofclientlist.get(i);
+                mostClientTime[i]=nbOfClientList.get(i);
             }
             
             
@@ -310,7 +310,7 @@ public class ControleService {
             int[] mostMediumTime = new int [tailleMedium];
             
             for (int i= 0;i<tailleMedium;i++){
-                mostMediumTime[i]=nboftimessorted.get(i);
+                mostMediumTime[i]=nbOfTimesSorted.get(i);
             }
             
   
@@ -323,7 +323,7 @@ public class ControleService {
                     }
                 }
             });
-            mapclient.entrySet().forEach(entry -> {
+            mapClient.entrySet().forEach(entry -> {
                 boolean insert= false;
                 for (int i= 0;i<tailleClient;i++){
                     if (Objects.equals(entry.getValue(), mostClientTime[i]) && mostClient[i]==null && !insert){
@@ -342,8 +342,8 @@ public class ControleService {
             }
         
 
-       }catch(Exception Ex){
-            System.out.println(Ex);
+       }catch(Exception ex){
+            System.out.println(ex);
        }
        
     }
@@ -352,19 +352,19 @@ public class ControleService {
        try {
             String Result= service.begginingConsult(myEmp);
             System.out.println(Result);
-       }catch(Exception Ex){
-            System.out.println(Ex);
+       }catch(Exception ex){
+            System.out.println(ex);
        }
        
     }
     public void testeRendConsult(Employee myEmp) {
        ServicePredictif service = new ServicePredictif();
-       String Comment= Saisie.lireChaine("Commentaire : ");
+       String comment= Saisie.lireChaine("Commentaire : ");
        try {
-            String Result= service.endingConsult(myEmp, Comment);
-            System.out.println(Result);
-       }catch(Exception Ex){
-            System.out.println(Ex);
+            String result= service.endingConsult(myEmp, comment);
+            System.out.println(result);
+       }catch(Exception ex){
+            System.out.println(ex);
        }
     }
     public void testerAskingHelp(Employee myEmp) {
@@ -446,7 +446,7 @@ public class ControleService {
         System.out.println(myClient);
     }
     
-    public int runningserviceEmployee(Employee myEmp) {
+    public int runningServiceEmployee(Employee myEmp) {
             System.out.println("***************************************************************");
             System.out.println("******************** Welcome to Predict'if ********************");
             System.out.println("*********************** Console Version ***********************");
@@ -494,7 +494,7 @@ public class ControleService {
             return integ;
        
     }
-    public int runningserviceClient(Client myClient) {
+    public int runningServiceClient(Client myClient) {
             System.out.println("***************************************************************");
             System.out.println("******************** Welcome to Predict'if ********************");
             System.out.println("*********************** Console Version ***********************");

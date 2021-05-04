@@ -42,8 +42,8 @@ public class Main {
               while(userClient==null){
                   try {
                       userClient=controle.testerAuthentificationClient();
-                  }catch(Exception Ex){
-                      System.out.println(Ex);
+                  }catch(Exception ex){
+                      System.out.println(ex);
                   } 
           }
           }else if (role==1){
@@ -68,10 +68,10 @@ public class Main {
           int i=-1;
           while(i!=0 && role!=0){
               if (role==1){
-                   i=controle.runningserviceEmployee(userEmp);
+                   i=controle.runningServiceEmployee(userEmp);
 
               }else if (role==2){
-                  i=controle.runningserviceClient(userClient);
+                  i=controle.runningServiceClient(userClient);
               }
           }
           userClient=null;
