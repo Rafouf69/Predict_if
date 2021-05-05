@@ -284,7 +284,7 @@ public class ControleService {
     public void testerEmployeeInfos(Employee myEmp) {
        ServicePredictif service = new ServicePredictif();
        try {
-            ArrayList<HashMap> result= service.EmployeeStats(myEmp);
+            ArrayList<HashMap> result= service.employeeStats(myEmp);
             HashMap<Medium,Integer> mapMedium =result.get(0);
             HashMap<Client,Integer> mapClient =result.get(1);
             List<Integer> nbOfClientList= new ArrayList(mapClient.values());

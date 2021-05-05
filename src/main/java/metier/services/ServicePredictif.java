@@ -356,7 +356,7 @@ public class ServicePredictif {
          
     }
 
-    public ArrayList EmployeeStats(Employee myEmp) throws Exception
+    public ArrayList employeeStats(Employee myEmp) throws Exception
     {
        
         List<Consultation> empListConsult= myEmp.getList();
@@ -403,24 +403,6 @@ public class ServicePredictif {
         }
         return returningClient;
      }
-    private Employee trouverEmpparId(Long id) throws Exception{
-        EmployeDAO monEmpDAO= new EmployeDAO();
-        Employee empToReturn= null;
-        try{
-            JpaUtil.creerContextePersistance();
-            empToReturn= monEmpDAO.chercherEmployeeparID(id);
-        }
-        catch(Exception ex){
-            throw ex;
-        }
-        finally { // dans tous les cas, on ferme l'entity manager
-        JpaUtil.fermerContextePersistance();
-        }   
-        if (empToReturn==null){
-            throw new Exception("Sorry that id does not match with any EmployeeId");
-        }
-        return empToReturn;
-     }
      
     private Medium trouverMediumParId(Long id) throws Exception{
         MediumDAO monMediumDAO= new MediumDAO();
@@ -440,26 +422,6 @@ public class ServicePredictif {
         }
         return mediumToReturn;
     }
-     
-    private Consultation trouverConsultparId(Long id) throws Exception{
-        ConsultationDAO monConsultDAO= new ConsultationDAO();
-        Consultation consultToReturn=null;
-        try{
-            JpaUtil.creerContextePersistance();
-            consultToReturn= monConsultDAO.chercherConsultparID(id);
-        }
-        catch(Exception ex){
-            throw ex;
-        }
-        finally { // dans tous les cas, on ferme l'entity manager
-        JpaUtil.fermerContextePersistance();
-        }
-        if (consultToReturn==null){
-            throw new Exception("Sorry that id does not match with any ConsultationId");
-        }
-        return consultToReturn;
-    }
-     
     public Client AuthentifierClient(String mail, String mdp) throws Exception {
           
         ClientDAO monClientDAO= new ClientDAO();
@@ -515,47 +477,6 @@ public class ServicePredictif {
         
         
     }
-       
-    private Client checkClientIdentity(long idclient, String mdp)throws Exception{
-        Client myclient;
-        //Etape 1: on récupère le client
-         try {
-             myclient= trouverClientparId(idclient);
-         }catch(Exception ex){
-             throw ex;
-         }
-         
-         //Etape 2: Verifier que le client existe: si on recherche un id qui existe pas cela ne renvoie pas une erreur: Nous devons la créer
-         if (myclient==null){
-             throw new Exception("This client do not exist. Please check Id");
-         }
-         //Etape 3: on vérifie le mdp
-         if (!myclient.getMotDePasse().equals(mdp)){
-            throw new Exception("Wrong Credentials. please make sure password is good");
-         }
-         //Etape 4: on vérifie le mdp
-         return myclient;
-      }
-    private Employee checkEmpIdentity(long idEmp, String mdp)throws Exception{
-        Employee myemp;
-        //Etape 1: on récupère le client
-         try {
-             myemp= trouverEmpparId(idEmp);
-         }catch(Exception ex){
-             throw ex;
-         }
-         
-         //Etape 2: Verifier que le client existe: si on recherche un id qui existe pas cela ne renvoie pas une erreur: Nous devons la créer
-         if (myemp==null){
-             throw new Exception("This employee do not exist. Please check Id");
-         }
-         //Etape 3: on vérifie le mdp
-         if (!myemp.getMotDePasse().equals(mdp)){
-            throw new Exception("Wrong Credentials. please make sure password is good");
-         }
-         //Etape 4: on vérifie le mdp
-         return myemp;
-      }
       
     //never used (maybe one day?)
     public List<Client> ListeClients() {
