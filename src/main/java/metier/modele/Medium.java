@@ -101,7 +101,7 @@ public class Medium implements Comparator<Medium> {
     public String toString()
     {
         String newLine = System.getProperty("line.separator");
-        String s = "Denomination : "+denomination+newLine+"Type de Medium : "+typeMedium+newLine+"Genre : "+genre;
+        String s = "Id du médium : "+id+newLine+"Denomination : "+denomination+newLine+"Type de Medium : "+typeMedium+newLine+"Genre : "+genre;
         switch(typeMedium)
         {
             case "Spirite":

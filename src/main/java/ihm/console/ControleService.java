@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import java.util.HashMap;
 import java.util.Objects;
 import java.lang.Math;
+import java.util.Iterator;
 import metier.modele.Client;
 import metier.modele.Consultation;
 import metier.modele.Employee;
@@ -263,12 +264,12 @@ public class ControleService {
             System.out.println(ex);
        }
        
-       try {
+       /*try {
            service.checkListConsultClient(myClient.getId());
        }catch(Exception ex)
        {
            System.out.println("Fail : " + ex.getMessage());
-       }
+       }*/
     }
     public void testerCheckWork(Employee myEmp) {
        ServicePredictif service = new ServicePredictif();
@@ -357,7 +358,7 @@ public class ControleService {
        }
        
     }
-    public void testeRendConsult(Employee myEmp) {
+    public void testerEndConsult(Employee myEmp) {
        ServicePredictif service = new ServicePredictif();
        String comment= Saisie.lireChaine("Commentaire : ");
        try {
@@ -405,23 +406,23 @@ public class ControleService {
         
         //nombre de consultations par medium
         System.out.println("-----Nombre de consultation par medium-----");
-        for (Medium listeMedium1 : listeMedium) {
-            System.out.println(listeMedium1.getDenomination()+ " a réalisé" + listeMedium1.getConsultNumber() + " consultations");
-        }
+        listeMedium.forEach(listeMedium1 -> {
+            System.out.println(listeMedium1.getDenomination()+ " a réalisé " + listeMedium1.getConsultNumber() + " consultations");
+        });
         System.out.println("");
         
         //repartition des clients par employee
         
         System.out.println("-----répartition des clients par employée-----");
-        for (Employee listeEmployee1 : listeEmployee) {
+        listeEmployee.forEach(listeEmployee1 -> {
             List<Consultation> listeConsultation = listeEmployee1.getList();
             Set<Client> setClient = new HashSet<>();
-            for(Consultation listeConsultation1 : listeConsultation)
-            {
+            
+            listeConsultation.forEach(listeConsultation1 -> {
                 setClient.add(listeConsultation1.getClient());
-            }
+            });
             System.out.println(listeEmployee1.getNom() + " " +listeEmployee1.getPrenom() + " a " + setClient.size() + " clients uniques");
-        }
+        });
         System.out.println("");
     }
     
@@ -477,7 +478,7 @@ public class ControleService {
                 testerBeginConsult(myEmp);
                 break;
             case 3:
-                testeRendConsult(myEmp);
+                testerEndConsult(myEmp);
                 break;
             case 4:
                 testerAskingHelp(myEmp);

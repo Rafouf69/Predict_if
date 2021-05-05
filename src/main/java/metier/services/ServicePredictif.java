@@ -10,18 +10,11 @@ import dao.EmployeDAO;
 import dao.ClientDAO;
 import dao.MediumDAO;
 import dao.JpaUtil;
-import java.util.Arrays;   
-import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import metier.modele.*;
 
 
@@ -134,53 +127,51 @@ public class ServicePredictif {
             throw ex;
         }
          
-         
-         //Un seul try catch ou lieu de plusieurs ????
-         
-         try{
-             //Etape 3: Assigner le bon employé
-             JpaUtil.creerContextePersistance();
-             JpaUtil.ouvrirTransaction();
+        try{
+            //Etape 3: Assigner le bon employé
+            JpaUtil.creerContextePersistance();
+            JpaUtil.ouvrirTransaction();
+            
+            EmployeDAO myEmpDAO= new EmployeDAO();
+            ConsultationDAO myConsultationDAO= new ConsultationDAO();
+            ClientDAO myClientDAO= new ClientDAO();
+            MediumDAO myMediumDAO= new MediumDAO();
              
-             EmployeDAO myDAOemp= new EmployeDAO();
-             ConsultationDAO myConsultationDAO= new ConsultationDAO();
-             ClientDAO myClientDAO= new ClientDAO();
-             MediumDAO myMediumDAO= new MediumDAO();
+            matchingEmployees=myEmpDAO.chercherEmployeDispo(myMedium.getGender()); //trouver les potentiels employées correspondant
              
-             matchingEmployees=myDAOemp.chercherEmployeDispo(myMedium.getGender()); //trouver les potentiels employées correspondant
-             
-             if (matchingEmployees.isEmpty()){
+            if (matchingEmployees.isEmpty()){
                  
-                throw new Exception("Sorry, " + myMedium.getDenomination() + " is unavailable for the moment, please come back later"); //Dans le cas ou aucun employé est possible
+               throw new Exception("Sorry, " + myMedium.getDenomination() + " is unavailable for the moment, please come back later"); //Dans le cas ou aucun employé est possible
                 
-             }else{
+            }else{
                  
-                employeChoisi = Collections.min(matchingEmployees); //prendre l'employée le plus faible
+               employeChoisi = Collections.min(matchingEmployees); //prendre l'employée le plus faible
            
-                myConsult= new Consultation(employeChoisi,date,myClient, myMedium);
+               myConsult= new Consultation(employeChoisi,date,myClient, myMedium);
                  
-                //changer le status de objets concernés et ajouter objet concernés
-                employeChoisi.setStatus(Status.WAITING);
-                myClient.setStatus(Status.WAITING);
-                employeChoisi.addNewConsult(myConsult);
-                myClient.addNewConsult(myConsult);
-                myMedium.addnewconsult(myConsult);
+               //changer le status de objets concernés et ajouter objet concernés
+               employeChoisi.setStatus(Status.WAITING);
+               myClient.setStatus(Status.WAITING);
+               employeChoisi.addNewConsult(myConsult);
+               myClient.addNewConsult(myConsult);
+               myMedium.addnewconsult(myConsult);
                 
-                //Sauvegarder changement et modifications dans BD
-                myMediumDAO.modifier(myMedium);
-                myClientDAO.modifier(myClient);
-                myDAOemp.modifier(employeChoisi);
+               //Sauvegarder changement et modifications dans BD
+               myMediumDAO.modifier(myMedium);
+               myClientDAO.modifier(myClient);
+               myConsultationDAO.creer(myConsult);
+               myEmpDAO.modifier(employeChoisi);
                 
-                JpaUtil.validerTransaction();
-             }     
-         }catch(Exception ex){
+               JpaUtil.validerTransaction();
+            }     
+        }catch(Exception ex){
             //Logger.getAnonymousLogger().log(Level.INFO, "[Service predictif:Log] " + ex); //in debug mode
             JpaUtil.annulerTransaction();
             throw ex;   
-         }
-         finally{
+        }
+        finally{
             JpaUtil.fermerContextePersistance();
-         }
+        }
          
        
          
@@ -334,9 +325,9 @@ public class ServicePredictif {
         try{
             JpaUtil.creerContextePersistance();
             listeMedium = monMediumDAO.chercherTous();
-            
             Collections.sort(listeMedium, new Medium());
             listeEmployee = monEmployeDAO.chercherTous();
+            Collections.sort(listeEmployee);
         }
         catch(Exception ex){
             throw ex;
@@ -369,8 +360,8 @@ public class ServicePredictif {
     {
        
         List<Consultation> empListConsult= myEmp.getList();
-        HashMap <Client, Integer> mapClient = new HashMap<Client,  Integer>();
-        HashMap <Medium, Integer> mapMedium = new HashMap<Medium,  Integer>();
+        HashMap <Client, Integer> mapClient = new HashMap<>();
+        HashMap <Medium, Integer> mapMedium = new HashMap<>();
         
         
         for (Consultation consult : empListConsult){
@@ -378,7 +369,7 @@ public class ServicePredictif {
             Client client= consult.getClient();
             Medium medium= consult.getMedium();
             
-            //stocker dans une map avec l'objetc comme clefs et le nombre de consultation comme valeurs
+            //stocker dans une map avec l'objet c comme clefs et le nombre de consultation comme valeurs
             mapMedium.put(medium,( (mapMedium.get(medium)==null) ? 1 : (mapMedium.get(medium)+1)));
             mapClient.put(client,( (mapClient.get(client)==null) ? 1 : (mapClient.get(client)+1)));
    
@@ -394,7 +385,7 @@ public class ServicePredictif {
         
     }
     
-     private Client trouverClientparId(Long id) throws Exception{
+    private Client trouverClientparId(Long id) throws Exception{
         ClientDAO monClientDAO= new ClientDAO();
         Client returningClient=null;
         try{
@@ -412,7 +403,7 @@ public class ServicePredictif {
         }
         return returningClient;
      }
-     private Employee trouverEmpparId(Long id) throws Exception{
+    private Employee trouverEmpparId(Long id) throws Exception{
         EmployeDAO monEmpDAO= new EmployeDAO();
         Employee empToReturn= null;
         try{
@@ -431,7 +422,7 @@ public class ServicePredictif {
         return empToReturn;
      }
      
-     private Medium trouverMediumParId(Long id) throws Exception{
+    private Medium trouverMediumParId(Long id) throws Exception{
         MediumDAO monMediumDAO= new MediumDAO();
         Medium mediumToReturn=null;
         try{
@@ -450,7 +441,7 @@ public class ServicePredictif {
         return mediumToReturn;
     }
      
-     private Consultation trouverConsultparId(Long id) throws Exception{
+    private Consultation trouverConsultparId(Long id) throws Exception{
         ConsultationDAO monConsultDAO= new ConsultationDAO();
         Consultation consultToReturn=null;
         try{
@@ -469,7 +460,7 @@ public class ServicePredictif {
         return consultToReturn;
     }
      
-      public Client AuthentifierClient(String mail, String mdp) throws Exception {
+    public Client AuthentifierClient(String mail, String mdp) throws Exception {
           
         ClientDAO monClientDAO= new ClientDAO();
         Client monClient;
@@ -497,7 +488,7 @@ public class ServicePredictif {
         
         
     }
-       public Employee AuthentifierEmployee(String mail, String mdp) throws Exception {
+    public Employee AuthentifierEmployee(String mail, String mdp) throws Exception {
           
         EmployeDAO monEmpDAO= new EmployeDAO();
         Employee monEmp;
@@ -545,7 +536,7 @@ public class ServicePredictif {
          //Etape 4: on vérifie le mdp
          return myclient;
       }
-       private Employee checkEmpIdentity(long idEmp, String mdp)throws Exception{
+    private Employee checkEmpIdentity(long idEmp, String mdp)throws Exception{
         Employee myemp;
         //Etape 1: on récupère le client
          try {
@@ -566,8 +557,8 @@ public class ServicePredictif {
          return myemp;
       }
       
-      //never used (maybe one day?)
-      public List<Client> ListeClients() {
+    //never used (maybe one day?)
+    public List<Client> ListeClients() {
         ClientDAO monClientDAO= new ClientDAO();
         try{
             JpaUtil.creerContextePersistance();
