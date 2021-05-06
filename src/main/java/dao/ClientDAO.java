@@ -38,7 +38,7 @@ public class ClientDAO {
         return (Client) query.getSingleResult();
         
     }
-    public Client chercherClientparID(Long Id) {
+    public Client chercherClientParID(Long Id) {
         return JpaUtil.obtenirContextePersistance().find(Client.class, Id);
         
     }

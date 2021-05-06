@@ -21,7 +21,7 @@ public class ConsultationDAO {
         return JpaUtil.obtenirContextePersistance().merge(consultation);
     }
     
-    public Consultation chercherConsultparID(Long Id) {
+    public Consultation chercherConsultParID(Long Id) {
         return JpaUtil.obtenirContextePersistance().find(Consultation.class, Id);
         
     }

@@ -347,7 +347,7 @@ public class ServicePredictif {
     public void checkListConsultClient (Long idClient) throws Exception{
         Client myClient;
         try {
-            myClient= trouverClientparId(idClient);
+            myClient= trouverClientParId(idClient);
         }catch(Exception ex){
             throw ex;
         }
@@ -385,12 +385,12 @@ public class ServicePredictif {
         
     }
     
-    private Client trouverClientparId(Long id) throws Exception{
+    private Client trouverClientParId(Long id) throws Exception{
         ClientDAO monClientDAO= new ClientDAO();
         Client returningClient=null;
         try{
             JpaUtil.creerContextePersistance();
-            returningClient= monClientDAO.chercherClientparID(id);
+            returningClient= monClientDAO.chercherClientParID(id);
         }
         catch(Exception ex){
             throw ex;
@@ -409,7 +409,7 @@ public class ServicePredictif {
         Medium mediumToReturn=null;
         try{
             JpaUtil.creerContextePersistance();
-            mediumToReturn= monMediumDAO.chercherMediumparID(id);
+            mediumToReturn= monMediumDAO.chercherMediumParID(id);
         }
         catch(Exception ex){
             throw ex;
@@ -422,7 +422,7 @@ public class ServicePredictif {
         }
         return mediumToReturn;
     }
-    public Client AuthentifierClient(String mail, String mdp) throws Exception {
+    public Client authentifierClient(String mail, String mdp) throws Exception {
           
         ClientDAO monClientDAO= new ClientDAO();
         Client monClient;
@@ -450,7 +450,7 @@ public class ServicePredictif {
         
         
     }
-    public Employee AuthentifierEmployee(String mail, String mdp) throws Exception {
+    public Employee authentifierEmployee(String mail, String mdp) throws Exception {
           
         EmployeDAO monEmpDAO= new EmployeDAO();
         Employee monEmp;

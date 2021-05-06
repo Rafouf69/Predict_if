@@ -30,7 +30,7 @@ import metier.services.ServicePredictif;
  */
 public class ControleService {
     
-    private Client ImportingClientIHMClient() {
+    private Client importingClientIHMClient() {
         
         String nom= Saisie.lireChaine("Nom du client :");
         String prenom= Saisie.lireChaine("Prenom du client");
@@ -54,7 +54,7 @@ public class ControleService {
         return myemp;
          
     }
-      private Medium ImportingClientIHMMedium() {
+      private Medium importingClientIHMMedium() {
         Medium newMedium=null;
         String denomination= Saisie.lireChaine("Dénomination du médium :");
         String genre= Saisie.lireChaine("Genre du medium (H/F) :");
@@ -81,7 +81,7 @@ public class ControleService {
     }
     public Client testerInscriptionClient() throws Exception{
         ServicePredictif serviceClient = new ServicePredictif();
-        Client newClient= ImportingClientIHMClient();
+        Client newClient= importingClientIHMClient();
         Client newClientBD=null;
         try{
             newClientBD= serviceClient.inscrireClient(newClient);
@@ -108,11 +108,11 @@ public class ControleService {
     
     public void testerInscriptionMedium(){
       ServicePredictif servicePredictif = new ServicePredictif();
-      Medium newMedium= ImportingClientIHMMedium();
+      Medium newMedium= importingClientIHMMedium();
       try{ 
-            Medium newMediumBD= servicePredictif.creerMedium(newMedium);
+            Medium newMediumBD = servicePredictif.creerMedium(newMedium);
             System.out.println("-> Succès inscription");
-            System.out.println("-> Bienvenue au Medium: id= " + newMedium.getId()+ " ;denomination= "+ newMedium.getDenomination()+" ;mail= ");
+            System.out.println("-> Bienvenue au Medium: id= " + newMediumBD.getId()+ " ;denomination= "+ newMediumBD.getDenomination()+" ;mail= ");
         }catch(Exception ex){
          System.out.println("> Echec inscription: Sorry boy");
         }
@@ -201,7 +201,7 @@ public class ControleService {
         ServicePredictif service = new ServicePredictif();
         Client clientBD;
         try{
-            clientBD= service.AuthentifierClient(mail,mdp);  
+            clientBD= service.authentifierClient(mail,mdp);  
         }catch(Exception err){
             System.out.println("> Authentification Failed : " + err.getMessage());
             throw err;
@@ -215,7 +215,7 @@ public class ControleService {
         ServicePredictif service = new ServicePredictif();
         Employee myEmp;
         try{
-            myEmp= service.AuthentifierEmployee(mail,mdp);  
+            myEmp= service.authentifierEmployee(mail,mdp);  
         }catch(Exception err){
             System.out.println("> Authentification Failed : " + err.getMessage());
             throw err;

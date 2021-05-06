@@ -37,7 +37,7 @@ public class EmployeDAO {
         return query.getResultList();
     }
     
-    public Employee chercherEmployeeparID(Long Id) {
+    public Employee chercherEmployeeParID(Long Id) {
         return JpaUtil.obtenirContextePersistance().find(Employee.class, Id);
         
     }
