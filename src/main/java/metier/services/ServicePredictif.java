@@ -385,7 +385,7 @@ public class ServicePredictif {
         
     }
     
-    private Client trouverClientParId(Long id) throws Exception{
+    public Client trouverClientParId(Long id) throws Exception{
         ClientDAO monClientDAO= new ClientDAO();
         Client returningClient=null;
         try{
