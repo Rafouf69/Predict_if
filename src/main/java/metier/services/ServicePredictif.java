@@ -473,9 +473,8 @@ public class ServicePredictif {
             JpaUtil.creerContextePersistance();
             monClient= monClientDAO.authentifierClient(mail) ;
         }
-        catch(Exception ex){
-            throw ex;
-            
+        catch(Exception ex){           
+              throw new Exception("Sorry there is not any mail with that id");
         }
         finally { // dans tous les cas, on ferme l'entity manager
             JpaUtil.fermerContextePersistance();
@@ -501,8 +500,8 @@ public class ServicePredictif {
             JpaUtil.creerContextePersistance();
             monEmp= monEmpDAO.authentifierEmp(mail) ;
         }
-        catch(Exception ex){
-            throw ex;
+        catch(Exception ex){           
+              throw new Exception("Sorry there is not any mail with that id");
         }
         finally { // dans tous les cas, on ferme l'entity manager
             JpaUtil.fermerContextePersistance();
