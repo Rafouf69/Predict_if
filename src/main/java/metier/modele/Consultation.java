@@ -69,6 +69,10 @@ public class Consultation {
     public ConsultationStatus getStatus(){
         return this.status;
     }
+    public String getCommentaire(){
+        return this.commentaire;
+    }
+    
     public Employee getEmployee(){
         return this.employee;
     }
@@ -78,6 +82,12 @@ public class Consultation {
     public Date getEndDate()
     {
         return this.endDate;
+    }
+    public Date getAskingDate(){
+        return this.askingDate ;
+    }
+    public Date getBegginingDate(){
+        return this.begginingDate ;
     }
     public void setStatus(ConsultationStatus newStat){
         this.status=newStat;

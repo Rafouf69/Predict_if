@@ -284,7 +284,7 @@ public class ControleService {
     public void testerEmployeeInfos(Employee myEmp) {
        ServicePredictif service = new ServicePredictif();
        try {
-            ArrayList<HashMap> result= service.employeeStats(myEmp);
+            ArrayList<HashMap> result= service.employeeStats(myEmp.getId());
             HashMap<Medium,Integer> mapMedium =result.get(0);
             HashMap<Client,Integer> mapClient =result.get(1);
             List<Integer> nbOfClientList= new ArrayList(mapClient.values());
@@ -351,7 +351,7 @@ public class ControleService {
     public void testerBeginConsult(Employee myEmp) {
        ServicePredictif service = new ServicePredictif();
        try {
-            String Result= service.begginingConsult(myEmp);
+            String Result= service.begginingConsult(myEmp.getId());
             System.out.println(Result);
        }catch(Exception ex){
             System.out.println(ex);
@@ -362,7 +362,7 @@ public class ControleService {
        ServicePredictif service = new ServicePredictif();
        String comment= Saisie.lireChaine("Commentaire : ");
        try {
-            String result= service.endingConsult(myEmp, comment);
+            String result= service.endingConsult(myEmp.getId(), comment);
             System.out.println(result);
        }catch(Exception ex){
             System.out.println(ex);

@@ -203,8 +203,17 @@ public class ServicePredictif {
         return returningString;
     }
     
-    public String begginingConsult(Employee myEmp) throws Exception{
+    public String begginingConsult(Long myEmpId) throws Exception{
         
+        Employee myEmp=null;
+        
+        try{
+            myEmp=trouverEmpParId(myEmpId);
+        }
+        catch(Exception ex){
+            throw ex;
+        }
+
         //check employee is phoning
         if (!myEmp.getStatus().equals(Status.WAITING)){
             throw new Exception("You cannot begin a conversation because they are not conversation waitings for you");
@@ -247,8 +256,16 @@ public class ServicePredictif {
         String returningString="Conversation started!";
         return returningString;
      }
-    public String endingConsult(Employee myEmp, String message) throws Exception{
+    public String endingConsult(Long myEmpId, String message) throws Exception{
         
+        Employee myEmp=null;
+        
+        try{
+            myEmp=trouverEmpParId(myEmpId);
+        }
+        catch(Exception ex){
+            throw ex;
+        }
         //check employee is phoning
         if (!myEmp.getStatus().equals(Status.CONVERSING)){
             throw new Exception("You cannot en a conversation if you are not consultating");
@@ -327,7 +344,7 @@ public class ServicePredictif {
             listeMedium = monMediumDAO.chercherTous();
             Collections.sort(listeMedium, new Medium());
             listeEmployee = monEmployeDAO.chercherTous();
-            Collections.sort(listeEmployee);
+            Collections.sort(listeEmployee,Collections.reverseOrder()) ;
         }
         catch(Exception ex){
             throw ex;
@@ -356,9 +373,17 @@ public class ServicePredictif {
          
     }
 
-    public ArrayList employeeStats(Employee myEmp) throws Exception
+    public ArrayList employeeStats(Long myEmpId) throws Exception
     {
-       
+        
+        Employee myEmp=null;
+        try{
+            myEmp=trouverEmpParId(myEmpId);
+        }
+        catch(Exception ex){
+            throw ex;
+        }
+        
         List<Consultation> empListConsult= myEmp.getList();
         HashMap <Client, Integer> mapClient = new HashMap<>();
         HashMap <Medium, Integer> mapMedium = new HashMap<>();
@@ -403,7 +428,25 @@ public class ServicePredictif {
         }
         return returningClient;
      }
-     
+    
+    public Employee trouverEmpParId(Long id) throws Exception{
+        EmployeDAO empDAO= new EmployeDAO();
+        Employee returningEmp=null;
+        try{
+            JpaUtil.creerContextePersistance();
+            returningEmp= empDAO.chercherEmployeeParID(id);
+        }
+        catch(Exception ex){
+            throw ex;
+        }
+        finally { // dans tous les cas, on ferme l'entity manager
+        JpaUtil.fermerContextePersistance();
+        }   
+        if (returningEmp==null){
+            throw new Exception("Sorry that id does not match with any EmployeeId");
+        }
+        return returningEmp;
+     }
     private Medium trouverMediumParId(Long id) throws Exception{
         MediumDAO monMediumDAO= new MediumDAO();
         Medium mediumToReturn=null;
