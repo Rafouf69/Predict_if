@@ -76,6 +76,21 @@ public class Medium implements Comparator<Medium> {
     public Long getId(){
         return id;
     }
+    public String getType(){
+        return typeMedium;
+    }
+    public String getSupport(){
+        return support;
+    }
+    public String getformation(){
+        return formation;
+    }
+    public String getpresentation(){
+        return presentation;
+    }
+    public String getpromotion(){
+        return promotion;
+    }
     public String getGender(){
         return this.genre;
     }
