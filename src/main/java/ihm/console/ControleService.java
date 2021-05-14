@@ -30,7 +30,7 @@ import metier.services.ServicePredictif;
  */
 public class ControleService {
     
-    private Client importingClientIHMClient() {
+    private Client importingClientIHMClient() throws Exception {
         
         String nom= Saisie.lireChaine("Nom du client :");
         String prenom= Saisie.lireChaine("Prenom du client");
@@ -38,7 +38,13 @@ public class ControleService {
         String motDePasse= Saisie.lireChaine("MotDePasse du client");
         String phoneNumber=Saisie.lireChaine("Numéro de téléphone du client: ");
         Date birthdate = new Date();
-        Client newClient= new Client(nom,prenom,mail, birthdate,motDePasse, phoneNumber);
+        Client newClient=null;
+        try{
+            newClient= new Client(nom,prenom,mail, birthdate,motDePasse, phoneNumber);
+        }catch (Exception ex){
+            throw ex;
+        }
+        
         return newClient;
          
     }
@@ -81,7 +87,12 @@ public class ControleService {
     }
     public Client testerInscriptionClient() throws Exception{
         ServicePredictif serviceClient = new ServicePredictif();
-        Client newClient= importingClientIHMClient();
+        Client newClient=null;
+        try{
+            newClient= importingClientIHMClient();
+        }catch (Exception ex){
+            throw ex;
+        }
         Client newClientBD=null;
         try{
             newClientBD= serviceClient.inscrireClient(newClient);
@@ -127,9 +138,9 @@ public class ControleService {
             String mail="MailClient"+i+"@gmail.com";
             String mdp = "mdpClient"+i;
             String phoneNumber="060000000"+i;
-            Client newClient= new Client(nom,prenom,mail,new Date(),mdp,phoneNumber);
             try{
-            serviceClient.inscrireClient(newClient);
+               Client newClient= new Client(nom,prenom,mail,new Date(),mdp,phoneNumber);
+               serviceClient.inscrireClient(newClient);
             }catch (Exception ex){
              System.out.println("> Echec initialization: ta base de données est sans doute déja remplie garçon");
             }

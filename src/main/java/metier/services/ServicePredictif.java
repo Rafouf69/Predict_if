@@ -31,11 +31,6 @@ public class ServicePredictif {
         AstroNetApi astroNetApi = new AstroNetApi();
   
         try{
-            ArrayList<String>  listeAstrale = (ArrayList<String>) astroNetApi.getProfil(client.getPrenom(), client.getDate());
-            client.setZodiaque(listeAstrale.get(0));
-            client.setSigneChinois(listeAstrale.get(1));
-            client.setCouleur(listeAstrale.get(2));
-            client.setAnimalTotem(listeAstrale.get(3));
             JpaUtil.creerContextePersistance();
             JpaUtil.ouvrirTransaction();
             newClient= monClientDAO.creer(client);

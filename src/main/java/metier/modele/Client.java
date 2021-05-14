@@ -20,9 +20,10 @@
  */
 package metier.modele;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import metier.services.AstroNetApi;
 import javax.persistence.*;
 
 
@@ -54,7 +55,7 @@ public class Client {
     
     public Client(){    
     }
-    public Client(String nom,String prenom, String mail, Date date, String motDePasse, String telephone){
+    public Client(String nom,String prenom, String mail, Date date, String motDePasse, String telephone)throws Exception{
         this.nom=nom;
         this.prenom=prenom;
         this.mail=mail;
@@ -62,6 +63,15 @@ public class Client {
         this.motDePasse=motDePasse;
         this.telephone=telephone;
         this.status=Status.FREE;
+        try{
+            ArrayList<String>  listeAstrale = (ArrayList<String>) new AstroNetApi().getProfil(prenom, date);
+            this.zodiaque=listeAstrale.get(0);
+            this.signeChinois=listeAstrale.get(1);
+            this.couleur=listeAstrale.get(2);
+            this.animalTotem=listeAstrale.get(3);
+        }catch(Exception ex){
+            throw new Exception("Error with AstroNetApi");
+        }
     }
     
     //Getters
