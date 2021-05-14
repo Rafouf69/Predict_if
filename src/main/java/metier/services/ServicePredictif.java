@@ -188,16 +188,25 @@ public class ServicePredictif {
      
      }
     
-    public String checkWork(Employee myEmp) throws Exception{
+    public Consultation checkWork(Long myEmpid) throws Exception{
          
-        String returningString;
+        Consultation returningConsult=null;
         
+        Employee myEmp=null;
+        
+        try{
+            myEmp=trouverEmpParId(myEmpid);
+        }
+        catch(Exception ex){
+            throw ex;
+        }
+
         //checkstatus
         if (myEmp.getStatus().equals(Status.FREE)){
-            returningString="This is great: You have no work to do";
+            System.out.println("This is great: You have no work to do");
         }
         else if (myEmp.getStatus().equals(Status.CONVERSING)){
-            returningString="You cannot use this feature while you're with a client. Sorry. PLease end your consutation";
+            throw new Exception("You cannot use this feature while you're with a client. Sorry. PLease end your consutation");
         }
         else{
             //get Lastelementof the list (should be a consultation waiting)
@@ -207,9 +216,10 @@ public class ServicePredictif {
             if (!ConsultationStatus.WAITING.equals(waitingconsult.getStatus())){
                 throw new Exception("Hmmm An error Occurred. PLease contact Predictif");
             }
-            returningString="It seems that you have one client waiting for you. Please begin the consultation n° " +waitingconsult.getId() +" with the client n° "+ waitingconsult.getClient().getId()+". You shoul incarn Medium "+waitingconsult.getMedium().getDenomination();
+            returningConsult=waitingconsult;
+           // returningString="It seems that you have one client waiting for you. Please begin the consultation n° " +waitingconsult.getId() +" with the client n° "+ waitingconsult.getClient().getId()+". You shoul incarn Medium "+waitingconsult.getMedium().getDenomination();
         }
-        return returningString;
+        return returningConsult;
     }
     
     public String begginingConsult(Long myEmpId) throws Exception{

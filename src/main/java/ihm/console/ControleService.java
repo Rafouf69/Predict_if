@@ -274,8 +274,8 @@ public class ControleService {
     public void testerCheckWork(Employee myEmp) {
        ServicePredictif service = new ServicePredictif();
        try {
-            String Result= service.checkWork(myEmp);
-            System.out.println(Result);
+            Consultation myconsult = service.checkWork(myEmp.getId());
+            System.out.println(myconsult);
        }catch(Exception Ex){
             System.out.println(Ex);
        }
