@@ -259,7 +259,7 @@ public class ControleService {
        long idMedium= Saisie.lireInteger("Id du medium :");
        //enlever les mdp
        try {
-            service.demandeDeConsultation(myClient,idMedium, new Date());
+            service.demandeDeConsultation(myClient.getId(),idMedium, new Date());
        }catch(Exception ex){
             System.out.println(ex);
        }
@@ -375,7 +375,7 @@ public class ControleService {
        int niveauTravail= Saisie.lireInteger("Niveau de travail : ",listvalue);
        try {
             ServicePredictif service = new ServicePredictif();
-            List<String> result= service.askingHelp(myEmp, niveauAmour, niveauSante, niveauTravail);
+            List<String> result= service.askingHelp(myEmp.getId(), niveauAmour, niveauSante, niveauTravail);
             System.out.println(result);
        }catch(Exception ex){
             System.out.println(ex);

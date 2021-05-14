@@ -105,8 +105,17 @@ public class ServicePredictif {
         return newMed;
     }
 
-    public Consultation demandeDeConsultation(Client myClient,Long idMedium, Date date) throws Exception{
-             
+    public Consultation demandeDeConsultation(Long myClientid,Long idMedium, Date date) throws Exception{
+        
+         Client myClient=null;
+        
+        try{
+            myClient=trouverClientParId(myClientid);
+        }
+        catch(Exception ex){
+            throw ex;
+        }       
+        
         List<Employee> matchingEmployees;
         Employee employeChoisi ;
         Consultation myConsult;
@@ -311,8 +320,16 @@ public class ServicePredictif {
         return returningString;
      }
      
-    public List<String> askingHelp(Employee myEmp, int amour, int sante, int travail) throws Exception{
+    public List<String> askingHelp(Long myEmpid, int amour, int sante, int travail) throws Exception{
         
+        Employee myEmp=null;
+        
+        try{
+            myEmp=trouverEmpParId(myEmpid);
+        }
+        catch(Exception ex){
+            throw ex;
+        }
         List<String> result=null;
         
         //check currently conversing
