@@ -55,7 +55,6 @@ public class Consultation {
        this.employee=emp;
        this.askingDate=askingDate; 
        this.status=ConsultationStatus.WAITING;
-       this.commentaire="aucun";
     }
     
     //Getters
