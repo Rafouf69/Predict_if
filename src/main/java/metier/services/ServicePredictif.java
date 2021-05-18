@@ -258,6 +258,8 @@ public class ServicePredictif {
             myEmpDAO.modifier(myEmp);
             myClientDAO.modifier(clientToChange);
             
+            Message.envoyerNotification(clientToChange.getTelephone(), "Bonjour "+clientToChange.getPrenom()+"J’ai bien reçu votre demande de consultation du "+consultToChange.getAskingDate()+". Vous pouvez dès à présent me contacter au"+ myEmp.getTelephone()+". A tout de suite ! Médiumiquement vôtre,"+consultToChange.getMedium().getDenomination());
+
             JpaUtil.validerTransaction();      
         }catch(Exception Ex){
             //Logger.getAnonymousLogger().log(Level.INFO, "[Service predictif:Log] " + ex); //in debug mode
@@ -266,6 +268,7 @@ public class ServicePredictif {
         }finally{
             JpaUtil.fermerContextePersistance();
         }
+
 
         String returningString="Conversation started!";
         return returningString;
